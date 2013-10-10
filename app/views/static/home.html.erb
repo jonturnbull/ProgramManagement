@@ -1,4 +1,18 @@
-<h1>Static#home</h1>
-<p>Find me in app/views/static/home.html.erb</p>
+<h1>This is our Program Management homepage</h1>
 
-<h1>This is our homepage</h1>
+<h2>Programs</h2>
+<%= link_to "New program", new_program_path %>
+
+<%= link_to "View existing programs", programs_path %>
+
+<h2>Projects</h2>
+
+<%= link_to "New organization", new_organization_path %>
+
+<%= link_to "View existing organizations", organizations_path %>
+
+<h2>Issues</h2>
+
+<%= link_to "New issue", new_issue_path %>
+
+<%= link_to "View existing issues", issues_path %>
