@@ -11,13 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131008202922) do
+ActiveRecord::Schema.define(version: 20131012210904) do
+
+  create_table "issue_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "issue_updates", force: true do |t|
+    t.text     "update_description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "issues_id"
+    t.integer  "status_types_id"
+  end
 
   create_table "issues", force: true do |t|
     t.string   "title"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "issue_types_id"
+    t.datetime "target_resolution_date"
+    t.text     "impact_description"
   end
 
   create_table "organizations", force: true do |t|
@@ -30,6 +47,12 @@ ActiveRecord::Schema.define(version: 20131008202922) do
   create_table "programs", force: true do |t|
     t.string   "name"
     t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "status_types", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
