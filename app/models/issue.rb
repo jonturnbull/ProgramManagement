@@ -1,3 +1,6 @@
 class Issue < ActiveRecord::Base
-    belongs_to :program
+    belongs_to :project
+    
+    has_many :issue_updates
+    
 end

@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Organization:</strong>
+  <%= link_to @program.organization.name, @program.organization %>
+</p>
+
+<p>
   <strong>Name:</strong>
   <%= @program.name %>
 </p>
@@ -10,7 +15,20 @@
   <%= @program.description %>
 </p>
 
-<%= link_to 'Edit', edit_program_path(@program) %> |
-<%= link_to 'Back', programs_path %>
+<p>
+	This program has <%= pluralize(@program.projects.count, 'project') %> associated with it
+</p>
 
-<%= link_to 'New Issue', new_program_issue_path(@program) %>
+<% if !@program.projects.empty? %>
+<ul>
+<% @program.projects.each do |project| %>
+<li><%= link_to project.name, project %></li>
+<% end %>
+</ul>
+<% end %>
+
+<%= link_to 'Edit this program', edit_program_path(@program) %> |
+<%= link_to 'Add new project', new_program_project_path(@program) %> | 
+<%= link_to 'View all projects for this program', program_projects_path(@program) %>
+
+

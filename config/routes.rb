@@ -1,19 +1,23 @@
 ProgramManagement::Application.routes.draw do
+
+
   get "static/home"
   
   resources :organizations do
     resources :programs, shallow: true
-  end
+  end 
   
   resources :programs do
-    resources :issues, shallow: true
+    resources :projects, shallow: true
   end
   
-
-
-
+  resources :projects
   
-
+  resources :issues
+  
+  resources :issue_updates
+  
+    
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

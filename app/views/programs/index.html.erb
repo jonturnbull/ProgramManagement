@@ -1,5 +1,6 @@
-<h1>Listing programs</h1>
+<h1>Listing all programs</h1>
 
+<% if !@programs.empty? %>
 <table>
   <thead>
     <tr>
@@ -12,6 +13,7 @@
   </thead>
 
   <tbody>
+	
     <% @programs.each do |program| %>
       <tr>
         <td><%= program.name %></td>
@@ -23,7 +25,9 @@
     <% end %>
   </tbody>
 </table>
-
+<% else %>
+<p>There are currently no programs</p>
+<% end %>
 <br>
 
-<%= link_to 'New Program', new_program_path %>
+<%= link_to 'New Program', new_organization_program_path(params[:organization_id]) %>

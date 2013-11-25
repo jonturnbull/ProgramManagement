@@ -5,7 +5,7 @@ class CreateTypeTables < ActiveRecord::Migration
       t.timestamps
     end
     
-    create_table :status, :force => true do |t|
+    create_table :status_types, :force => true do |t|
       t.string :name
       t.timestamps
     end

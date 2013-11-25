@@ -1,5 +1,5 @@
 class Organization < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   
-  has_many :programs
+  has_many :programs, dependent: :destroy
 end

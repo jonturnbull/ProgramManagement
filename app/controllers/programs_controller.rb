@@ -4,7 +4,7 @@ class ProgramsController < ApplicationController
   # GET /programs
   # GET /programs.json
   def index
-    @programs = Program.all
+    @programs = Program.find_all_by_organization_id(params[:organization_id])
   end
 
   # GET /programs/1
@@ -14,7 +14,9 @@ class ProgramsController < ApplicationController
 
   # GET /programs/new
   def new
-    @program = Program.new
+    @organization = Organization.find(params[:organization_id])
+    logger.debug @organization
+    @program = @organization.programs.new
   end
 
   # GET /programs/1/edit
@@ -24,7 +26,8 @@ class ProgramsController < ApplicationController
   # POST /programs
   # POST /programs.json
   def create
-    @program = Program.new(program_params)
+    @organization = Organization.find(params[:organization_id])
+    @program = @organization.programs.new(program_params)
 
     respond_to do |format|
       if @program.save

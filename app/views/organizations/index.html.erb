@@ -1,5 +1,7 @@
 <h1>Listing organizations</h1>
 
+
+<% if !@organizations.empty? %>
 <table>
   <thead>
     <tr>
@@ -23,7 +25,9 @@
     <% end %>
   </tbody>
 </table>
-
+<% else %>
+<p>There are currently no organizations</p>
+<% end %>
 <br>
 
 <%= link_to 'New Organization', new_organization_path %>

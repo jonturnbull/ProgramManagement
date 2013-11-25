@@ -10,5 +10,17 @@
   <%= @organization.description %>
 </p>
 
-<%= link_to 'Edit', edit_organization_path(@organization) %> |
-<%= link_to 'Back', organizations_path %> | <%= link_to 'New program', new_organization_program_path(@organization) %>
+<p>
+Currently <%= pluralize(@organization.programs.count, 'program') %> associated with this organization
+</p>
+
+<% if !@organization.programs.empty? %>
+<ul>
+<% @organization.programs.each do |program| %>
+<li><%= link_to program.name, program %></li>
+<% end %>
+</ul>
+<% end %>
+
+<%= link_to 'Edit organization', edit_organization_path(@organization) %> | <%= link_to 'New program', new_organization_program_path(@organization) %> | 
+<%= link_to "View all programs for #{@organization.name}", organization_programs_path(@organization) %>
