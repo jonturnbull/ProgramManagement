@@ -11,13 +11,20 @@ ProgramManagement::Application.routes.draw do
     resources :projects, shallow: true
   end
   
-  resources :projects
+  resources :projects do
+    resources :issues, shallow: true
+  end
   
+  resources :issues do
+    resources :issue_updates, shallow: true
+  end
+  
+  resources :projects
+    
   resources :issues
   
   resources :issue_updates
-  
-    
+      
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

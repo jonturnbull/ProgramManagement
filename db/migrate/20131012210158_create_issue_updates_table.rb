@@ -6,11 +6,9 @@ class CreateIssueUpdatesTable < ActiveRecord::Migration
     end
     
     add_reference :issue_updates, :issues
-    rename_table :status, :status_types
   end
 
   def self.down
-    rename_table :status_types, :status
     drop_table :issue_updates
   end
 end

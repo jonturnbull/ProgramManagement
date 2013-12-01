@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131013162825) do
+ActiveRecord::Schema.define(version: 20131126224356) do
 
   create_table "issue_types", force: true do |t|
     t.string   "name"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20131013162825) do
     t.integer  "status_types_id"
   end
 
+  add_index "issue_updates", ["issues_id"], name: "index_issue_updates_on_issues_id"
+
   create_table "issues", force: true do |t|
     t.string   "title"
     t.text     "description"
@@ -37,6 +39,8 @@ ActiveRecord::Schema.define(version: 20131013162825) do
     t.text     "impact_description"
     t.integer  "project_id"
   end
+
+  add_index "issues", ["project_id"], name: "index_issues_on_project_id"
 
   create_table "organizations", force: true do |t|
     t.string   "name"
@@ -53,13 +57,19 @@ ActiveRecord::Schema.define(version: 20131013162825) do
     t.integer  "organization_id"
   end
 
+  add_index "programs", ["organization_id"], name: "index_programs_on_organization_id"
+
   create_table "projects", force: true do |t|
     t.string   "name"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "program_id"
+    t.datetime "start_date"
+    t.datetime "planned_end_date"
   end
+
+  add_index "projects", ["program_id"], name: "index_projects_on_program_id"
 
   create_table "status_types", force: true do |t|
     t.string   "name"
