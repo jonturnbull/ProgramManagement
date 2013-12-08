@@ -14,8 +14,9 @@ var Fluid = {
 
 	init: function() {
 		this._nodes.grid = DOM.id("fluid-grid");
+		this._nodes.container = DOM.id("fluid-container-div");
 		// Expand the container:
-		DOM.id("fluid-container-div").style.width = DOM.getWindowWidth() + "px";
+		this._nodes.container.style.width = DOM.getWindowWidth() + "px";
 		window.onresize = _Fluid_pack;
 	},
 	
@@ -56,6 +57,8 @@ var Fluid = {
 		c._buttonNodeRight.style.textAlign = "right";
 		c.leftButtons = Array();
 		c.rightButtons = Array();
+		// Scroll if required:
+		//this._nodes.container.scrollLeft = 10000;
 		return c;
 	},
 	
@@ -181,8 +184,19 @@ var Fluid = {
 			}
 			args.display(td, item);
 		}
+		// Scroll if required:
+		//this._nodes.container.scrollLeft = 10000;
 		
 		return c;
+	},
+	
+	releaseFrom: function(index) {
+		while(this.columns.length > index) {
+			var col = this.columns.pop();
+			col.node.innerHTML = "";
+			col.node.parentNode.removeChild(col.node);
+			col.node = null;
+		}
 	},
 	
 	// PRIVATE:
@@ -191,7 +205,8 @@ var Fluid = {
 
 // To be called by window.resize:
 function _Fluid_pack() {
-	for(var i=0; i<Fluid.columns.length; i++) {
+	for(var i=1; i<Fluid.columns.length; i++) {
+	// TODO for(var i=0; i<Fluid.columns.length; i++) {
 		var c = Fluid.columns[i];
 		var maxHeight = c._getMaxFormHeight();
 		if(DOM.getSize(c._formNode).height > maxHeight) {
@@ -241,6 +256,7 @@ function Column() {
 		var td1 = DOM.addNode(tr1, "td");
 		td1.className = "form-c-label";
 		dd.node = DOM.addNode(td1, "table");
+		dd.node.id = args.name
 		dd.node.className = "wg-ddown-table pointer";
 		var tr2 = DOM.addNode(dd.node, "tr");
 		var td2 = DOM.addNode(tr2, "td");

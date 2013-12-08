@@ -14,14 +14,18 @@
 <script language="JavaScript" type="text/javascript" src="../res/eap.R1.js"></script>
 <script language="JavaScript" type="text/javascript" src="../res/fs-config.js"></script>
 <script language="JavaScript" type="text/javascript" src="../res/fluid.js"></script>
+<script language="JavaScript" type="text/javascript" src="../res/pmo.js"></script>
 <script>
 function loadPage() {
 	Fluid.init();
+	// TODO remove this line
+	Fluid.columns.push({});
 	// Form 1:
 	var f = Fluid.addForm({width:280, title: "Innovair"});
 	f.addDropDown({name:"org-ddown", text:"Programmes"});
 	f.addLabel({text: "innovair.co", href:"http://innovair.co"});
 	f.addLabel({text: "54 employees"});
+	f.addLabel({text: "At Innovair, ideas, technology, experience and best practices come together to create ground-breaking, innovative products for the enterprise market."});
 	f.addLabel({text: "At Innovair, ideas, technology, experience and best practices come together to create ground-breaking, innovative products for the enterprise market."});
 	f.addLabel({text: "At Innovair, ideas, technology, experience and best practices come together to create ground-breaking, innovative products for the enterprise market."});
 	f.addButton({name:"b-org-edit", type:"edit", side:"right"});
@@ -61,13 +65,6 @@ function loadPage() {
 	//f.gridNode.innerHTML = Strings.multiply("Main</p>", 30);
 
 
-	// Drop-down:
-	/*
-	var progsMenu = new Widgets.Menu({attachTo: DOM.id("ddown"), align:"left", width:"inherit"});
-	progsMenu.addOption({text:"People", link:"javascript:alert('Not Set')"});
-	progsMenu.addOption({text:"Risks", link:"javascript:alert('Not Set')"});
-	progsMenu.addOption({text:"Issues", link:"javascript:alert('Not Set')"});
-	*/
 	Fluid.pack();
 	
 	// Ajax:
@@ -78,7 +75,7 @@ function loadPage() {
 		//parameters: Array({name:"action", value:"change-password"}, DOM.id("old_password"), DOM.id("password1")),
 		onSuccess: function(data) {
 			for(var i=0; i<data.length; i++) {
-				console.log(data[i]);
+				//console.log(data[i]);
 			}
 		},
 		onFailure: null
@@ -144,9 +141,9 @@ function loadPage() {
 								</tr>
 								<tr>
 									<td class="form-c">
-										<div class="wg-highlight">FT Consulting</div>
-										<div class="wg-highlight">Innovair</div>
-										<div class="wg-highlight">RedFly</div>
+										<div class="wg-highlight" onclick="PMO.displayOrg(1)">FT Consulting</div>
+										<div class="wg-highlight" onclick="PMO.displayOrg(2)">Innovair</div>
+										<div class="wg-highlight" onclick="PMO.displayOrg(3)">RedFly</div>
 									</td>
 								</tr>
 							</table>
