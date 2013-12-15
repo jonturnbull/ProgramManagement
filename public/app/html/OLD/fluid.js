@@ -13,12 +13,11 @@ var Fluid = {
 	columns: new Array(),
 
 	init: function() {
-		// Expand the container:
+		this._nodes.grid = DOM.id("fluid-grid");
 		this._nodes.container = DOM.id("fluid-container-div");
+		// Expand the container:
 		this._nodes.container.style.width = DOM.getWindowWidth() + "px";
 		window.onresize = _Fluid_pack;
-		// Get a reference to the UI grid:
-		this._nodes.grid = DOM.id("fluid-grid");
 	},
 	
 	pack: function() {
@@ -27,53 +26,8 @@ var Fluid = {
 
 	addForm: function(args) {
 		Utils.checkMandatoryArgs(args, ["width", "title"]);
-		args.type = Constants.UI.COL_TYPE_FORM;
 		var c = this._addColumn(args);
-		c._addTitle({node: c.gridNode, text: args.title});
-		return c;
-	},
-	
-	addOrgs: function(args) {
-		Utils.checkMandatoryArgs(args, ["width"]);
-		args.createHeader = function(col) {
-			// Create the fixed title section:
-			col._headerNode = DOM.addNode(col.node, "div");
-			col._headerNode.className = "fluid-form";
-			col._headerNode.style.width = args.width+"px";
-			var table = DOM.addNode(col._headerNode, "table");
-			table.className = "form-grid";
-			var tr = DOM.addNode(table, "tr");
-			var td = DOM.addNode(tr, "td");
-			td.className = "form-c";
-			var div1 = DOM.addNode(td, "div");
-			div1.className = "wg-highlight";
-			div1.innerHTML = "HOME";
-			var div2 = DOM.addNode(td, "div");
-			div2.className = "wg-highlight";
-			div2.innerHTML = "PERSONAL";
-		};
-		args.type = Constants.UI.COL_TYPE_ORGS;
-		var c = this._addColumn(args);
-		c._addTitle({node: c.gridNode, text: "Organisations", align: "center"});
-		// Create main section:
-		var tr = DOM.addNode(c.gridNode, "tr");
-		var td = DOM.addNode(tr, "td");
-		td.className = "form-c";
-		var wgGroup = new Widgets.Group({activeClass:"wg-highlight", selectedClass:"wg-highlight-selected"});
-		var div1 = DOM.addNode(td, "div");
-		div1.innerHTML = "FT Consulting";
-		wgGroup.push(div1);
-		DOM.addEvent(div1, "onclick", function() { PMO.displayOrg(1); });
-		var div2 = DOM.addNode(td, "div");
-		div2.innerHTML = "Innovair";
-		wgGroup.push(div2);
-		DOM.addEvent(div2, "onclick", function() { PMO.displayOrg(2); });
-		var div3 = DOM.addNode(td, "div");
-		div3.innerHTML = "RedFly";
-		wgGroup.push(div3);
-		DOM.addEvent(div3, "onclick", function() { PMO.displayOrg(3); });
-		// Create the footer section:
-		c.addButton({name:"b-p-add", type:"add"});
+		c._addTitle(c.gridNode, args.title, false);
 		return c;
 	},
 	
@@ -86,7 +40,7 @@ var Fluid = {
 			col._headerNode.style.width = args.width+"px";
 			var table1 = DOM.addNode(col._headerNode, "table");
 			table1.className = "form-grid";
-			col._addTitle({node: table1, text: args.title, isSubtitle: true});
+			col._addTitle(table1, args.title, true);		
 			// Create the fixed filter section:
 			var tr1 = DOM.addNode(table1, "tr");
 			var td1 = DOM.addNode(tr1, "td");
@@ -151,7 +105,6 @@ var Fluid = {
 			};
 		};
 		args.isList = true;
-		args.type = Constants.UI.COL_TYPE_LIST;
 		var c = this._addColumn(args);
 		// Create the footer section:
 		c._footerMsg.innerHTML = "Page 1 of 1";
@@ -173,13 +126,7 @@ var Fluid = {
 	},
 	
 	releaseFrom: function(index) {
-		if(index < 1) {
-			throw "index out of bounds: "+index;
-		}
-		if(index == 1) {
-			throw "cannot release first column (Organisations)";
-		}
-		while(this.columns.length > index-1) {
+		while(this.columns.length > index) {
 			var col = this.columns.pop();
 			col.node.innerHTML = "";
 			col.node.parentNode.removeChild(col.node);
@@ -191,7 +138,7 @@ var Fluid = {
 	_nodes: {},
 	
 	_addColumn: function(args) {
-		var c = new Column(args.type);
+		var c = new Column();
 		this.columns.push(c);
 		// Create the column container:
 		c.node = DOM.addNode(this._nodes.grid, "td");
@@ -199,7 +146,7 @@ var Fluid = {
 		c.node.className = "fluid-grid-col";
 		// Placeholder for the header if required:
 		if(args.createHeader) {
-			args.createHeader(c);
+			c._headerNode = args.createHeader(c);
 		}
 		// Create the resizable form section:
 		c._formNode = DOM.addNode(c.node, "div");		
@@ -242,21 +189,13 @@ var Fluid = {
 // To be called by window.resize:
 function _Fluid_pack() {
 	Fluid._nodes.container.style.width = DOM.getWindowWidth() + "px";
-	for(var i=0; i<Fluid.columns.length; i++) {
+	for(var i=1; i<Fluid.columns.length; i++) {
+	// TODO for(var i=0; i<Fluid.columns.length; i++) {
 		var c = Fluid.columns[i];
-		// Calculate the maximum allowed height:
-		var maxHeight = DOM.getWindowHeight() - DOM.id("header").offsetHeight - DOM.id("footer").offsetHeight - c._footerNode.offsetHeight - 1;
-		if(c._headerNode) {
-			maxHeight -= c._headerNode.offsetHeight;
-		}
+		var maxHeight = c._getMaxFormHeight();
 		if(DOM.getSize(c._formNode).height > maxHeight) {
-			// The height style value must not include padding.
-			// Note that list columns have no top or bottom padding.
-			var styleHeight = maxHeight;
-			if(c._type != Constants.UI.COL_TYPE_LIST) {
-				styleHeight -= (Constants.UI.FORM_PADDING_TOP + Constants.UI.FORM_PADDING_BOTTOM);
-			}
-			c._formNode.style.height = styleHeight+"px";
+			// The height value must not include padding:
+			c._formNode.style.height = (maxHeight-c._getPadding())+"px";
 		}
 		else {
 			c._formNode.style.height = "";
@@ -264,11 +203,7 @@ function _Fluid_pack() {
 	}
 }
 
-function Column(type) {
-
-	if(Utils.isNull(type)) {
-		throw "column type is a required argument";
-	}
+function Column() {
 
 	this.addLabel = function(args) {
 		if(Utils.isNull(args.text)) {
@@ -359,8 +294,7 @@ function Column(type) {
 	};
 
 	// PRIVATE:
-	this._components = Array();
-	this._type = type;
+	this._components = Array(),
 
 	this._getPadding = function() {
 		if(this._headerNode) {
@@ -370,7 +304,7 @@ function Column(type) {
 		else {
 			return Constants.UI.FORM_PADDING_TOP + Constants.UI.FORM_PADDING_BOTTOM;
 		}
-	};
+	},
 	
 	this._getMaxFormHeight = function() {
 		var maxHeight = DOM.getWindowHeight() - DOM.id("header").offsetHeight - DOM.id("footer").offsetHeight - this._footerNode.offsetHeight - 1;
@@ -378,24 +312,21 @@ function Column(type) {
 			maxHeight -= this._headerNode.offsetHeight;
 		}
 		return maxHeight;
-	};
+	},
 	
-	this._addTitle = function(args) {
+	this._addTitle = function(node, text, subtitle) {
 		var title = new FluidComponent(this);
-		this._components.push(args.text);
-		var tr = DOM.addNode(args.node, "tr");
+		this._components.push(title);
+		var tr = DOM.addNode(node, "tr");
 		title.node = DOM.addNode(tr, "td");
-		if(args.isSubtitle) {
+		if(subtitle) {
 			title.node.className = "form-c-subtitle";
 		}
 		else {
 			title.node.className = "form-c-title";
 		}
-		title.node.innerHTML = args.text;
+		title.node.innerHTML = text;
 		title.node.fluid = title;
-		if(args.align == "center") {
-			title.node.style.textAlign= "center";
-		}
 		return title;
 	};
 

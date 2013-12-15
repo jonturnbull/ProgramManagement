@@ -2,7 +2,7 @@
 var PMO = {
 
 	displayOrg: function(org) {
-		Fluid.releaseFrom(1);
+		Fluid.releaseFrom(2);
 		var request = new AjaxRequest2({
 			url: "../tmp/org-"+org+".json",
 			method: "get",
@@ -31,6 +31,7 @@ var PMO = {
 	},
 	
 	listPrograms: function(org) {
+		Fluid.releaseFrom(3);
 		// TODO this needs to come from JSON
 		var data = new Array();
 		data.push({id:1, name: "Digital Presence", projects: 3});
@@ -55,7 +56,7 @@ var PMO = {
 	},
 	
 	displayProgram: function(id) {
-		Fluid.releaseFrom(3);
+		Fluid.releaseFrom(4);
 		var request = new AjaxRequest2({
 			url: "../tmp/program-"+id+".json",
 			method: "get",
@@ -79,6 +80,7 @@ var PMO = {
 	},
 	
 	listProjects: function(id) {
+		Fluid.releaseFrom(5);
 		// TODO this needs to come from JSON
 		var data = new Array();
 		data.push({id: 1, name: "Web Billing Platform", people: 5, startDate: "12 August", endDate: "18 October"});
@@ -113,6 +115,10 @@ var PMO = {
 			td3.className = "form-c";
 			td3.innerHTML = item.startDate + " to " + item.endDate;
 		}});
+	},
+	
+	displayProject: function(id) {
+		Fluid.releaseFrom(6);
 	}
 };
 

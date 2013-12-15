@@ -770,6 +770,41 @@ var Widgets = {
 		return "EAP_WIDGET_"+this._nextId;
 	},
 	
+	Group: function(args) {
+		if(Utils.isNull(args.activeClass)) {
+			throw "activeClass: required argument";
+		}
+		if(Utils.isNull(args.selectedClass)) {
+			throw "selectedClass: required argument";
+		}
+		this._activeClass = args.activeClass;
+		this._selectedClass = args.selectedClass;
+		this._lastSelected = null;
+		this._lastEventHandler = null;
+		this._nodes = new Array();
+
+		this.push = function(node) {
+			if(!node.fluid) {
+				node.fluid = {};
+			}
+			node.fluid.wgGroup = this;
+			node.className = this._activeClass;
+			DOM.addEvent(node, "onclick", function(node) {
+				// Re-enable the previously selected item:
+				if(node.fluid.wgGroup._lastSelected != null) {
+					node.fluid.wgGroup._lastSelected.className = node.fluid.wgGroup._activeClass;
+					node.fluid.wgGroup._lastSelected.onclick = node.fluid.wgGroup._lastEventHandler;
+				}
+				node.fluid.wgGroup._lastSelected = node;
+				// Disable the clicked node:
+				node.className = node.fluid.wgGroup._selectedClass;
+				node.fluid.wgGroup._lastEventHandler = node.onclick;
+				node.onclick = null;
+			});
+			this._nodes.push(node);
+		}
+	},
+	
 	Overlay: function(args) {
 		// Checks:
 		if(args.attachTo == null) {

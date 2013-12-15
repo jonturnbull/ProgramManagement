@@ -46,7 +46,10 @@ var Constants = {
 		FORM_FOOTER_HEIGHT: 65,
 		FORM_PADDING_TOP: 10,
 		FORM_PADDING_BOTTOM: 20,
-		BUTTON_MARGIN: 5
+		BUTTON_MARGIN: 5,
+		COL_TYPE_FORM: "ctf",
+		COL_TYPE_LIST: "ctl",
+		COL_TYPE_ORGS: "cto"
 	},
 	
 	Other: {

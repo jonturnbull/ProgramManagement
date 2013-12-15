@@ -770,13 +770,16 @@ var DOM = {
 	},
 
 	getPosition: function(elem) {
-		var left = 0;
-		var top = 0;
-		do {
-			left += elem.offsetLeft;
-			top += elem.offsetTop;
-		} while(elem = elem.offsetParent);
-		return {x: left, y: top};
+		// TODO remove
+		//var left = 0;
+		//var top = 0;
+		//do {
+		//	left += elem.offsetLeft;
+		//	top += elem.offsetTop;
+		//} while(elem = elem.offsetParent);		
+		//return {x: left, y: top};
+		var pos = elem.getBoundingClientRect();
+		return {x: pos.left, y: pos.top};
 	},
 	
 	getSize: function(elem) {
@@ -834,22 +837,23 @@ var DOM = {
 	popups: new Object(),
 	
 	addEvent: function(node, onEvent, handler) {
-		if(!node.eap) {
-			node.eap = new Object();
+		if(!node.fluid) {
+			node.fluid = {};
 		}
-		if(!node.eap[onEvent]) {
-			node.eap[onEvent] = new Object();
-			node.eap[onEvent].handlers = new Array();
+		if(!node.fluid[onEvent]) {
+			node.fluid[onEvent] = {};
+			node.fluid[onEvent].handlers = new Array();
+			// Save the current event if any:
 			if((typeof node[onEvent]) == "function") {
-				node.eap[onEvent].handlers.push(node[onEvent]);
+				node.fluid[onEvent].handlers.push(node[onEvent]);
 			}
 			node[onEvent] = function() {
-				for(var i=0; i<this.eap[onEvent].handlers.length; i++) {
-					this.eap[onEvent].handlers[i](this);
+				for(var i=0; i<this.fluid[onEvent].handlers.length; i++) {
+					this.fluid[onEvent].handlers[i](this);
 				}
 			}
 		}
-		node.eap[onEvent].handlers.push(handler);
+		node.fluid[onEvent].handlers.push(handler);
 	}
 };
 
