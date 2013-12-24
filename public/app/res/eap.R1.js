@@ -805,6 +805,63 @@ var Widgets = {
 		}
 	},
 	
+	ButtonGrid: function(args) {
+		Utils.checkArgs(args, "attachTo", "buttons", "size='absolute'");
+		Utils.checkArgValues(args.size, "relative", "absolute");
+		// Count the number of characters in the buttons:
+		var numChars = 0;
+		if(args.size == "relative") {
+			for(var i=0; i<args.buttons.length; i++) {
+				numChars += args.buttons[i].text.length;
+			}
+		}
+		var table = DOM.addNode(args.attachTo, "table");
+		table.className = "wg-button-grid";
+		var tr = DOM.addNode(table, "tr");
+		var wgGroup = new Widgets.Group({activeClass:"wg-button-grid", selectedClass:"wg-button-grid-s"});
+		for(var i=0; i<args.buttons.length; i++) {
+			var button = args.buttons[i];
+			var td = DOM.addNode(tr, "td");
+			td.className = "wg-button-grid";
+			if(args.size == "absolute") {
+				td.style.width = parseInt(100/args.buttons.length)+"%";
+			}
+			else if(args.size == "relative") {
+				td.style.width = parseInt(button.text.length/numChars*100)+"%";
+			}
+			else {
+				throw "unexpected size value: "+args.size;
+			}
+			td.innerHTML= button.text;
+			td.onclick = button.action;
+			wgGroup.push(td);
+		}
+	},
+
+	/*
+	ButtonGrid: function(args) {
+		if(Utils.isNull(args.attachTo)) {
+			throw "'attachTo': required argument";
+		}
+		if(Utils.isNull(args.buttons)) {
+			throw "'buttons': required argument";
+		}
+		var table = DOM.addNode(args.attachTo, "table");
+		table.className = "wg-button-grid";
+		var tr = DOM.addNode(table, "tr");
+		var wgGroup = new Widgets.Group({activeClass:"wg-button-grid", selectedClass:"wg-button-grid-s"});
+		for(var i=0; i<args.buttons.length; i++) {
+			var button = args.buttons[i];
+			var td = DOM.addNode(tr, "td");
+			td.className = "wg-button-grid";
+			td.style.width = parseInt(100/args.buttons.length)+"%";
+			td.innerHTML= button.text;
+			td.onclick = button.action;
+			wgGroup.push(td);
+		}
+	},
+	*/
+	
 	Overlay: function(args) {
 		// Checks:
 		if(args.attachTo == null) {
