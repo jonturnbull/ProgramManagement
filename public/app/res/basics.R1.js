@@ -636,10 +636,10 @@ var DOM = {
 	},
 
 	addNode: function(parent, nodeType) {
-		if(Utils.isNull(parent)) {
+		if(Utils.not(parent)) {
 			throw "parent: required argument";
 		}
-		if(Utils.isNull(nodeType)) {
+		if(Utils.not(nodeType)) {
 			throw "nodeType: required argument";
 		}
 		var node = document.createElement(nodeType);
@@ -727,23 +727,23 @@ var DOM = {
 	popups: new Object(),
 	
 	addEvent: function(node, onEvent, handler) {
-		if(!node.fluid) {
-			node.fluid = {};
+		if(!node.wrapper) {
+			node.wrapper = {};
 		}
-		if(!node.fluid[onEvent]) {
-			node.fluid[onEvent] = {};
-			node.fluid[onEvent].handlers = new Array();
+		if(!node.wrapper[onEvent]) {
+			node.wrapper[onEvent] = {};
+			node.wrapper[onEvent].handlers = new Array();
 			// Save the current event if any:
 			if((typeof node[onEvent]) == "function") {
-				node.fluid[onEvent].handlers.push(node[onEvent]);
+				node.wrapper[onEvent].handlers.push(node[onEvent]);
 			}
 			node[onEvent] = function() {
-				for(var i=0; i<this.fluid[onEvent].handlers.length; i++) {
-					this.fluid[onEvent].handlers[i](this);
+				for(var i=0; i<this.wrapper[onEvent].handlers.length; i++) {
+					this.wrapper[onEvent].handlers[i](this);
 				}
 			}
 		}
-		node.fluid[onEvent].handlers.push(handler);
+		node.wrapper[onEvent].handlers.push(handler);
 	}
 };
 
@@ -818,6 +818,48 @@ function Popup(name, link, popup) {
 
 
 ///////////////////////////////////////////////////////////////////////////////
+// Table class:
+///////////////////////////////////////////////////////////////////////////////
+
+var Tables = {
+	defaultTableClass: false,
+	defaultColClass: false
+};
+
+function Table(args) {
+	Utils.checkArgs(args, "attachTo", "numCols=1");
+	this.node = DOM.addNode(args.attachTo, "table");
+	this.node.wrapper = this;
+	this.rows = new Array();
+	if(Tables.defaultTableClass) {
+		this.node.className = Tables.defaultTableClass;
+	}
+	this.addRow = function() {
+		var row = {node:DOM.addNode(this.node, "tr")};
+		row.node.wrapper = row;
+		this.rows.push(row);
+		row.cols = new Array();
+		for(var i=0; i<args.numCols; i++) {
+			var col = {node:DOM.addNode(row.node, "td")};
+			col.node.wrapper = col;
+			row.cols.push(col);
+			if(Tables.defaultColClass) {
+				col.node.className = Tables.defaultColClass;
+			}
+		}
+		row.last = function() {
+			return Arrays.last(this.cols);
+		};
+		return row;
+	};
+	this.last = function() {
+		return Arrays.last(this.rows);
+	};
+	return this;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
 // Utils class:
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -828,7 +870,7 @@ var Utils = {
 		return text;
 	},
 
-	isNull: function(arg) {
+	not: function(arg) {
 		if(arg == undefined || arg == null) {
 			return true;
 		}
@@ -836,7 +878,7 @@ var Utils = {
 	},
 	
 	checkArgs: function(args) {
-		if(Utils.isNull(args)) {
+		if(Utils.not(args)) {
 			throw new Error("null argument");
 		}
 		for(var i=1; i<arguments.length; i++) {
@@ -844,13 +886,13 @@ var Utils = {
 			var tmp = arg.split("=");
 			if(tmp.length == 1) {
 				// Default value not specified, validate if NULL:
-				if(Utils.isNull(args[arg])) {
+				if(Utils.not(args[arg])) {
 					throw new Error("'"+arguments[i]+"': required argument");
 				}
 			}
 			else if(tmp.length == 2) {
 				// Default value specified, default if NULL:
-				if(Utils.isNull(args[tmp[0]])) {
+				if(Utils.not(args[tmp[0]])) {
 					args[tmp[0]] = eval(tmp[1]);
 				}
 			}
@@ -869,15 +911,6 @@ var Utils = {
 			}
 		}
 		throw new Error("illegal argument: "+arg);
-	},
-	
-	checkMandatoryArgs: function(args, names) {
-		for(var i=0; i<names.length; i++) {
-			if(this.isNull(args[names[i]])) {
-				throw "'"+names[i]+"': required argument";
-			}
-		}
-		return args;
 	}
 };
 

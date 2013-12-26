@@ -1,3 +1,41 @@
+// Fluid UI styles
+// Copyright 2013 Int3raction.com, all rights reserved.
+// Change log:
+// 2013-12-25: Carlos Silva: refactored layout and component style names to make them more meaningful
+
+
+
+/* Built-in classes: */
+a:link {
+	color: #32A2FB;
+	text-decoration: none;
+}
+a:visited {
+	color: #32A2FB;
+	text-decoration: none;
+}
+a:hover {
+	color: #32A2FB;
+	text-decoration: underline;
+}
+a:active {
+	color: #32A2FB;
+	text-decoration: none;
+}
+table {
+	border: none;
+	border-spacing: 0px;
+}
+table td, table th {
+	padding: 0px;
+	margin: 0px;
+}
+td {
+	text-align: left;
+	vertical-align: top;
+}
+
+
 
 /* Home screen */
 html {
@@ -66,38 +104,8 @@ td.header-c-separator {
 }
 
 
-/* Built-in classes: */
-a:link {
-	color: #32A2FB;
-	text-decoration: none;
-}
-a:visited {
-	color: #32A2FB;
-	text-decoration: none;
-}
-a:hover {
-	color: #32A2FB;
-	text-decoration: underline;
-}
-a:active {
-	color: #32A2FB;
-	text-decoration: none;
-}
-table {
-	border: none;
-	border-spacing: 0px;
-}
-table td, table th {
-	padding: 0px;
-	margin: 0px;
-}
-td {
-	text-align: left;
-	vertical-align: top;
-}
 
-
-/* Fluid components: */
+/* Fluid layout: */
 #fluid-container {
 	padding: 0;
 	margin: 0;
@@ -116,9 +124,13 @@ td {
 #fluid-container-table {
 	height: 100%;
 }
-td.fluid-grid-col {
+td.fluid-col {
 	background-color: white;
 	border-right: 1px solid #CCCCCC;
+}
+div.fluid-footer {
+	height: 65px;
+	vertical-align: top;
 }
 div.fluid-form {
 	overflow-y: auto;
@@ -129,23 +141,45 @@ div.fluid-form {
 	/* space for vertical scrollbars */
 	padding-right: 0px;
 }
-div.fluid-footer {
-	height: 65px;
-	vertical-align: top;
+table.fluid-grid {
+	width: 100%;
 }
+td.fluid-cell-padded {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+
+
+
+/* Fluid UI components: */
+div.fluid-c-title {
+	font-size: 20px;
+	font-weight: bold;
+	color: #333333;
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+td.fluid-c-subtitle {
+	font-size: 16px;
+	font-weight: bold;
+	color: #666666;
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+div.fluid-c-label {
+	float: left;
+}
+
+
+
+
+/* Fluid components: (OLD) */
 div.fluid-filter {
 	border-bottom: 1px solid #CCCCCC;
 	padding-top: 10px;
 	padding-bottom: 20px;
-}
-table.form-grid {
-	width: 100%;
-}
-td.form-c {
-	padding-left: 20px;
-	padding-right: 20px;
-	padding-top: 10px;
-	padding-bottom: 0px;
 }
 td.form-c-title {
 	font-size: 20px;
@@ -170,18 +204,6 @@ td.form-c-label {
 	padding-right: 20px;
 	padding-top: 10px;
 	padding-bottom: 5px;
-}
-table.wg-ddown-table {
-	width: 100%;
-	padding: 10px;
-	background-color: #E4E4E4;
-}
-td.wg-ddown-td {
-	text-align: left;
-	vertical-align: middle;
-	font-size: 16px;
-	font-weight: bold;
-	color: #333333;
 }
 div.wg-highlight {
 	font-family: Arial, Helvetica, sans-serif;

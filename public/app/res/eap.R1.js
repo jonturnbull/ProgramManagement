@@ -744,7 +744,7 @@ function AjaxRequest2(args) {
 			if(this.status != 200 && this.status != 0) {
 				throw "server status code: "+this.status+(this.statusText ? " ("+this.statusText+")" : "");
 			}
-			if(Utils.isNull(this.responseText)) {
+			if(Utils.not(this.responseText)) {
 				throw "Ajax response is null";
 			}
 			var data = eval(this.responseText);
@@ -771,12 +771,7 @@ var Widgets = {
 	},
 	
 	Group: function(args) {
-		if(Utils.isNull(args.activeClass)) {
-			throw "activeClass: required argument";
-		}
-		if(Utils.isNull(args.selectedClass)) {
-			throw "selectedClass: required argument";
-		}
+		Utils.checkArgs(args, "activeClass", "selectedClass");
 		this._activeClass = args.activeClass;
 		this._selectedClass = args.selectedClass;
 		this._lastSelected = null;
@@ -840,10 +835,10 @@ var Widgets = {
 
 	/*
 	ButtonGrid: function(args) {
-		if(Utils.isNull(args.attachTo)) {
+		if(Utils.not(args.attachTo)) {
 			throw "'attachTo': required argument";
 		}
-		if(Utils.isNull(args.buttons)) {
+		if(Utils.not(args.buttons)) {
 			throw "'buttons': required argument";
 		}
 		var table = DOM.addNode(args.attachTo, "table");

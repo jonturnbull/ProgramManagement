@@ -18,7 +18,9 @@
 <script>
 function loadPage() {
 	Fluid.init();
-	var f = Fluid.addOrgs({width:250});
+	//var f = Fluid.addOrgs({width:250});
+	//var f = Fluid.addOrgsForm({width:250});
+	PMO.listOrgs();
 	PMO.displayHome();
 	Fluid.pack();
 }
