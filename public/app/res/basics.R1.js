@@ -1,117 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Generics.R1
+// Basics.R1
 // Dependencies: none;
 ///////////////////////////////////////////////////////////////////////////////
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Logger class:
-///////////////////////////////////////////////////////////////////////////////
-
-var Logger = {
-
-	showStatus: false,
-	_INFO: "info",
-	_WARN: "warning",
-	_ERROR: "error",
-
-	buffer: new Array(),
-	
-	info: function(msg) {
-		this._log(msg, this._INFO);
-	},
-	
-	warn: function(msg) {
-		this._log(msg, this._WARN);
-	},
-	
-	error: function(msg) {
-		this._log(msg, this._ERROR);
-	},
-	
-	_log: function(msg, type) {
-		msg = msg == null ? "[null]" : msg.toString();
-		this.buffer.push(type+": "+msg);
-		if(window.console) {
-			if(type == this._INFO) {
-				console.info(msg);
-			}
-			else if(type == this._WARN) {
-				console.warn(msg);
-			}
-			else {
-				console.error(msg);
-			}
-		}
-		if(this.showStatus) {
-			window.status = msg;
-		}
-	}
-};
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// UnitTest class
-///////////////////////////////////////////////////////////////////////////////
-
-var UnitTest = {
-
-	print: function(line) {
-		document.write(line);
-	},
-	
-	nl: function() {
-		document.write("<br>");
-	},
-
-	println: function(line) {
-		this.print(line);
-		this.nl();
-	},
-
-	printTitle: function(string) {
-		document.write("<br><b>"+string+"</b><br>");
-	},
-	
-	printArray: function(array) {
-		for(var i in array) {
-			this.println(array[i]);
-		}
-	},
-
-	eval: function(expr, quotes) {
-		document.write(expr+": ");
-		if(quotes) {
-			document.write("\"");
-		}
-		document.write("<b>"+eval(expr)+"</b>");
-		if(quotes) {
-			document.write("\"");
-		}
-		document.write("<br>");
-	},
-	
-	assert: function(expr, expected, quotes) {
-		document.write(expr+": ");
-		var result = eval(expr)+"";
-		if(result != expected) {
-			document.write("<span class=\"fnt-error\">");
-		}
-		if(quotes) {
-			document.write("\"");
-		}
-		document.write("<b>"+result+"</b>");
-		if(quotes) {
-			document.write("\"");
-		}
-		if(result != expected) {
-			document.write("</span> (expected \""+expected+"\")");
-		}
-		document.write("<br>");
-	}
-};
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -933,6 +823,11 @@ function Popup(name, link, popup) {
 
 var Utils = {
 
+	log: function(text) {
+		window.console ? console.log(text) : alert(text);
+		return text;
+	},
+
 	isNull: function(arg) {
 		if(arg == undefined || arg == null) {
 			return true;
@@ -940,13 +835,40 @@ var Utils = {
 		return false;
 	},
 	
-	checkArgValues: function(arg, values) {
-		for(var i=0; i<values.length; i++) {
-			if(values[i] == arg) {
+	checkArgs: function(args) {
+		if(Utils.isNull(args)) {
+			throw new Error("null argument");
+		}
+		for(var i=1; i<arguments.length; i++) {
+			var arg = arguments[i];
+			var tmp = arg.split("=");
+			if(tmp.length == 1) {
+				// Default value not specified, validate if NULL:
+				if(Utils.isNull(args[arg])) {
+					throw new Error("'"+arguments[i]+"': required argument");
+				}
+			}
+			else if(tmp.length == 2) {
+				// Default value specified, default if NULL:
+				if(Utils.isNull(args[tmp[0]])) {
+					args[tmp[0]] = eval(tmp[1]);
+				}
+			}
+			else {
+				throw new Error("illegal format: "+arg);
+			}
+		}
+		return args;
+	},
+	
+	checkArgValues: function(arg) {
+		Utils.checkArgs(arg);
+		for(var i=1; i<arguments.length; i++) {
+			if(arguments[i] == arg) {
 				return true;
 			}
 		}
-		return false;
+		throw new Error("illegal argument: "+arg);
 	},
 	
 	checkMandatoryArgs: function(args, names) {
@@ -955,7 +877,99 @@ var Utils = {
 				throw "'"+names[i]+"': required argument";
 			}
 		}
-		return true;
+		return args;
 	}
 };
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// UnitTest class
+///////////////////////////////////////////////////////////////////////////////
+
+var UT = {
+
+	print: function(line) {
+		document.write(line);
+	},
+	
+	nl: function() {
+		document.write("<br>");
+	},
+
+	println: function(line) {
+		this.print(line);
+		this.nl();
+	},
+
+	printTitle: function(string) {
+		document.write("<br><b>"+string+"</b><br>");
+	},
+	
+	printArray: function(array) {
+		for(var i in array) {
+			this.println(array[i]);
+		}
+	},
+
+	eval: function(expr, quotes) {
+		document.write(expr+": ");
+		if(quotes) {
+			document.write("\"");
+		}
+		var result = eval(expr);
+		document.write("<b>"+result+"</b>");
+		if(quotes) {
+			document.write("\"");
+		}
+		document.write("<br>");
+		return result;
+	},
+	
+	assert: function(expr, expected, quotes) {
+		document.write(expr+": ");
+		var result = eval(expr)+"";
+		this._printAssertResult(result, expected, quotes);
+		return result;
+	},
+	
+	assertFail: function(expr, expected, quotes) {
+		document.write(expr+": ");
+		try {
+			var result = eval(expr)+"";
+			document.write("<span class=\"fnt-error\">expression did not fail</span><br>");
+			return result;
+		}
+		catch(e) {
+			this._printAssertResult(e.message, expected, quotes);
+			return e;
+		}
+	},
+	
+	_printAssertResult: function(result, expected, quotes) {
+		if(result != expected) {
+			document.write("<span class=\"fnt-error\">expected ");
+			if(quotes) {
+				document.write("\"");
+			}
+			document.write("<b>"+expected+"</b>");
+			if(quotes) {
+				document.write("\"");
+			}
+			document.write(", found ");
+		}
+		if(quotes) {
+			document.write("\"");
+		}
+		document.write("<b>"+result+"</b>");
+		if(quotes) {
+			document.write("\"");
+		}
+		if(result != expected) {
+			document.write("</span>");
+		}
+		document.write("<br>");
+	}
+};
+
 

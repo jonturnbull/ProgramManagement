@@ -29,7 +29,7 @@ var Fluid = {
 		Utils.checkMandatoryArgs(args, ["width", "title"]);
 		args.type = Constants.UI.COL_TYPE_FORM;
 		var c = this._addColumn(args);
-		c._addTitle({node: c.gridNode, text: args.title});
+		c._addTitle({node:c.gridNode, text:args.title, isSubtitle:args.isSubtitle});
 		return c;
 	},
 	
@@ -48,9 +48,14 @@ var Fluid = {
 			var div1 = DOM.addNode(td, "div");
 			div1.className = "wg-highlight";
 			div1.innerHTML = "HOME";
+			col._wgGroup = new Widgets.Group({activeClass:"wg-highlight", selectedClass:"wg-highlight-s"});
+			col._wgGroup.push(div1);
+			DOM.addEvent(div1, "onclick", function() { PMO.displayHome(); });
 			var div2 = DOM.addNode(td, "div");
 			div2.className = "wg-highlight";
 			div2.innerHTML = "PERSONAL";
+			col._wgGroup.push(div2);
+			DOM.addEvent(div2, "onclick", function() { PMO.displayPersonal(); });
 		};
 		args.type = Constants.UI.COL_TYPE_ORGS;
 		var c = this._addColumn(args);
@@ -59,18 +64,17 @@ var Fluid = {
 		var tr = DOM.addNode(c.gridNode, "tr");
 		var td = DOM.addNode(tr, "td");
 		td.className = "form-c";
-		var wgGroup = new Widgets.Group({activeClass:"wg-highlight", selectedClass:"wg-highlight-selected"});
 		var div1 = DOM.addNode(td, "div");
 		div1.innerHTML = "FT Consulting";
-		wgGroup.push(div1);
+		c._wgGroup.push(div1);
 		DOM.addEvent(div1, "onclick", function() { PMO.displayOrg(1); });
 		var div2 = DOM.addNode(td, "div");
 		div2.innerHTML = "Innovair";
-		wgGroup.push(div2);
+		c._wgGroup.push(div2);
 		DOM.addEvent(div2, "onclick", function() { PMO.displayOrg(2); });
 		var div3 = DOM.addNode(td, "div");
 		div3.innerHTML = "RedFly";
-		wgGroup.push(div3);
+		c._wgGroup.push(div3);
 		DOM.addEvent(div3, "onclick", function() { PMO.displayOrg(3); });
 		// Create the footer section:
 		c.addButton({name:"b-p-add", type:"add"});
@@ -236,6 +240,11 @@ var Fluid = {
 		// Scroll if required:
 		this._nodes.container.scrollLeft = 10000;
 		return c;
+	},
+	
+	// Objects:
+	Button: function(args) {
+		
 	}
 };
 
@@ -319,21 +328,23 @@ function Column(type) {
 		dd.node.fluid = dd;
 		return dd;
 	};
+	
+	this.addButtonGrid = function(buttons) {
+		if(Utils.isNull(buttons)) {
+			throw "function requires an argument";
+		}
+		var bg = new FluidComponent(this);
+		this._components.push(bg);		
+		var tr1 = DOM.addNode(this.gridNode, "tr");
+		var td1 = DOM.addNode(tr1, "td");
+		td1.className = "form-c-label";
+		var wgBg = new Widgets.ButtonGrid({attachTo:td1, buttons:buttons});
+	}
 
 	this.addButton = function(args) {
-		if(Utils.isNull(args.name)) {
-			throw "'name' is a required argument";
-		}
-		if(Utils.isNull(args.type)) {
-			throw "'type' is a required argument";
-		}
+		Utils.checkArgs(args, "name", "type", "side='right'");
 		// TODO check allowed button types
-		if(Utils.isNull(args.side)) {
-			args.side = "right";
-		}
-		if(!Utils.checkArgValues(args.side, ["left", "right"])) {
-			throw "illegal 'side' argument: "+args.side;
-		}
+		Utils.checkArgValues(args.side, "left", "right");
 		var b = new FluidComponent(this);
 		this._components.push(b);
 		if(args.side == "left") {
@@ -361,24 +372,6 @@ function Column(type) {
 	// PRIVATE:
 	this._components = Array();
 	this._type = type;
-
-	this._getPadding = function() {
-		if(this._headerNode) {
-			// List form does not have padding at the top or bottom:
-			return 0;
-		}
-		else {
-			return Constants.UI.FORM_PADDING_TOP + Constants.UI.FORM_PADDING_BOTTOM;
-		}
-	};
-	
-	this._getMaxFormHeight = function() {
-		var maxHeight = DOM.getWindowHeight() - DOM.id("header").offsetHeight - DOM.id("footer").offsetHeight - this._footerNode.offsetHeight - 1;
-		if(this._headerNode) {
-			maxHeight -= this._headerNode.offsetHeight;
-		}
-		return maxHeight;
-	};
 	
 	this._addTitle = function(args) {
 		var title = new FluidComponent(this);
