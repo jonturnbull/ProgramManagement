@@ -11,13 +11,10 @@
 var Fluid = {
 
 	Constants: {
-		COL_TYPE_FORM: "ctf",
-		COL_TYPE_LIST: "ctl",
-		COL_TYPE_ORGS: "cto",
 		FORM_FOOTER_HEIGHT: 65,
 		FORM_PADDING_TOP: 10,
 		FORM_PADDING_BOTTOM: 20,
-		BUTTON_MARGIN: 5
+		buttonMargin: 5
 	},
 
 	columns: new Array(),
@@ -30,8 +27,8 @@ var Fluid = {
 		// Get a reference to the UI grid:
 		this._nodes.grid = DOM.id("fluid-grid");
 		// Set defaults:
-		Tables.defaultTableClass = "fluid-grid";
-		Tables.defaultColClass = "fluid-cell-padded";
+		Widgets.Constants.defaultTableClass = "fluid-grid";
+		Widgets.Constants.defaultColClass = "fluid-cell-padded";
 	},
 	
 	pack: function() {
@@ -40,18 +37,17 @@ var Fluid = {
 
 	addForm2: function(args) {
 		Utils.checkArgs(args, "width", "title");
-		return this._addColumn2(args, Fluid.Constants.COL_TYPE_FORM);
+		return this._addColumn2(args, {form:true});
 	},
 	
 	addListForm: function(args) {
 		Utils.checkArgs(args, "width", "title", "data", "display");
-		return this._addColumn2(args, Fluid.Constants.COL_TYPE_LIST);
+		return this._addColumn2(args, {list:true});
 	},
-	
+
 	_addColumn2: function(args, type) {
 		Utils.checkArgs(type);
-		Utils.checkArgValues(type, Fluid.Constants.COL_TYPE_FORM, Fluid.Constants.COL_TYPE_LIST, Fluid.Constants.COL_TYPE_ORGS);
-		var c = {type:args.type};
+		var c = {type:type};
 		this.columns.push(c);
 		// Create the column container:
 		c.node = DOM.addNode(this._nodes.grid, "td");
@@ -62,7 +58,7 @@ var Fluid = {
 		c.header = {node:DOM.addNode(c.node, "div")};
 		c.header.node.wrapper = c.header;
 		c.header.node.style.width = args.width+"px";
-		if(type == Fluid.Constants.COL_TYPE_LIST) {
+		if(c.type.list) {
 			c.header.node.className = "fluid-filter";
 			// TODO use Table component
 			var table1 = DOM.addNode(c.header.node, "table");
@@ -131,51 +127,46 @@ var Fluid = {
 				}
 			};
 		}
-		else if(type == Fluid.Constants.COL_TYPE_ORGS) {
-		}
 
 		// Create the resizable form section:
 		c.form = {node: DOM.addNode(c.node, "div")};
 		c.form.node.wrapper = c.form;
 		c.form.node.className = "fluid-form";
 		c.form.node.style.width = args.width+"px";
-		if(type == Fluid.Constants.COL_TYPE_LIST) {
+		if(c.type.list) {
 			c.form.node.style.paddingTop = "0px";
 			c.form.node.style.paddingBottom = "0px";
 		}
-		c.form.grid = new Table({attachTo:c.form.node});
-		if(type != Fluid.Constants.COL_TYPE_LIST) {
+		c.form.grid = new Widgets.Table().attachTo(c.form.node);
+		if(c.type.form) {
 			var row = c.form.grid.addRow();
-			c.header.title = Fluid_addTitle({attachTo:row.cols[0].node, text:args.title});			
+			row.last().addTitle({text:args.title});
 		}
 
 		// TODO remove
-		c.gridNode = c.form.grid.node;		
+		//c.gridNode = c.form.grid.node;		
 
 		// Create the footer section:
 		c.footer = {node: DOM.addNode(c.node, "div")};
 		c.footer.node.wrapper = c.footer;
 		c.footer.node.className = "fluid-footer";
 		c.footer.node.style.width = args.width+"px";
-		var table = DOM.addNode(c.footer.node, "table");
-		table.style.width = "100%";
-		table.style.padding = "10px";
-		table.style.paddingLeft = "20px";
-		table.style.paddingRight = "20px";
-		var col = DOM.addNode(table, "tr");
-		c.footer._buttonNodeLeft = DOM.addNode(col, "td");
-		c.footer._buttonNodeLeft.style.textAlign = "left";
-		c.footer._buttonNodeLeft.style.width = "50%";
-		c.footer._footerMsg = DOM.addNode(col, "td");
-		c.footer._footerMsg.style.textAlign = "center";
-		c.footer._footerMsg.style.verticalAlign = "middle";
-		c.footer._footerMsg.style.whiteSpace = "nowrap";
-		c.footer._buttonNodeRight = DOM.addNode(col, "td");
-		c.footer._buttonNodeRight.style.textAlign = "right";
-		c.footer._buttonNodeRight.style.width = "50%";
+		c.footer.grid = new Widgets.Table({numCols:3, tableClass:false, colClass:false}).attachTo(c.footer.node);
+		c.footer.grid.node.style.width = "100%";
+		c.footer.grid.node.style.padding = "10px";
+		c.footer.grid.node.style.paddingLeft = "20px";
+		c.footer.grid.node.style.paddingRight = "20px";
+		var row = c.footer.grid.addRow();
+		row.cols[0].node.style.textAlign = "left";
+		row.cols[0].node.style.width = "50%";
+		row.cols[1].node.style.textAlign = "center";
+		row.cols[1].node.style.verticalAlign = "middle";
+		row.cols[1].node.style.whiteSpace = "nowrap";
+		row.cols[2].node.style.textAlign = "right";
+		row.cols[2].node.style.width = "50%";
 		c.footer.leftButtons = new Array();
 		c.footer.rightButtons = new Array();
-		
+
 		// Create functions:
 		c.footer.addButton = function(args) {
 			Utils.checkArgs(args, "name", "type", "side='right'");
@@ -183,19 +174,19 @@ var Fluid = {
 			Utils.checkArgValues(args.side, "left", "right");
 			var b = {};
 			if(args.side == "left") {
-				b.node = DOM.addNode(this._buttonNodeLeft, "input");
-				b.node.style.marginRight = Fluid.Constants.BUTTON_MARGIN + "px";
+				b.node = DOM.addNode(this.grid.rows[0].cols[0].node, "input");
+				b.node.style.marginRight = Fluid.Constants.buttonMargin + "px";
 				this.leftButtons.push(b);
 			}
 			else if(args.side == "right") {
-				b.node = DOM.addNode(this._buttonNodeRight, "input");
-				b.node.style.marginLeft = Fluid.Constants.BUTTON_MARGIN + "px";
+				b.node = DOM.addNode(this.grid.rows[0].cols[2].node, "input");
+				b.node.style.marginLeft = Fluid.Constants.buttonMargin + "px";
 				this.rightButtons.push(b);
 			}
 			else {
 				throw new Error(args.side);
 			}
-			b.node.fluid = this;
+			b.node.wrapper = b.node;
 			b.node.type = "submit";
 			b.node.name = args.name;
 			b.node.id = args.name;

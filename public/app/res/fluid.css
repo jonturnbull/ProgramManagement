@@ -153,26 +153,6 @@ td.fluid-cell-padded {
 
 
 
-/* Fluid UI components: */
-div.fluid-c-title {
-	font-size: 20px;
-	font-weight: bold;
-	color: #333333;
-	margin-top: 0px;
-	margin-bottom: 5px;
-}
-td.fluid-c-subtitle {
-	font-size: 16px;
-	font-weight: bold;
-	color: #666666;
-	margin-top: 15px;
-	margin-bottom: 10px;
-}
-div.fluid-c-label {
-	float: left;
-}
-
-
 
 
 /* Fluid components: (OLD) */
@@ -204,35 +184,6 @@ td.form-c-label {
 	padding-right: 20px;
 	padding-top: 10px;
 	padding-bottom: 5px;
-}
-div.wg-highlight {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: normal;
-	color: #999999;
-	text-align: center;
-	vertical-align: middle;
-	padding: 15px;
-	margin-bottom: 10px;
-}
-div.wg-highlight:hover {
-	background-color: #F8F8F8;
-	color: #666666;
-	font-weight: bold;
-	cursor: pointer;
-}
-div.wg-highlight-s {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: bold;
-	text-align: center;
-	vertical-align: middle;
-	padding: 15px;
-	margin-bottom: 10px;
-	background-color: #F8F8F8;
-	color: #666666;
 }
 div.wg-filter {
 	width: 100%;

@@ -4,44 +4,45 @@ var PMO = {
 	listOrgs: function() {
 		Fluid.releaseFrom(1);
 		var f = Fluid.addForm2({width:250, title:"Organisations"});
-		f.header.title.node.style.textAlign = "center";
+		f.form.grid.rows[0].cols[0].node.children[0].style.textAlign = "center";
 
 		// Create Home and Personal links:
 		f.header.node.className = "fluid-form";
-		f.header.grid = new Table({attachTo:f.header.node});
+		f.header.grid = new Widgets.Table().attachTo(f.header.node);
 		var row = f.header.grid.addRow();
-		var div1 = DOM.addNode(row.cols[0].node, "div");
-		// TODO use Block
-		div1.className = "wg-highlight";
-		div1.innerHTML = "HOME";
-		f._wgGroup = new Widgets.Group({activeClass:"wg-highlight", selectedClass:"wg-highlight-s"});
-		f._wgGroup.push(div1);
-		DOM.addEvent(div1, "onclick", function() { PMO.displayHome(); });
-		var div2 = DOM.addNode(row.cols[0].node, "div");
-		div2.className = "wg-highlight";
-		div2.innerHTML = "PERSONAL";
-		f._wgGroup.push(div2);
-		DOM.addEvent(div2, "onclick", function() { PMO.displayPersonal(); });
-
-		// List organisations:
-		// TODO use Table component
-		var tr = DOM.addNode(f.gridNode, "tr");
-		var td = DOM.addNode(tr, "td");
-		td.className = "fluid-cell-padded";
-		var div3 = DOM.addNode(td, "div");
-		// TODO get orgs from Ajax
-		div3.innerHTML = "FT Consulting";
-		f._wgGroup.push(div3);
-		DOM.addEvent(div3, "onclick", function() { PMO.displayOrg(1); });
-		var div4 = DOM.addNode(td, "div");
-		div4.innerHTML = "Innovair";
-		f._wgGroup.push(div4);
-		DOM.addEvent(div4, "onclick", function() { PMO.displayOrg(2); });
-		var div5 = DOM.addNode(td, "div");
-		div5.innerHTML = "RedFly";
-		f._wgGroup.push(div5);
-		DOM.addEvent(div5, "onclick", function() { PMO.displayOrg(3); });
+		var block = row.cols[0].addBlock({text:"HOME"});
+		block.node.onclick = function() {
+			PMO.displayHome();
+		}
+		f.blockGroup = new Group({widget:"block"});
+		f.blockGroup.push(block.node);
+		block = row.cols[0].addBlock({text:"PERSONAL"});
+		block.node.onclick = function() {
+			PMO.displayPersonal();
+		}
+		f.blockGroup.push(block.node);
 		
+		// List organisations:
+		row = f.form.grid.addRow();
+		var request = new AjaxRequest2({
+			url: "../tmp/organisations.json",
+			method: "get",
+			async: true,
+			onSuccess: function(data) {
+				for(var i=0; i<data.length; i++) {
+					var org = data[i];
+					block = row.cols[0].addBlock({text:org.name});
+					block.id = org.id;
+					block.node.onclick = function(node) {
+						PMO.displayOrg(node.wrapper.id);
+					}
+					f.blockGroup.push(block.node);
+				}
+			},
+			onFailure: null
+		});
+		request.send();
+
 		// Add buttons to footer:
 		f.footer.addButton({name:"b-p-add", type:"add"});
 	},
@@ -68,6 +69,7 @@ var PMO = {
 				var f = Fluid.addForm({width:280, title: org.name});
 				var buttons = new Array();
 				buttons.push({text:"Programs", action:function() {
+					// TODO org.id is incorrect
 					PMO.listPrograms(org.id);
 				}});
 				buttons.push({text:"People", action:function() {
@@ -203,6 +205,11 @@ var PMO = {
 				f.addButtonGrid(buttons);
 				f.addLabel({text: p.description});
 				/*
+				
+				var row = f.form.grid.addRow();
+				row.last().label({text:"Start Date"});
+				new Widgets.Label({text:"Start Date"}).attachTo(row.last().node);
+				
 				var section = f.addSection();
 				section.add(new Fluid.Label({text:"Start Date"}));
 				section.add(new Fluid.Text({text:p.startDate});

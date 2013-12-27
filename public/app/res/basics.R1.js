@@ -817,47 +817,6 @@ function Popup(name, link, popup) {
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Table class:
-///////////////////////////////////////////////////////////////////////////////
-
-var Tables = {
-	defaultTableClass: false,
-	defaultColClass: false
-};
-
-function Table(args) {
-	Utils.checkArgs(args, "attachTo", "numCols=1");
-	this.node = DOM.addNode(args.attachTo, "table");
-	this.node.wrapper = this;
-	this.rows = new Array();
-	if(Tables.defaultTableClass) {
-		this.node.className = Tables.defaultTableClass;
-	}
-	this.addRow = function() {
-		var row = {node:DOM.addNode(this.node, "tr")};
-		row.node.wrapper = row;
-		this.rows.push(row);
-		row.cols = new Array();
-		for(var i=0; i<args.numCols; i++) {
-			var col = {node:DOM.addNode(row.node, "td")};
-			col.node.wrapper = col;
-			row.cols.push(col);
-			if(Tables.defaultColClass) {
-				col.node.className = Tables.defaultColClass;
-			}
-		}
-		row.last = function() {
-			return Arrays.last(this.cols);
-		};
-		return row;
-	};
-	this.last = function() {
-		return Arrays.last(this.rows);
-	};
-	return this;
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Utils class:
