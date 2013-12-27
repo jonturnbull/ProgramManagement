@@ -23,6 +23,19 @@ function loadPage() {
 	});
 	request.send();
 	
+	// Ajax:
+	var request = new AjaxRequest2({
+		url: "../organizations/23/programs.json",
+		method: "get",
+		async: false,
+		//parameters: Array({name:"action", value:"change-password"}, DOM.id("old_password"), DOM.id("password1")),
+		onSuccess: function(data) {
+			writePrograms(data)
+		},
+		onFailure: null
+	});
+	request.send();
+	
 	
 	
 	// Form 1:
@@ -102,6 +115,31 @@ function writeOrganisations(data){
 	
 	Fluid.pack();
 }
+
+function writePrograms(data){
+	
+	var programs_array = new Array();
+		
+	for(var i=0; i<data.length; i++) {
+		programs_array[i]=data[i];
+	}
+	
+	
+	f2 = Fluid.addList({width:430, title: "Programmes", data: programs_array, display: function(node, item) {		
+		var table = DOM.addNode(node, "table");
+		table.className = "fluid-grid";
+		// Name
+		var tr2 = DOM.addNode(table, "tr");
+		var td2 = DOM.addNode(tr2, "td");
+		td2.className = "form-c";
+		td2.style.fontSize = "14px";
+		td2.innerHTML = "<strong>"+item.name+"</strong><p>"+item.description+"</p>";
+		
+
+	}});
+	
+	Fluid.pack();
+}
 -->
 </script>
 </head>
@@ -141,9 +179,7 @@ function writeOrganisations(data){
 			<table id="fluid-container-table">
 				<!-- First column: -->
 				<tr id="fluid-grid">
-					<td class="fluid-grid-col">
-						
-						
+					<td class="fluid-grid-col">						
 					</td>
 					<!-- This is where Fluid columns are added -->
 				</tr>
