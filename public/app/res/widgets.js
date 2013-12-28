@@ -89,6 +89,7 @@ var Widgets = {
 				col.addLabel = function(args) { return new Widgets.Label(args).attachTo(this.node); };
 				col.addText = function(args) { return new Widgets.Text(args).attachTo(this.node); };
 				col.addButtonGrid = function(args) { return new Widgets.ButtonGrid(args).attachTo(this.node); };
+				col.addUserBlock = function(args) { return new Widgets.UserBlock(args).attachTo(this.node); };
 			}
 			row.last = function() {
 				return Arrays.last(this.cols);
@@ -150,7 +151,7 @@ var Widgets = {
 		}
 		if(args.float) {
 			this.node.style.float = "left";
-			this.node.style.marginRight = "5px";			
+			this.node.style.marginRight = "7px";			
 		}
 		this.attachTo = Widgets._attachTo;
 		return this;
@@ -194,6 +195,17 @@ var Widgets = {
 			wgGroup.push(td);
 		}
 		this.attachTo = Widgets._attachTo;
+	},
+	
+	UserBlock: function(args) {
+		Utils.checkArgs(args, "type", "text");
+		Utils.checkArgValues(args.type, "label", "company", "external", "group");
+		this.node = document.createElement("div");
+		this.node.wrapper = this;
+		this.node.className = "wg-user-"+args.type;
+		this.node.innerHTML = args.text;
+		this.attachTo = Widgets._attachTo;
+		return this;
 	},
 
 	// TODO: refactor 

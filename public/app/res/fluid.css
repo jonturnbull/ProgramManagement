@@ -163,6 +163,7 @@ td.fluid-cell-padded {
 	padding-right: 20px;
 	padding-top: 10px;
 	padding-bottom: 5px;
+	vertical-align: middle;
 }
 div.fluid-filter-header {
 	border-bottom: 1px solid #CCCCCC;
@@ -188,6 +189,11 @@ td.fluid-list-cell {
 	cursor: pointer;
 }
 td.fluid-list-cell:hover {
+	background-color: #F8F8F8;
+}
+td.fluid-list-cell-s {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #CCCCCC;
 	background-color: #F8F8F8;
 }
 

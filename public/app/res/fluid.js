@@ -175,6 +175,7 @@ var Fluid = {
 		
 		// Display data (if list):
 		if(c.type.list) {
+			c.form.list = {data:args.data, group:new Group({activeClass:"fluid-list-cell", selectedClass:"fluid-list-cell-s"})};
 			for(var i=0; i<args.data.length; i++) {
 				var item = args.data[i];
 				var row = c.form.grid.addRow();
@@ -184,6 +185,7 @@ var Fluid = {
 					node.style.borderBottom = "none";
 				}
 				args.display(node, item);
+				c.form.list.group.push(node);
 			}
 		}
 

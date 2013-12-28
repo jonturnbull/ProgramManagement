@@ -176,26 +176,23 @@ var PMO = {
 				f.form.grid.addRow().last().addButtonGrid({buttons:buttons});
 				f.form.grid.addRow().last().addText({text:p.description});
 				var row = f.form.grid.addRow();
-				row.last().addLabel({text:"Start Date:", float:true, margin:true});
+				row.last().addLabel({text:"Start Date", float:true, margin:true});
 				row.last().addText({text:p.startDate});
 				row = f.form.grid.addRow();
-				row.last().addLabel({text:"Planned End Date:", float:true, margin:true});
+				row.last().addLabel({text:"Planned End Date", float:true, margin:true});
 				row.last().addText({text:p.endDate});
-				
+				row = f.form.grid.addRow();
+				row.last().addUserBlock({type:"label", text:"Project Managers"});
+				row.last().addUserBlock({type:"company", text:"Anna Fiore"});
+				row.last().addUserBlock({type:"external", text:"AJ"});
+				row.last().addUserBlock({type:"company", text:"Carlo Abruzzo"});
+				row.last().addUserBlock({type:"external", text:"John Cutler"});
+				row = f.form.grid.addRow();
+				row.last().addUserBlock({type:"label", text:"Project Team"});
+				row.last().addUserBlock({type:"group", text:"Innovair"});
+				// Footer buttons:
 				f.footer.addButton({name:"b-org-edit", type:"edit", side:"right"});
 				f.footer.addButton({name:"b-org-h", type:"history"});
-
-				/*
-				
-				section = f.addSection();
-				section.add(new Fluid.Label({text:"Project Managers"}));
-				section.add(new Fluid.Person({id:1, name:"Carlo Abruzzo", external:false}));
-				section = f.addSection();
-				section.add(new Fluid.Label({text:"Project Team"}));
-				section.add(new Fluid.Group({id:1, name:"Innovair"}));
-				*/
-				
-
 			},
 			onFailure: null
 		});
