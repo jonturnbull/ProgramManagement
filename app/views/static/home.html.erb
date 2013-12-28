@@ -1,25 +1,43 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>PMO</title>
-<link href="../res/fluid.css" rel="stylesheet" type="text/css" />
-<link href="../res/widgets.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-<!--
--->
-</style>
-<script language="JavaScript" type="text/javascript" src="../res/generics.R1.js"></script>
-<script language="JavaScript" type="text/javascript" src="../res/constants.js"></script>
-<script language="JavaScript" type="text/javascript" src="../res/eap.R1.js"></script>
-<script language="JavaScript" type="text/javascript" src="../res/fs-config.js"></script>
-<script language="JavaScript" type="text/javascript" src="../res/fluid.js"></script>
-<script language="JavaScript" type="text/javascript" src="../res/pmo.js"></script>
+<% content_for :title, "Welcome to Program Management home" %>
+
+
 <script>
+<!--
+
 function loadPage() {
+	
 	Fluid.init();
 	// TODO remove this line
 	Fluid.columns.push({});
+		
+	// Ajax:
+	var request = new AjaxRequest2({
+		url: "../organizations.json",
+		method: "get",
+		async: false,
+		//parameters: Array({name:"action", value:"change-password"}, DOM.id("old_password"), DOM.id("password1")),
+		onSuccess: function(data) {
+			writeOrganisations(data)
+		},
+		onFailure: null
+	});
+	request.send();
+	
+	// Ajax:
+	var request = new AjaxRequest2({
+		url: "../organizations/23/programs.json",
+		method: "get",
+		async: false,
+		//parameters: Array({name:"action", value:"change-password"}, DOM.id("old_password"), DOM.id("password1")),
+		onSuccess: function(data) {
+			writePrograms(data)
+		},
+		onFailure: null
+	});
+	request.send();
+	
+	
+	
 	// Form 1:
 	var f = Fluid.addForm({width:280, title: "Innovair"});
 	f.addDropDown({name:"org-ddown", text:"Programmes"});
@@ -64,25 +82,65 @@ function loadPage() {
 	}});
 	//f.gridNode.innerHTML = Strings.multiply("Main</p>", 30);
 
-
 	Fluid.pack();
 	
-	// Ajax:
-	var request = new AjaxRequest2({
-		url: "../tmp/organisations.json",
-		method: "get",
-		async: true,
-		//parameters: Array({name:"action", value:"change-password"}, DOM.id("old_password"), DOM.id("password1")),
-		onSuccess: function(data) {
-			for(var i=0; i<data.length; i++) {
-				//console.log(data[i]);
-			}
-		},
-		onFailure: null
-	});
-	request.send();
+	
+	
+		
 }
 
+function writeOrganisations(data){
+	
+	var organizations_array = new Array();
+		
+	for(var i=0; i<data.length; i++) {
+		organizations_array[i]=data[i];
+		//console.log(data[i]);
+	}
+	
+	
+	f2 = Fluid.addList({width:430, title: "Organizations", data: organizations_array, display: function(node, item) {		
+		var table = DOM.addNode(node, "table");
+		table.className = "fluid-grid";
+		// Name
+		var tr2 = DOM.addNode(table, "tr");
+		var td2 = DOM.addNode(tr2, "td");
+		td2.className = "form-c";
+		td2.style.fontSize = "14px";
+		td2.innerHTML = "<strong>"+item.name+"</strong>";
+		td2.onClick="PMO.displayOrg(" + item.id + ")"
+		
+
+	}});
+	
+	Fluid.pack();
+}
+
+function writePrograms(data){
+	
+	var programs_array = new Array();
+		
+	for(var i=0; i<data.length; i++) {
+		programs_array[i]=data[i];
+	}
+	
+	
+	f2 = Fluid.addList({width:430, title: "Programmes", data: programs_array, display: function(node, item) {	
+		var table = DOM.addNode(node, "table");
+		table.className = "fluid-grid";
+		// Name
+		var tr2 = DOM.addNode(table, "tr");
+		var td2 = DOM.addNode(tr2, "td");
+		td2.className = "form-c";
+		td2.style.fontSize = "14px";
+		td2.innerHTML = "<strong>"+item.name+"</strong><p>"+item.description+"</p>";
+		
+
+	}});
+	
+	Fluid.pack();
+}
+-->
 </script>
 </head>
 
@@ -121,33 +179,7 @@ function loadPage() {
 			<table id="fluid-container-table">
 				<!-- First column: -->
 				<tr id="fluid-grid">
-					<td class="fluid-grid-col">
-						<div class="fluid-form" style="width:250px">
-							<table class="form-grid">
-								<tr>
-									<td class="form-c">
-										<div class="wg-highlight">HOME</div>
-										<div class="wg-highlight">PERSONAL</div>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<div class="fluid-form" style="width:250px; border-bottom:none">
-							<table class="form-grid">
-								<tr>
-									<td class="form-c-title" style="text-align: center">
-									Organisations
-									</td>
-								</tr>
-								<tr>
-									<td class="form-c">
-										<div class="wg-highlight" onclick="PMO.displayOrg(1)">FT Consulting</div>
-										<div class="wg-highlight" onclick="PMO.displayOrg(2)">Innovair</div>
-										<div class="wg-highlight" onclick="PMO.displayOrg(3)">RedFly</div>
-									</td>
-								</tr>
-							</table>
-						</div>
+					<td class="fluid-grid-col">						
 					</td>
 					<!-- This is where Fluid columns are added -->
 				</tr>
@@ -159,5 +191,3 @@ function loadPage() {
         <td id="footer"></td>
     </tr>
 </table>
-</body>
-</html>
