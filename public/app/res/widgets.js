@@ -86,6 +86,9 @@ var Widgets = {
 				col.addTable = function(args) { return new Widgets.Table(args).attachTo(this.node); };
 				col.addBlock = function(args) { return new Widgets.Block(args).attachTo(this.node); };
 				col.addTitle = function(args) { return new Widgets.Title(args).attachTo(this.node); };
+				col.addLabel = function(args) { return new Widgets.Label(args).attachTo(this.node); };
+				col.addText = function(args) { return new Widgets.Text(args).attachTo(this.node); };
+				col.addButtonGrid = function(args) { return new Widgets.ButtonGrid(args).attachTo(this.node); };
 			}
 			row.last = function() {
 				return Arrays.last(this.cols);
@@ -124,16 +127,43 @@ var Widgets = {
 		return this;
 	},
 
-	// TODO: refactor 
-	_nextId: 0,
-	
-	_getNextId: function() {
-		this._nextId++;
-		return "EAP_WIDGET_"+this._nextId;
+	Text: function(args) {
+		Utils.checkArgs(args, "text");
+		this.node = document.createElement("div");
+		this.node.wrapper = this;
+		this.node.className = "wg-text";
+		if(args.href) {
+			var a = DOM.addNode(this.node, "a");
+			a.href = args.href;
+			a.target = "_blank";
+			a.innerHTML = args.text;
+		}
+		else {
+			this.node.innerHTML = args.text;
+		}
+		if(args.title) {
+			this.node.style.fontWeight = "bold";
+			this.node.style.fontSize = "14px";		
+		}
+		if(args.margin) {
+			this.node.style.marginBottom = "5px";
+		}
+		if(args.float) {
+			this.node.style.float = "left";
+			this.node.style.marginRight = "5px";			
+		}
+		this.attachTo = Widgets._attachTo;
+		return this;
+	},
+
+	Label: function(args) {
+		var text = new Widgets.Text(args);
+		text.node.className = "wg-label";
+		return text;
 	},
 
 	ButtonGrid: function(args) {
-		Utils.checkArgs(args, "attachTo", "buttons", "size='absolute'");
+		Utils.checkArgs(args, "buttons", "size='absolute'");
 		Utils.checkArgValues(args.size, "relative", "absolute");
 		// Count the number of characters in the buttons:
 		var numChars = 0;
@@ -142,9 +172,9 @@ var Widgets = {
 				numChars += args.buttons[i].text.length;
 			}
 		}
-		var table = DOM.addNode(args.attachTo, "table");
-		table.className = "wg-button-grid";
-		var tr = DOM.addNode(table, "tr");
+		this.node = document.createElement("table");
+		this.node.className = "wg-button-grid";
+		var tr = DOM.addNode(this.node, "tr");
 		var wgGroup = new Group({activeClass:"wg-button-grid", selectedClass:"wg-button-grid-s"});
 		for(var i=0; i<args.buttons.length; i++) {
 			var button = args.buttons[i];
@@ -163,7 +193,17 @@ var Widgets = {
 			td.onclick = button.action;
 			wgGroup.push(td);
 		}
+		this.attachTo = Widgets._attachTo;
 	},
+
+	// TODO: refactor 
+	_nextId: 0,
+	
+	_getNextId: function() {
+		this._nextId++;
+		return "EAP_WIDGET_"+this._nextId;
+	},
+
 
 	/*
 	ButtonGrid: function(args) {

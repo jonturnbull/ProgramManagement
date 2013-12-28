@@ -14,7 +14,6 @@ var Constants = {
 		NEW_PASSWORD_MUST_BE_DIFFERENT: "New password must be different from the old one",
 		FORM_UNSAVED_CHANGES_MSG: "You have unsaved changes in this form. Please press the \"save\" button below to avoid losing them",
 		// New:
-		FILTER_RESULTS: "filter results"
 	},
 
 	UI: {
@@ -57,3 +56,8 @@ var Constants = {
 	}
 };
 
+// TODO: this must be a map that loads locale constants from the server according to
+// the user's language and locale
+var Locale = {
+	filterResults: "filter results"
+};

@@ -37,6 +37,20 @@ td {
 
 
 
+/* Fonts: */
+.fnt-normal {
+	font-family: Arial, Helvetica, sans-serif;
+	font-style: normal;
+	font-size: 12px;
+	color: #666666;
+}
+.fnt-filter-input {
+	color: #CDCDCD;
+	font-size: 12px;
+}
+
+
+
 /* Home screen */
 html {
 	height: 100%;
@@ -150,17 +164,40 @@ td.fluid-cell-padded {
 	padding-top: 10px;
 	padding-bottom: 5px;
 }
+div.fluid-filter-header {
+	border-bottom: 1px solid #CCCCCC;
+	padding-top: 10px;
+	padding-bottom: 20px;
+}
+div.fluid-filter-box {
+	width: 100%;
+	border: 1px solid #CCCCCC;
+	padding: 0px;
+}
+td.fluid-filter-cell {
+	padding: 3px;
+}
+input[type='text'].fluid-filter-input {
+	border: none;
+	outline: none;
+	width: 100%;
+}
+td.fluid-list-cell {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #CCCCCC;
+	cursor: pointer;
+}
+td.fluid-list-cell:hover {
+	background-color: #F8F8F8;
+}
 
 
 
 
 
 /* Fluid components: (OLD) */
-div.fluid-filter {
-	border-bottom: 1px solid #CCCCCC;
-	padding-top: 10px;
-	padding-bottom: 20px;
-}
+
+
 td.form-c-title {
 	font-size: 20px;
 	font-weight: bold;
@@ -185,77 +222,8 @@ td.form-c-label {
 	padding-top: 10px;
 	padding-bottom: 5px;
 }
-div.wg-filter {
-	width: 100%;
-	border: 1px solid #CCCCCC;
-	padding: 0px;
-}
-td.wg-filter-c {
-	padding: 3px;
-}
-input[type='text'].wg-filter-input {
-	border: none;
-	outline: none;
-	width: 100%;
-}
-td.wg-list-c {
-	padding-bottom: 10px;
-	border-bottom: 1px solid #CCCCCC;
-	cursor: pointer;
-}
-td.wg-list-c:hover {
-	background-color: #F8F8F8;
-}
-table.wg-button-grid {
-	width: 100%;
-	border: 1px solid #CCCCCC;
-	border-collapse: collapse;
-}
-td.wg-button-grid {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: normal;
-	text-align: center;
-	vertical-align: middle;
-	padding: 10px;
-	color: #999999;
-	border: 1px solid #CCCCCC;
-}
-td.wg-button-grid:hover {
-	font-weight: bold;
-	cursor: pointer;
-	color: #666666;
-	background-color: #F8F8F8;
-}
-td.wg-button-grid-s {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: bold;
-	text-align: center;
-	vertical-align: middle;
-	padding: 10px;
-	color: #666666;
-	background-color: #F8F8F8;
-	border: 1px solid #CCCCCC;
-}
 
 
-/* Font styles: */
-.fnt-normal {
-	font-family: Arial, Helvetica, sans-serif;
-	font-style: normal;
-	font-size: 12px;
-	color: #666666;
-}
-.fnt-filter-input {
-	color: #CDCDCD;
-	font-size: 12px;
-}
-.fnt-dark {
-	color: #333333;
-}
 
 /* Other: */
 .pointer {
