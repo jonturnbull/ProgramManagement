@@ -274,39 +274,6 @@ var Widgets = {
 		return this;
 	},
 
-	// TODO: refactor 
-	_nextId: 0,
-	
-	_getNextId: function() {
-		this._nextId++;
-		return "EAP_WIDGET_"+this._nextId;
-	},
-
-
-	/*
-	ButtonGrid: function(args) {
-		if(Utils.not(args.attachTo)) {
-			throw "'attachTo': required argument";
-		}
-		if(Utils.not(args.buttons)) {
-			throw "'buttons': required argument";
-		}
-		var table = DOM.addNode(args.attachTo, "table");
-		table.className = "wg-button-grid";
-		var tr = DOM.addNode(table, "tr");
-		var wgGroup = new Widgets.Group({activeClass:"wg-button-grid", selectedClass:"wg-button-grid-s"});
-		for(var i=0; i<args.buttons.length; i++) {
-			var button = args.buttons[i];
-			var td = DOM.addNode(tr, "td");
-			td.className = "wg-button-grid";
-			td.style.width = parseInt(100/args.buttons.length)+"%";
-			td.innerHTML= button.text;
-			td.onclick = button.action;
-			wgGroup.push(td);
-		}
-	},
-	*/
-	
 	Overlay: function(args) {
 		// Checks:
 		if(args.attachTo == null) {
@@ -458,7 +425,7 @@ var Widgets = {
 			// DOM structure:
 			this.wgNode = document.createElement("table");
 			document.body.appendChild(this.wgNode);
-			this.wgNode.id = Widgets._getNextId();
+			this.wgNode.id = DOM.generateId();
 			this.wgNode.className = "wg-menu";
 			this.wgNode.setAttribute("border", "0");
 			// Widget references:
@@ -758,7 +725,7 @@ var Widgets = {
 		td.style.width = Constants.UI.WG_BUTTON_MENU_WIDTH+"px";
 		tr.appendChild(td);
 		this.wgNode = document.createElement("input");
-		this.wgNode.id = Widgets._getNextId();
+		this.wgNode.id = DOM.generateId();
 		this.wgNode.type = "button";
 		this.wgNode.className = "wg-button-menu-right";
 		this.wgNode.title = "Click to see additional options";
@@ -854,8 +821,8 @@ var Widgets = {
 		this.onCheck = null;
 		this._columns = args.columns;
 		this._otherList = null;
-		this._paneId = Widgets._getNextId();
-		this._tableId = Widgets._getNextId();
+		this._paneId = DOM.generateId();
+		this._tableId = DOM.generateId();
 		// Constants:
 		this._colorSelected = args.selectedColor == null ? Constants.UI.COLOR_BLUE : args.selectedColor;
 		this._colorBlank = Constants.UI.COLOR_WHITE;

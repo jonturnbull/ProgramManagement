@@ -59,12 +59,12 @@ var Fluid = {
 		}
 	},
 
-	addForm: function(args) {
+	addColumn: function(args) {
 		Utils.checkArgs(args, "width", "title");
 		return this._addColumn(args, {form:true});
 	},
 	
-	addListForm: function(args) {
+	addListColumn: function(args) {
 		Utils.checkArgs(args, "width", "title", "data", "render");
 		return this._addColumn(args, {list:true});
 	},
@@ -248,7 +248,7 @@ var Fluid = {
 
 		// Footer functions:
 		c.footer.addButton = function(args) {
-			Utils.checkArgs(args, "name", "type", "side='right'");
+			Utils.checkArgs(args, "name=DOM.generateId()", "type", "side='right'");
 			// TODO check allowed button types
 			Utils.checkArgValues(args.side, "left", "right");
 			var b = {fluidColumn:c};
@@ -280,9 +280,9 @@ var Fluid = {
 		// List footer:
 		if(c.type.list) {
 			c.footer.grid.last().cols[1].node.innerHTML = "Page 1 of 1";
-			c.footer.addButton({name:"b-p-next", type:"next-inactive"});
-			c.footer.addButton({name:"b-p-add", type:"add"});
-			c.footer.addButton({name:"b-p-prev", type:"prev-inactive", side:"left"});
+			c.footer.addButton({type:"next-inactive"});
+			c.footer.addButton({type:"add"});
+			c.footer.addButton({type:"prev-inactive", side:"left"});
 		}
 		
 		// Any additional functions:

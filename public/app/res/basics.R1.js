@@ -635,6 +635,10 @@ var DOM = {
 		return obj;
 	},
 
+	generateId: function() {
+		return "node_"+(++this._currentId);
+	},
+	
 	addNode: function(parent, nodeType) {
 		if(Utils.not(parent)) {
 			throw "parent: required argument";
@@ -766,7 +770,10 @@ var DOM = {
 			}
 		}
 		node.wrapper[onEvent].handlers.push(handler);
-	}
+	},
+	
+	// PRIVATE:
+	_currentId: 0
 };
 
 

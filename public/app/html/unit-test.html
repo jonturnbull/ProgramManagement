@@ -260,6 +260,9 @@ UT.eval("System.device.iPhone");
 UT.eval("System.device.iPad");
 
 UT.printTitle("DOM:");
+UT.assert("DOM.generateId()", "node_1");
+UT.assert("DOM.generateId()", "node_2");
+UT.nl();
 </script>
 <a href="javascript:DOM.getWindow('win1', 'files/about.html').open();">Open a regular window</a><br>
 <a href="javascript:DOM.getPopup('win2', 'files/about.html').setSize(300, 200).open();">Open a popup window</a><br>
