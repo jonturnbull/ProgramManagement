@@ -646,6 +646,19 @@ var DOM = {
 		parent.appendChild(node);
 		return node;
 	},
+	
+	releaseChildren: function(node) {
+		if(node) {
+			while(node.firstChild) {
+				node.removeChild(node.firstChild);
+			}
+		}
+	},
+
+	release: function(node) {
+		this.releaseChildren(node);
+		node.parentNode.removeChild(node);
+	},
 
 	goto: function(url) {
 		document.location = url;
@@ -669,11 +682,20 @@ var DOM = {
 		//} while(elem = elem.offsetParent);		
 		//return {x: left, y: top};
 		var pos = elem.getBoundingClientRect();
-		return {x: pos.left, y: pos.top};
+		return {x:pos.left, y:pos.top};
 	},
 	
 	getSize: function(elem) {
 		return {width: elem.offsetWidth, height: elem.offsetHeight};
+	},
+	
+	getStyleSize: function(args) {
+		Utils.checkArgs(args, "size", "border=0", "padding=0", "margin=0");
+		var styleSize = args.size;
+		styleSize -= args.border * 2;
+		styleSize -= args.padding * 2;
+		styleSize -= args.margin * 2;
+		return styleSize;
 	},
 
 	getWindow: function(name, link) {

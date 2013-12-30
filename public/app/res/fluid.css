@@ -39,14 +39,17 @@ td {
 
 /* Fonts: */
 .fnt-normal {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-style: normal;
 	font-size: 12px;
 	color: #666666;
 }
 .fnt-filter-input {
-	color: #CDCDCD;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
+	font-style: normal;
+	color: #CDCDCD;
+	letter-spacing: 0.03em;
 }
 
 
@@ -101,7 +104,7 @@ td.header-c-icon {
 td.header-c-text {
 	padding: 15px;
 	text-align: left;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	font-style: normal;
 	font-weight: bold;
@@ -152,17 +155,25 @@ div.fluid-form {
 	border-bottom: 1px solid #CCCCCC;
 	padding-top: 10px;
 	padding-bottom: 20px;
+	padding-left: 0px;
 	/* space for vertical scrollbars */
 	padding-right: 0px;
 }
 table.fluid-grid {
 	width: 100%;
 }
-td.fluid-cell-padded {
+td.fluid-cell-view {
 	padding-left: 20px;
 	padding-right: 20px;
 	padding-top: 10px;
-	padding-bottom: 5px;
+	padding-bottom: 0px;
+	vertical-align: middle;
+}
+td.fluid-cell-edit {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	vertical-align: middle;
 }
 div.fluid-filter-header {
@@ -171,7 +182,6 @@ div.fluid-filter-header {
 	padding-bottom: 20px;
 }
 div.fluid-filter-box {
-	width: 100%;
 	border: 1px solid #CCCCCC;
 	padding: 0px;
 }
@@ -184,6 +194,9 @@ input[type='text'].fluid-filter-input {
 	width: 100%;
 }
 td.fluid-list-cell {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #CCCCCC;
 	cursor: pointer;
@@ -192,11 +205,119 @@ td.fluid-list-cell:hover {
 	background-color: #F8F8F8;
 }
 td.fluid-list-cell-s {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #CCCCCC;
 	background-color: #F8F8F8;
 }
+div.fluid-edit {
+	color: #FFFFFF;
+	color: #C07201;
+	background-color: #FFDE0D;
+	font-size: 12px;
+	font-weight: bold;
+	letter-spacing: 0.03em;
+	padding: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
 
+
+
+/* Buttons: */
+input.button-save {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -4px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-save:hover {
+	background-position: -34px -4px;
+	cursor: pointer;
+}
+input.button-save-inactive {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -64px -4px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-history {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -34px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-history:hover {
+	background-position: -34px -34px;
+	cursor: pointer;
+}
+input.button-edit {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -64px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-edit:hover {
+	background-position: -34px -64px;
+	cursor: pointer;
+}
+input.button-add {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -94px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-add:hover {
+	background-position: -34px -94px;
+	cursor: pointer;
+}
+input.button-leave {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -154px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-leave:hover {
+	background-position: -34px -154px;
+	cursor: pointer;
+}
+input.button-leave-inactive {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -64px -154px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-prev-inactive {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -184px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+input.button-next-inactive {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -214px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
 
 
 
@@ -231,97 +352,21 @@ td.form-c-label {
 
 
 
+/* Input components: */
+
+
+
 /* Other: */
 .pointer {
 	cursor: pointer;
 }
 
 
-/* Input components: */
-input.button-save {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -4px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-save:hover {
-	background-position: -34px -4px;
-	cursor: pointer;
-}
-input.button-history {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -34px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-history:hover {
-	background-position: -34px -34px;
-	cursor: pointer;
-}
-input.button-edit {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -64px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-edit:hover {
-	background-position: -34px -64px;
-	cursor: pointer;
-}
-input.button-add {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -94px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-add:hover {
-	background-position: -34px -94px;
-	cursor: pointer;
-}
-input.button-leave {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -154px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-leave:hover {
-	background-position: -34px -154px;
-	cursor: pointer;
-}
-input.button-leave-inactive {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -64px -154px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-prev-inactive {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -184px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-next-inactive {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -214px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-
-
-
-
 /* OLD RIT - NOT YET REVIEWED */
 
 
 /* Built-in classes: */
+/*
 input {
 	border: 1px solid #666666;
 	padding: 2px;
@@ -361,7 +406,7 @@ select {
 	height: 20px;
 	width: 150px;
 }
-
+*/
 
 /* Global classes: */
 .fnt-mandatory {
@@ -501,7 +546,7 @@ input.button-small {
 	border: none;
 	color: white;
 	font-weight: normal;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 }
 input.button-small:hover {
@@ -515,7 +560,7 @@ input.button-normal {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -530,7 +575,7 @@ input.button-danger {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #333333;
 }
@@ -545,7 +590,7 @@ input.button-inactive {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -556,7 +601,7 @@ input.button-dialog {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 	margin-left: 5px;
@@ -573,7 +618,7 @@ input.button-dialog-red {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 	margin-left: 5px;
@@ -590,7 +635,7 @@ input.button-plus {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -605,7 +650,7 @@ input.button-pleft {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -620,7 +665,7 @@ input.button-pright-070 {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -635,7 +680,7 @@ input.button-pright-100 {
 	width: 100px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }

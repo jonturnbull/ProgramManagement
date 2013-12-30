@@ -58,12 +58,14 @@ var Widgets = {
 	
 	Constants: {
 		defaultTableClass: false,
-		defaultColClass: false
+		defaultColClass: false,
+		mandatoryColor: "#FA0000",
+		marginBottom: 7
 	},
 	
 	Table: function(args) {
 		args = Utils.not(args) ? {} : args;
-		Utils.checkArgs(args, "numCols=1", "tableClass=Widgets.Constants.defaultTableClass", "colClass=Widgets.Constants.defaultColClass");
+		Utils.checkArgs(args, "numCols=1");
 		this.node = document.createElement("table");
 		this.node.wrapper = this;
 		this.rows = new Array();
@@ -90,6 +92,9 @@ var Widgets = {
 				col.addText = function(args) { return new Widgets.Text(args).attachTo(this.node); };
 				col.addButtonGrid = function(args) { return new Widgets.ButtonGrid(args).attachTo(this.node); };
 				col.addUserBlock = function(args) { return new Widgets.UserBlock(args).attachTo(this.node); };
+				col.addTextBox = function(args) { return new Widgets.TextBox(args).attachTo(this.node); };
+				col.addTextArea = function(args) { return new Widgets.TextArea(args).attachTo(this.node); };
+				col.addDatePicker = function(args) { return new Widgets.DatePicker(args).attachTo(this.node); };
 			}
 			row.last = function() {
 				return Arrays.last(this.cols);
@@ -147,7 +152,7 @@ var Widgets = {
 			this.node.style.fontSize = "14px";		
 		}
 		if(args.margin) {
-			this.node.style.marginBottom = "5px";
+			this.node.style.marginBottom = args.margin+"px";
 		}
 		if(args.float) {
 			this.node.style.float = "left";
@@ -160,6 +165,11 @@ var Widgets = {
 	Label: function(args) {
 		var text = new Widgets.Text(args);
 		text.node.className = "wg-label";
+		if(args.mandatory) {
+			var span = DOM.addNode(text.node, "span");
+			span.style.color = Widgets.Constants.mandatoryColor;
+			span.innerHTML = "&nbsp;*";
+		}
 		return text;
 	},
 
@@ -204,6 +214,62 @@ var Widgets = {
 		this.node.wrapper = this;
 		this.node.className = "wg-user-"+args.type;
 		this.node.innerHTML = args.text;
+		this.attachTo = Widgets._attachTo;
+		return this;
+	},
+	
+	TextBox: function(args) {
+		Utils.checkArgs(args, "name", "width");
+		this.node = document.createElement("input");
+		this.node.type = "text";
+		this.node.className = "wg-textbox";
+		this.node.name = args.name;
+		this.node.id = args.name;
+		this.node.style.width = DOM.getStyleSize({size:args.width, border:1, padding:5}) + "px";
+		if(args.text) {
+			this.node.value = args.text;
+		}
+		this.attachTo = Widgets._attachTo;
+		return this;
+	},
+	
+	TextArea: function(args) {
+		Utils.checkArgs(args, "name", "width", "height");
+		this.node = document.createElement("textarea");
+		this.node.className = "wg-textarea";
+		this.node.name = args.name;
+		this.node.id = args.name;
+		this.node.style.width = DOM.getStyleSize({size:args.width, border:1, padding:5}) + "px";
+		this.node.style.height = DOM.getStyleSize({size:args.height, border:1, padding:5}) + "px";
+		if(args.text) {
+			this.node.innerHTML = args.text;
+		}
+		this.attachTo = Widgets._attachTo;
+		return this;
+	},
+	
+	DatePicker: function(args) {
+		Utils.checkArgs(args, "name");
+		this.node = document.createElement("div");
+		this.node.className = "wg-datepicker-box";
+		var row = new Widgets.Table({numCols:2}).attachTo(this.node).addRow();
+		var wgWidth = 130;
+		var buttonWidth = 24;
+		row.cols[0].node.style.width = (wgWidth-buttonWidth)+"px";
+		var input = DOM.addNode(row.cols[0].node, "input");
+		input.type = "text";
+		input.name = args.name;
+		input.id = args.name;
+		if(args.text) {
+			input.value = args.text;
+		}
+		input.className = "wg-datepicker-input";
+		input.style.width = (DOM.getStyleSize({size:wgWidth, padding:5})-buttonWidth)+"px";
+		row.cols[1].node.className = "wg-datepicker-icon-cell";
+		row.cols[1].node.style.width = buttonWidth+"px";
+		var button = DOM.addNode(row.cols[1].node, "input");
+		button.type = "button";
+		button.className = "wg-datepicker-icon";
 		this.attachTo = Widgets._attachTo;
 		return this;
 	},

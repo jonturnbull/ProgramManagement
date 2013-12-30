@@ -11,6 +11,9 @@
 var Fluid = {
 
 	Constants: {
+		gridView: {tableClass:"fluid-grid", colClass:"fluid-cell-view"},
+		gridEdit: {tableClass:"fluid-grid", colClass:"fluid-cell-edit"},
+		colPadding: 20,
 		formFooterHeight: 65,
 		formPaddingTop: 10,
 		formPaddingBottom: 20,
@@ -26,32 +29,33 @@ var Fluid = {
 		window.onresize = Fluid.pack;
 		// Get a reference to the UI grid:
 		this._nodes.grid = DOM.id("fluid-grid");
-		// Set defaults:
-		Widgets.Constants.defaultTableClass = "fluid-grid";
-		Widgets.Constants.defaultColClass = "fluid-cell-padded";
 	},
 
 	pack: function() {
 		Fluid._nodes.container.style.width = DOM.getWindowWidth() + "px";
 		for(var i=0; i<Fluid.columns.length; i++) {
-			var c = Fluid.columns[i];
-			// Calculate the maximum allowed height:
-			var maxHeight = DOM.getWindowHeight() - DOM.id("header").offsetHeight - DOM.id("footer").offsetHeight - c.footer.node.offsetHeight - 1;
-			if(c.header.node) {
-				maxHeight -= c.header.node.offsetHeight;
+			Fluid.packColumn(Fluid.columns[i]);
+		}
+	},
+	
+	// TODO make this a col function
+	packColumn: function(c) {
+		// Calculate the maximum allowed height:
+		var maxHeight = DOM.getWindowHeight() - DOM.id("header").offsetHeight - DOM.id("footer").offsetHeight - c.footer.node.offsetHeight - 1;
+		if(c.header.node) {
+			maxHeight -= c.header.node.offsetHeight;
+		}
+		if(DOM.getSize(c.form.node).height > maxHeight) {
+			// The height style value must not include padding.
+			// Note that list columns have no top or bottom padding.
+			var styleHeight = maxHeight;
+			if(c.type.form) {
+				styleHeight -= (Fluid.Constants.formPaddingTop + Fluid.Constants.formPaddingBottom);
 			}
-			if(DOM.getSize(c.form.node).height > maxHeight) {
-				// The height style value must not include padding.
-				// Note that list columns have no top or bottom padding.
-				var styleHeight = maxHeight;
-				if(c.type.form) {
-					styleHeight -= (Fluid.Constants.formPaddingTop + Fluid.Constants.formPaddingBottom);
-				}
-				c.form.node.style.height = styleHeight+"px";
-			}
-			else {
-				c.form.node.style.height = "";
-			}
+			c.form.node.style.height = styleHeight+"px";
+		}
+		else {
+			c.form.node.style.height = "";
 		}
 	},
 
@@ -61,7 +65,7 @@ var Fluid = {
 	},
 	
 	addListForm: function(args) {
-		Utils.checkArgs(args, "width", "title", "data", "display");
+		Utils.checkArgs(args, "width", "title", "data", "render");
 		return this._addColumn(args, {list:true});
 	},
 	
@@ -77,44 +81,76 @@ var Fluid = {
 		}
 	},
 	
+	edit: function(c) {
+		if(c.type.list) {
+			throw new Error("cannot edit list column");
+		}
+		// Header:
+		DOM.releaseChildren(c.header.node);
+		c.header.node.innerHTML = "Editing";
+		c.header.node.className = "fluid-edit";
+		c.header.node.style.width = DOM.getStyleSize({size:c.width, padding:20}) + "px";
+		// Form:
+		DOM.release(c.form.grid.node);
+		c.form.grid = new Widgets.Table(Fluid.Constants.gridEdit).attachTo(c.form.node);
+		// Footer:
+		while(c.footer.leftButtons.length > 0) {
+			var b = c.footer.leftButtons.pop();
+			DOM.release(b.node);
+		}
+		while(c.footer.rightButtons.length > 0) {
+			var b = c.footer.rightButtons.pop();
+			DOM.release(b.node);
+		}
+		return c;
+	},
+	
 	// PRIVATE:
 	_nodes: {},
 
 	_addColumn: function(args, type) {
 		Utils.checkArgs(type);
-		var c = {type:type};
+		var c = {type:type, width:args.width};
 		this.columns.push(c);
 		// Create the column container:
 		c.node = DOM.addNode(this._nodes.grid, "td");
 		c.node.fluid = this;
 		c.node.className = "fluid-col";
 
+		// Function needed internally:
+		c.getMaxNodeWidth = function(args) {
+			args = Utils.not(args) ? {} : args;
+			Utils.checkArgs(args, "border=0", "padding=0");
+			args.size = this.width;
+			args.padding += Fluid.Constants.colPadding;
+			return DOM.getStyleSize(args);
+		};
+		
 		// Create header:
 		c.header = {node:DOM.addNode(c.node, "div")};
 		c.header.node.wrapper = c.header;
 		c.header.node.style.width = args.width+"px";
 		if(c.type.list) {
 			c.header.node.className = "fluid-filter-header";
-			c.header.grid = new Widgets.Table().attachTo(c.header.node);
+			c.header.grid = new Widgets.Table(Fluid.Constants.gridView).attachTo(c.header.node);
 			c.header.grid.addRow().last().addTitle({text:args.title, subtitle:true});
 			// Create the filter section:
-			var headerDiv = DOM.addNode(c.header.grid.addRow().last().node, "div");
-			headerDiv.className = "fluid-filter-box";
-			var table2 = DOM.addNode(headerDiv, "table");
-			//TODO remove table2.className = "form-grid";
-			var tr2 = DOM.addNode(table2, "tr");
-			var td2 = DOM.addNode(tr2, "td");
-			var td3 = DOM.addNode(tr2, "td");
-			td3.style.width = "100%";
-			var td4 = DOM.addNode(tr2, "td");
-			td4.style.verticalAlign = "middle";
-			td2.className = td3.className = td4.className = "fluid-filter-cell";
-			var sIcon = DOM.addNode(td2, "img");
+			var filterDiv = DOM.addNode(c.header.grid.addRow().last().node, "div");
+			filterDiv.className = "fluid-filter-box";
+			filterDiv.style.width = c.getMaxNodeWidth({border:1}) + "px";
+			var table = new Widgets.Table({numCols:3}).attachTo(filterDiv);
+			var row = table.addRow();
+			row.cols[1].node.style.width = "100%";
+			row.cols[2].node.style.verticalAlign = "middle";
+			for(var i=0; i<row.cols.length; i++) {
+				row.cols[i].node.className = "fluid-filter-cell";
+			}
+			var sIcon = DOM.addNode(row.cols[0].node, "img");
 			sIcon.src = "../img/icon-search.png";
-			var input = DOM.addNode(td3, "input");
+			var input = DOM.addNode(row.cols[1].node, "input");
 			input.wrapper = {};
 			input.wrapper.clearIconVisible = false;
-			input.wrapper.clearIconCell = td4;
+			input.wrapper.clearIconCell = row.cols[2].node;
 			input.type = "text";
 			input.className = "fluid-filter-input fnt-filter-input";
 			input.value = Locale.filterResults;
@@ -167,13 +203,13 @@ var Fluid = {
 			c.form.node.style.paddingTop = "0px";
 			c.form.node.style.paddingBottom = "0px";
 		}
-		c.form.grid = new Widgets.Table().attachTo(c.form.node);
+		c.form.grid = new Widgets.Table(Fluid.Constants.gridView).attachTo(c.form.node);
 		if(c.type.form) {
 			var row = c.form.grid.addRow();
 			row.last().addTitle({text:args.title});
 		}
 		
-		// Display data (if list):
+		// Render data (if list):
 		if(c.type.list) {
 			c.form.list = {data:args.data, group:new Group({activeClass:"fluid-list-cell", selectedClass:"fluid-list-cell-s"})};
 			for(var i=0; i<args.data.length; i++) {
@@ -184,7 +220,7 @@ var Fluid = {
 				if(i == args.data.length-1) {
 					node.style.borderBottom = "none";
 				}
-				args.display(node, item);
+				args.render(node, item);
 				c.form.list.group.push(node);
 			}
 		}
@@ -194,7 +230,7 @@ var Fluid = {
 		c.footer.node.wrapper = c.footer;
 		c.footer.node.className = "fluid-footer";
 		c.footer.node.style.width = args.width+"px";
-		c.footer.grid = new Widgets.Table({numCols:3, tableClass:false, colClass:false}).attachTo(c.footer.node);
+		c.footer.grid = new Widgets.Table({numCols:3}).attachTo(c.footer.node);
 		c.footer.grid.node.style.width = "100%";
 		c.footer.grid.node.style.padding = "10px";
 		c.footer.grid.node.style.paddingLeft = "20px";
@@ -210,12 +246,12 @@ var Fluid = {
 		c.footer.leftButtons = new Array();
 		c.footer.rightButtons = new Array();
 
-		// Create functions:
+		// Footer functions:
 		c.footer.addButton = function(args) {
 			Utils.checkArgs(args, "name", "type", "side='right'");
 			// TODO check allowed button types
 			Utils.checkArgValues(args.side, "left", "right");
-			var b = {};
+			var b = {fluidColumn:c};
 			if(args.side == "left") {
 				b.node = DOM.addNode(this.grid.rows[0].cols[0].node, "input");
 				b.node.style.marginRight = Fluid.Constants.buttonMargin + "px";
@@ -229,21 +265,31 @@ var Fluid = {
 			else {
 				throw new Error(args.side);
 			}
-			b.node.wrapper = b.node;
+			b.node.wrapper = b;
 			b.node.type = "submit";
 			b.node.name = args.name;
 			b.node.id = args.name;
 			b.node.value = "";
 			b.node.className = "button-"+args.type;
+			if(args.onclick) {
+				DOM.addEvent(b.node, "onclick", args.onclick);
+			}
 			return b;
 		};
 		
-		// Create list footer:
+		// List footer:
 		if(c.type.list) {
 			c.footer.grid.last().cols[1].node.innerHTML = "Page 1 of 1";
 			c.footer.addButton({name:"b-p-next", type:"next-inactive"});
 			c.footer.addButton({name:"b-p-add", type:"add"});
 			c.footer.addButton({name:"b-p-prev", type:"prev-inactive", side:"left"});
+		}
+		
+		// Any additional functions:
+		if(c.type.form) {
+			c.edit = function() {
+				DOM.release(this.node);
+			};
 		}
 		
 		// Scroll if required:

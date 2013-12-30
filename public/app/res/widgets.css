@@ -16,8 +16,10 @@ div.wg-subtitle {
 div.wg-label {
 	color: #333333;
 	font-weight: bold;
+	margin-bottom: 8px;
 }
 div.wg-text {
+	margin-bottom: 8px;
 }
 div.wg-block {
 	font-family: Arial, Helvetica, sans-serif;
@@ -52,6 +54,7 @@ table.wg-button-grid {
 	width: 100%;
 	border: 1px solid #CCCCCC;
 	border-collapse: collapse;
+	margin-bottom: 10px;
 }
 td.wg-button-grid {
 	font-family: Arial, Helvetica, sans-serif;
@@ -86,7 +89,7 @@ div.wg-user-label {
 	padding-top: 3px;
 	padding-bottom: 3px;
 	margin-right: 7px;
-	margin-bottom: 5px;
+	margin-bottom: 7px;
 	float: left;
 	color: #333333;
 	font-weight: bold;
@@ -97,7 +100,7 @@ div.wg-user-company {
 	padding-left: 7px;
 	padding-right: 7px;
 	margin-right: 5px;
-	margin-bottom: 5px;
+	margin-bottom: 7px;
 	float: left;
 	color: #30A2FB;
 	font-weight: normal;
@@ -109,7 +112,7 @@ div.wg-user-external {
 	padding-left: 7px;
 	padding-right: 7px;
 	margin-right: 5px;
-	margin-bottom: 5px;
+	margin-bottom: 7px;
 	float: left;
 	color: #FA0000;
 	font-weight: normal;
@@ -121,12 +124,61 @@ div.wg-user-group {
 	padding-left: 7px;
 	padding-right: 7px;
 	margin-right: 5px;
-	margin-bottom: 5px;
+	margin-bottom: 7px;
 	float: left;
 	color: #669500;
 	font-weight: normal;
 	background-color: #E9FABC;
 }
+input[type="text"].wg-textbox {
+	font-family: Helvetica, Arial, sans-serif;
+	font-style: normal;
+	font-size: 12px;
+	color: #333333;
+	border: 1px solid #CCCCCC;
+	padding: 5px;
+	margin: 0px;
+}
+textarea.wg-textarea {
+	font-family: Helvetica, Arial, sans-serif;
+	font-style: normal;
+	font-size: 12px;
+	color: #333333;
+	border: 1px solid #CCCCCC;
+	padding: 5px;
+	margin: 0px;
+}
+div.wg-datepicker-box {
+	border: 1px solid #CCCCCC;
+	padding: 0px;
+	margin: 0px;
+	text-align: left;
+	display: inline-block;
+}
+input.wg-datepicker-input {
+	font-family: Helvetica, Arial, sans-serif;
+	font-style: normal;
+	font-size: 12px;
+	color: #333333;
+	border: none;
+	padding: 5px;
+	margin: 0px;
+	width: 118px;
+}
+td.wg-datepicker-icon-cell {
+	width: 24px;
+	vertical-align: middle;
+	text-align: center;
+}
+input.wg-datepicker-icon {
+	background: url('../img/icon-calendar.png');
+	background-repeat: no-repeat;
+	border: none;
+	width: 16px;
+	height: 16px;
+}
+
+
 
 /* OLD */
 table.wg-menu {
