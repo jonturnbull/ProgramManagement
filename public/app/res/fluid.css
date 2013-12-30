@@ -1,3 +1,58 @@
+// Fluid UI styles
+// Copyright 2013 Int3raction.com, all rights reserved.
+// Change log:
+// 2013-12-25: Carlos Silva: refactored layout and component style names to make them more meaningful
+
+
+
+/* Built-in classes: */
+a:link {
+	color: #32A2FB;
+	text-decoration: none;
+}
+a:visited {
+	color: #32A2FB;
+	text-decoration: none;
+}
+a:hover {
+	color: #32A2FB;
+	text-decoration: underline;
+}
+a:active {
+	color: #32A2FB;
+	text-decoration: none;
+}
+table {
+	border: none;
+	border-spacing: 0px;
+}
+table td, table th {
+	padding: 0px;
+	margin: 0px;
+}
+td {
+	text-align: left;
+	vertical-align: top;
+}
+
+
+
+/* Fonts: */
+.fnt-normal {
+	font-family: Helvetica, Arial, sans-serif;
+	font-style: normal;
+	font-size: 12px;
+	color: #666666;
+}
+.fnt-filter-input {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	color: #CDCDCD;
+	letter-spacing: 0.03em;
+}
+
+
 
 /* Home screen */
 html {
@@ -49,7 +104,7 @@ td.header-c-icon {
 td.header-c-text {
 	padding: 15px;
 	text-align: left;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	font-style: normal;
 	font-weight: bold;
@@ -66,38 +121,8 @@ td.header-c-separator {
 }
 
 
-/* Built-in classes: */
-a:link {
-	color: #32A2FB;
-	text-decoration: none;
-}
-a:visited {
-	color: #32A2FB;
-	text-decoration: none;
-}
-a:hover {
-	color: #32A2FB;
-	text-decoration: underline;
-}
-a:active {
-	color: #32A2FB;
-	text-decoration: none;
-}
-table {
-	border: none;
-	border-spacing: 0px;
-}
-table td, table th {
-	padding: 0px;
-	margin: 0px;
-}
-td {
-	text-align: left;
-	vertical-align: top;
-}
 
-
-/* Fluid components: */
+/* Fluid layout: */
 #fluid-container {
 	padding: 0;
 	margin: 0;
@@ -116,9 +141,13 @@ td {
 #fluid-container-table {
 	height: 100%;
 }
-td.fluid-grid-col {
+td.fluid-col {
 	background-color: white;
 	border-right: 1px solid #CCCCCC;
+}
+div.fluid-footer {
+	height: 65px;
+	vertical-align: top;
 }
 div.fluid-form {
 	overflow-y: auto;
@@ -126,27 +155,176 @@ div.fluid-form {
 	border-bottom: 1px solid #CCCCCC;
 	padding-top: 10px;
 	padding-bottom: 20px;
+	padding-left: 0px;
 	/* space for vertical scrollbars */
 	padding-right: 0px;
 }
-div.fluid-footer {
-	height: 65px;
-	vertical-align: top;
-}
-div.fluid-filter {
-	border-bottom: 1px solid #CCCCCC;
-	padding-top: 10px;
-	padding-bottom: 20px;
-}
-table.form-grid {
+table.fluid-grid {
 	width: 100%;
 }
-td.form-c {
+td.fluid-cell-view {
 	padding-left: 20px;
 	padding-right: 20px;
 	padding-top: 10px;
 	padding-bottom: 0px;
+	vertical-align: middle;
 }
+td.fluid-cell-edit {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	vertical-align: middle;
+}
+div.fluid-filter-header {
+	border-bottom: 1px solid #CCCCCC;
+	padding-top: 10px;
+	padding-bottom: 20px;
+}
+div.fluid-filter-box {
+	border: 1px solid #CCCCCC;
+	padding: 0px;
+}
+td.fluid-filter-cell {
+	padding: 3px;
+}
+input[type='text'].fluid-filter-input {
+	border: none;
+	outline: none;
+	width: 100%;
+}
+td.fluid-list-cell {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #CCCCCC;
+	cursor: pointer;
+}
+td.fluid-list-cell:hover {
+	background-color: #F8F8F8;
+}
+td.fluid-list-cell-s {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #CCCCCC;
+	background-color: #F8F8F8;
+}
+div.fluid-edit {
+	color: #FFFFFF;
+	color: #C07201;
+	background-color: #FFDE0D;
+	font-size: 12px;
+	font-weight: bold;
+	letter-spacing: 0.03em;
+	padding: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+
+
+/* Buttons: */
+input.button-save {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -4px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-save:hover {
+	background-position: -34px -4px;
+	cursor: pointer;
+}
+input.button-save-inactive {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -64px -4px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-history {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -34px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-history:hover {
+	background-position: -34px -34px;
+	cursor: pointer;
+}
+input.button-edit {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -64px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-edit:hover {
+	background-position: -34px -64px;
+	cursor: pointer;
+}
+input.button-add {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -94px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-add:hover {
+	background-position: -34px -94px;
+	cursor: pointer;
+}
+input.button-leave {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -154px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-leave:hover {
+	background-position: -34px -154px;
+	cursor: pointer;
+}
+input.button-leave-inactive {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -64px -154px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+input.button-prev-inactive {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -184px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+input.button-next-inactive {
+	background: #FFFFFF url('../img/buttons.png') no-repeat;
+	background-position: -4px -214px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+	outline: none;
+}
+
+
+
+
+/* Fluid components: (OLD) */
+
+
 td.form-c-title {
 	font-size: 20px;
 	font-weight: bold;
@@ -171,118 +349,12 @@ td.form-c-label {
 	padding-top: 10px;
 	padding-bottom: 5px;
 }
-table.wg-ddown-table {
-	width: 100%;
-	padding: 10px;
-	background-color: #E4E4E4;
-}
-td.wg-ddown-td {
-	text-align: left;
-	vertical-align: middle;
-	font-size: 16px;
-	font-weight: bold;
-	color: #333333;
-}
-div.wg-highlight {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: normal;
-	color: #999999;
-	text-align: center;
-	vertical-align: middle;
-	padding: 15px;
-	margin-bottom: 10px;
-}
-div.wg-highlight:hover {
-	background-color: #F8F8F8;
-	color: #666666;
-	font-weight: bold;
-	cursor: pointer;
-}
-div.wg-highlight-s {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: bold;
-	text-align: center;
-	vertical-align: middle;
-	padding: 15px;
-	margin-bottom: 10px;
-	background-color: #F8F8F8;
-	color: #666666;
-}
-div.wg-filter {
-	width: 100%;
-	border: 1px solid #CCCCCC;
-	padding: 0px;
-}
-td.wg-filter-c {
-	padding: 3px;
-}
-input[type='text'].wg-filter-input {
-	border: none;
-	outline: none;
-	width: 100%;
-}
-td.wg-list-c {
-	padding-bottom: 10px;
-	border-bottom: 1px solid #CCCCCC;
-	cursor: pointer;
-}
-td.wg-list-c:hover {
-	background-color: #F8F8F8;
-}
-table.wg-button-grid {
-	width: 100%;
-	border: 1px solid #CCCCCC;
-	border-collapse: collapse;
-}
-td.wg-button-grid {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: normal;
-	text-align: center;
-	vertical-align: middle;
-	padding: 10px;
-	color: #999999;
-	border: 1px solid #CCCCCC;
-}
-td.wg-button-grid:hover {
-	font-weight: bold;
-	cursor: pointer;
-	color: #666666;
-	background-color: #F8F8F8;
-}
-td.wg-button-grid-s {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: bold;
-	text-align: center;
-	vertical-align: middle;
-	padding: 10px;
-	color: #666666;
-	background-color: #F8F8F8;
-	border: 1px solid #CCCCCC;
-}
 
 
-/* Font styles: */
-.fnt-normal {
-	font-family: Arial, Helvetica, sans-serif;
-	font-style: normal;
-	font-size: 12px;
-	color: #666666;
-}
-.fnt-filter-input {
-	color: #CDCDCD;
-	font-size: 12px;
-}
-.fnt-dark {
-	color: #333333;
-}
+
+/* Input components: */
+
+
 
 /* Other: */
 .pointer {
@@ -290,91 +362,11 @@ td.wg-button-grid-s {
 }
 
 
-/* Input components: */
-input.button-save {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -4px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-save:hover {
-	background-position: -34px -4px;
-	cursor: pointer;
-}
-input.button-history {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -34px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-history:hover {
-	background-position: -34px -34px;
-	cursor: pointer;
-}
-input.button-edit {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -64px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-edit:hover {
-	background-position: -34px -64px;
-	cursor: pointer;
-}
-input.button-add {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -94px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-add:hover {
-	background-position: -34px -94px;
-	cursor: pointer;
-}
-input.button-leave {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -154px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-leave:hover {
-	background-position: -34px -154px;
-	cursor: pointer;
-}
-input.button-leave-inactive {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -64px -154px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-prev-inactive {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -184px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-next-inactive {
-	background: #FFFFFF url('../img/buttons.png') no-repeat;
-	background-position: -4px -214px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-
-
-
-
 /* OLD RIT - NOT YET REVIEWED */
 
 
 /* Built-in classes: */
+/*
 input {
 	border: 1px solid #666666;
 	padding: 2px;
@@ -414,7 +406,7 @@ select {
 	height: 20px;
 	width: 150px;
 }
-
+*/
 
 /* Global classes: */
 .fnt-mandatory {
@@ -554,7 +546,7 @@ input.button-small {
 	border: none;
 	color: white;
 	font-weight: normal;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 }
 input.button-small:hover {
@@ -568,7 +560,7 @@ input.button-normal {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -583,7 +575,7 @@ input.button-danger {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #333333;
 }
@@ -598,7 +590,7 @@ input.button-inactive {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -609,7 +601,7 @@ input.button-dialog {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 	margin-left: 5px;
@@ -626,7 +618,7 @@ input.button-dialog-red {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 	margin-left: 5px;
@@ -643,7 +635,7 @@ input.button-plus {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -658,7 +650,7 @@ input.button-pleft {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -673,7 +665,7 @@ input.button-pright-070 {
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -688,7 +680,7 @@ input.button-pright-100 {
 	width: 100px;
 	color: white;
 	font-weight: bold;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }

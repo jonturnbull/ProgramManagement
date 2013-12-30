@@ -1,18 +1,64 @@
 
 var PMO = {
 
-	displayHome: function() {
+	listOrgs: function() {
+		Fluid.releaseFrom(1);
+		var f = Fluid.addForm({width:250, title:"Organisations"});
+		f.form.grid.rows[0].cols[0].node.children[0].style.textAlign = "center";
+
+		// Create Home and Personal links:
+		f.header.node.className = "fluid-form";
+		f.header.grid = new Widgets.Table(Fluid.Constants.gridView).attachTo(f.header.node);
+		var row = f.header.grid.addRow();
+		var block = row.cols[0].addBlock({text:"HOME"});
+		block.node.onclick = function() {
+			PMO.viewHome();
+		}
+		f.blockGroup = new Group({widget:"block"});
+		f.blockGroup.push(block.node);
+		block = row.cols[0].addBlock({text:"PERSONAL"});
+		block.node.onclick = function() {
+			PMO.viewPersonal();
+		}
+		f.blockGroup.push(block.node);
+		
+		// List organisations:
+		row = f.form.grid.addRow();
+		var request = new AjaxRequest2({
+			url: "../tmp/organisations.json",
+			method: "get",
+			async: true,
+			onSuccess: function(data) {
+				for(var i=0; i<data.length; i++) {
+					var org = data[i];
+					block = row.cols[0].addBlock({text:org.name});
+					block.id = org.id;
+					block.node.onclick = function(node) {
+						PMO.viewOrg(node.wrapper.id);
+					}
+					f.blockGroup.push(block.node);
+				}
+			},
+			onFailure: null
+		});
+		request.send();
+
+		// Add buttons to footer:
+		f.footer.addButton({name:"b-p-add", type:"add"});
+	},
+
+	viewHome: function() {
 		Fluid.releaseFrom(2);
 		Fluid.addForm({width:500, title:"Home"});
 	},
 
-	displayPersonal: function() {
+	viewPersonal: function() {
 		Fluid.releaseFrom(2);
 		//Fluid.addForm({width:500, title:"Personal"});
-		PMO.displayProject(1);
+		PMO.viewProject(1);
 	},
 	
-	displayOrg: function(org) {
+	viewOrg: function(org) {
 		Fluid.releaseFrom(2);
 		var request = new AjaxRequest2({
 			url: "../tmp/org-"+org+".json",
@@ -23,19 +69,22 @@ var PMO = {
 				var f = Fluid.addForm({width:280, title: org.name});
 				var buttons = new Array();
 				buttons.push({text:"Programs", action:function() {
+					// TODO org.id is incorrect
 					PMO.listPrograms(org.id);
 				}});
 				buttons.push({text:"People", action:function() {
 					PMO.listPeople(org.id);
 				}});
-				f.addButtonGrid(buttons);
-				f.addLabel({text:org.domain, href:"http://"+org.domain});
-				f.addLabel({text:org.employees+" employees"});
-				f.addLabel({text:org.description});
-				f.addButton({name:"b-org-edit", type:"edit", side:"right"});
-				f.addButton({name:"b-org-h", type:"history"});
-				f.addButton({name:"b-org-leave", type:"leave", side:"left"});
-				//PMO.listPrograms(org);
+				var row = f.form.grid.addRow();
+				row.last().addButtonGrid({buttons:buttons});
+				row = f.form.grid.addRow();
+				row.last().addText({text:org.domain, href:"http://"+org.domain});
+				row.last().addText({text:org.employees+" employees"});
+				//row = f.form.grid.addRow();
+				row.last().addText({text:org.description});
+				f.footer.addButton({name:"b-org-edit", type:"edit", side:"right"});
+				f.footer.addButton({name:"b-org-h", type:"history"});
+				f.footer.addButton({name:"b-org-leave", type:"leave", side:"left"});
 			},
 			onFailure: null
 		});
@@ -47,23 +96,15 @@ var PMO = {
 		// TODO this needs to come from JSON
 		var data = new Array();
 		data.push({id:1, name:"Digital Presence", projects:3});
-		f = Fluid.addList({width:430, title:"Programs", data:data, display:function(node, item) {
+		f = Fluid.addListForm({width:430, title:"Programs", data:data, render:function(node, item) {
 			node.onclick = function() {
-				PMO.displayProgram(item.id);
+				PMO.viewProgram(item.id);
 			}
-			var table = DOM.addNode(node, "table");
-			table.className = "fluid-grid";
-			// Name
-			var tr1 = DOM.addNode(table, "tr");
-			var td1 = DOM.addNode(tr1, "td");
-			td1.className = "form-c";
-			td1.style.fontSize = "14px";
-			td1.innerHTML = "<strong>"+item.name+"</strong>";
-			// Projects:
-			var tr2 = DOM.addNode(table, "tr");
-			var td2 = DOM.addNode(tr2, "td");
-			td2.className = "form-c";
-			td2.innerHTML = item.projects + " projects";
+			var table = new Widgets.Table().attachTo(node);
+			var row = table.addRow();
+			//row.cols[0].node.style.paddingBottom = "0px";
+			row.last().addText({text:item.name, title:true, margin:3});
+			row.last().addText({text:item.projects + " projects"});
 		}});
 	},
 	
@@ -72,7 +113,7 @@ var PMO = {
 		Fluid.addForm({width:280, title:"People"});
 	},
 	
-	displayProgram: function(id) {
+	viewProgram: function(id) {
 		Fluid.releaseFrom(4);
 		var request = new AjaxRequest2({
 			url: "../tmp/program-"+id+".json",
@@ -80,7 +121,7 @@ var PMO = {
 			async: true,
 			onSuccess: function(data) {
 				var p = data[0];
-				var f = Fluid.addForm({width:280, title: p.name});
+				var f = Fluid.addForm({width:280, title:p.name});
 				var buttons = new Array();
 				buttons.push({text:"Projects", action:function() {
 					PMO.listProjects(p.id);
@@ -88,10 +129,10 @@ var PMO = {
 				buttons.push({text:"Status", action:function() {
 					alert("Not set!");
 				}});
-				f.addButtonGrid(buttons);
-				f.addLabel({text: p.description});
-				f.addButton({name:"b-org-edit", type:"edit", side:"right"});
-				f.addButton({name:"b-org-h", type:"history"});
+				f.form.grid.addRow().last().addButtonGrid({buttons:buttons});
+				f.form.grid.addRow().last().addText({text:p.description});
+				f.footer.addButton({name:"b-org-edit", type:"edit", side:"right"});
+				f.footer.addButton({name:"b-org-h", type:"history"});
 			},
 			onFailure: null
 		});
@@ -105,38 +146,19 @@ var PMO = {
 		data.push({id: 1, name: "Web Billing Platform", people: 5, startDate: "12 August", endDate: "18 October"});
 		data.push({id: 2, name: "Back Office API", people: 0, startDate: "5 October 2012", endDate: "25 November 2013"});
 		data.push({id: 3, name: "E-Commerce Business Case", people: 2, startDate: "4 April", endDate: "12 June"});
-		f = Fluid.addList({width:430, title: "Projects", data: data, display: function(node, item) {
+		f = Fluid.addListForm({width:430, title:"Projects", data:data, render:function(node, item) {
 			node.onclick = function() {
-				PMO.displayProject(item.id);
+				PMO.viewProject(item.id);
 			}
-			var table = DOM.addNode(node, "table");
-			table.className = "fluid-grid";
-			// Name
-			var tr1 = DOM.addNode(table, "tr");
-			var td1 = DOM.addNode(tr1, "td");
-			td1.className = "form-c";
-			td1.style.fontSize = "14px";
-			td1.innerHTML = "<strong>"+item.name+"</strong>";
-			// People:
-			var tr2 = DOM.addNode(table, "tr");
-			var td2 = DOM.addNode(tr2, "td");
-			td2.className = "form-c";
-			if(item.people) {
-				td2.innerHTML = item.people + " people";
-			}
-			else {
-				// TODO get company name via item.parent.name
-				td2.innerHTML = "open to all employees";
-			}
-			// Dates:
-			var tr3 = DOM.addNode(table, "tr");
-			var td3 = DOM.addNode(tr3, "td");
-			td3.className = "form-c";
-			td3.innerHTML = item.startDate + " to " + item.endDate;
+			var table = new Widgets.Table().attachTo(node);
+			var row = table.addRow();
+			row.last().addText({text:item.name, title:true, margin:3});
+			row.last().addText({text:item.people? item.people+" people" : "Open to all employees", margin:3});
+			row.last().addText({text:item.startDate + " to " + item.endDate});
 		}});
 	},
 	
-	displayProject: function(id) {
+	viewProject: function(id) {
 		Fluid.releaseFrom(6);
 		var request = new AjaxRequest2({
 			url: "../tmp/project-"+1+".json",
@@ -144,10 +166,10 @@ var PMO = {
 			async: true,
 			onSuccess: function(data) {
 				var p = data[0];
-				var f = Fluid.addForm({width:280, title: p.name});
+				var f = Fluid.addForm({width:280, title:p.name});
 				var buttons = new Array();
 				buttons.push({text:"Status", action:function() {
-					PMO.displayStatus(p.id);
+					PMO.viewStatus(p.id);
 				}});
 				buttons.push({text:"Risks", action:function() {
 					alert("Not set!");
@@ -155,37 +177,68 @@ var PMO = {
 				buttons.push({text:"Issues", action:function() {
 					alert("Not set!");
 				}});
-				f.addButtonGrid(buttons);
-				f.addLabel({text: p.description});
-				/*
-				var section = f.addSection();
-				section.add(new Fluid.Label({text:"Start Date"}));
-				section.add(new Fluid.Text({text:p.startDate});
-				section = f.addSection();
-				section.add(new Fluid.Label({text:"Planned End Date"}));
-				section.add(new Fluid.Text({text:p.endDate}));
-				section.add(new Fluid.Label({text:"Planned End Date"}));
-				section.add(new Fluid.Text({text:p.endDate}));
-				section = f.addSection();
-				section.add(new Fluid.Label({text:"Project Managers"}));
-				section.add(new Fluid.Person({id:1, name:"Carlo Abruzzo", external:false}));
-				section = f.addSection();
-				section.add(new Fluid.Label({text:"Project Team"}));
-				section.add(new Fluid.Group({id:1, name:"Innovair"}));
-				*/
-				
-								
-				//f.addLabel({text: "<span style='font-weight:bold; color:#333333'>Start Date</span> "+p.startDate});
-				//f.addLabel({text: "<span style='font-weight:bold; color:#333333'>Planned End Date</span> "+p.startDate});
-				f.addButton({name:"b-org-edit", type:"edit", side:"right"});
-				f.addButton({name:"b-org-h", type:"history"});
+				var row = f.form.grid.addRow();
+				row.last().addButtonGrid({buttons:buttons});
+				row = f.form.grid.addRow();
+				row.last().addText({text:p.description});
+				row = f.form.grid.addRow();
+				row.last().addLabel({text:"Start Date", float:true});
+				row.last().addText({text:p.startDate});
+				row.last().addLabel({text:"Planned End Date", float:true});
+				row.last().addText({text:p.endDate});
+				row = f.form.grid.addRow();
+				row.last().addUserBlock({type:"label", text:"Project Managers"});
+				row.last().addUserBlock({type:"company", text:"Anna Fiore"});
+				row.last().addUserBlock({type:"external", text:"AJ"});
+				row.last().addUserBlock({type:"company", text:"Carlo Abruzzo"});
+				row.last().addUserBlock({type:"external", text:"John Cutler"});
+				row = f.form.grid.addRow();
+				row.last().addUserBlock({type:"label", text:"Project Team"});
+				row.last().addUserBlock({type:"group", text:"Innovair"});
+				// Footer buttons:
+				f.footer.addButton({name:"b-org-edit", type:"edit", side:"right", onclick:function(node) {
+					PMO.editProject(p, node.wrapper.fluidColumn);
+				}});
+				f.footer.addButton({name:"b-org-h", type:"history"});
 			},
 			onFailure: null
 		});
 		request.send();
 	},
 	
-	displayStatus: function(id) {
+	editProject: function(p, c) {
+		c = Fluid.edit(c);
+		var row = c.form.grid.addRow();
+		row.last().addLabel({text:"Title", mandatory:true});
+		var wg = row.last().addTextBox({name:"title", width:c.getMaxNodeWidth(), text:p.name});
+		wg.node.focus();
+		var row = c.form.grid.addRow();
+		row.last().addLabel({text:"Description", mandatory:true});
+		row.last().addTextArea({name:"description", width:c.getMaxNodeWidth(), height:100, text:p.description});
+		var row = c.form.grid.addRow();
+		row.last().addLabel({text:"Start Date", mandatory:true});
+		row.last().addDatePicker({name:"startDate", text:p.startDate});
+		var row = c.form.grid.addRow();
+		row.last().addLabel({text:"Planned End Date"});
+		row.last().addDatePicker({name:"endDate", text:p.endDate});
+		var row = c.form.grid.addRow();
+		row.last().addLabel({text:"Project Managers", mandatory:true});
+		wg = row.last().addText({text:"Select one or more project managers for this project. Project managers are able to edit project details (including selecting the project team and other project managers) and are responsible for completing the project's status reports.", margin:true});
+		row.last().addUserBlock({type:"company", text:"Carlo Abruzzo"});
+		var row = c.form.grid.addRow();
+		row.last().addLabel({text:"Project Team", mandatory:true});
+		row.last().addText({text:"Select users that are allowed to collaborate in this project. Note that by default projects are open to your company; if you prefer to select individual users, please remove Innovair from the team.", margin:true});
+		row.last().addUserBlock({type:"group", text:"Innovair"});
+		// Footer buttons:
+		c.footer.addButton({name:"b-proj-save", type:"save-inactive", onclick:function(node) {
+			//TODO PMO.editProject(p, node.wrapper.fluidColumn);
+		}});
+		c.footer.addButton({name:"b-proj-h", type:"history"});
+		// TODO this must be called automatically
+		Fluid.packColumn(c);
+	},
+	
+	viewStatus: function(id) {
 		Fluid.releaseFrom(7);
 		Fluid.addForm({width:500, title:"Status", isSubtitle:true});
 	}

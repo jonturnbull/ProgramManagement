@@ -636,15 +636,28 @@ var DOM = {
 	},
 
 	addNode: function(parent, nodeType) {
-		if(Utils.isNull(parent)) {
+		if(Utils.not(parent)) {
 			throw "parent: required argument";
 		}
-		if(Utils.isNull(nodeType)) {
+		if(Utils.not(nodeType)) {
 			throw "nodeType: required argument";
 		}
 		var node = document.createElement(nodeType);
 		parent.appendChild(node);
 		return node;
+	},
+	
+	releaseChildren: function(node) {
+		if(node) {
+			while(node.firstChild) {
+				node.removeChild(node.firstChild);
+			}
+		}
+	},
+
+	release: function(node) {
+		this.releaseChildren(node);
+		node.parentNode.removeChild(node);
 	},
 
 	goto: function(url) {
@@ -669,11 +682,20 @@ var DOM = {
 		//} while(elem = elem.offsetParent);		
 		//return {x: left, y: top};
 		var pos = elem.getBoundingClientRect();
-		return {x: pos.left, y: pos.top};
+		return {x:pos.left, y:pos.top};
 	},
 	
 	getSize: function(elem) {
 		return {width: elem.offsetWidth, height: elem.offsetHeight};
+	},
+	
+	getStyleSize: function(args) {
+		Utils.checkArgs(args, "size", "border=0", "padding=0", "margin=0");
+		var styleSize = args.size;
+		styleSize -= args.border * 2;
+		styleSize -= args.padding * 2;
+		styleSize -= args.margin * 2;
+		return styleSize;
 	},
 
 	getWindow: function(name, link) {
@@ -727,23 +749,23 @@ var DOM = {
 	popups: new Object(),
 	
 	addEvent: function(node, onEvent, handler) {
-		if(!node.fluid) {
-			node.fluid = {};
+		if(!node.wrapper) {
+			node.wrapper = {};
 		}
-		if(!node.fluid[onEvent]) {
-			node.fluid[onEvent] = {};
-			node.fluid[onEvent].handlers = new Array();
+		if(!node.wrapper[onEvent]) {
+			node.wrapper[onEvent] = {};
+			node.wrapper[onEvent].handlers = new Array();
 			// Save the current event if any:
 			if((typeof node[onEvent]) == "function") {
-				node.fluid[onEvent].handlers.push(node[onEvent]);
+				node.wrapper[onEvent].handlers.push(node[onEvent]);
 			}
 			node[onEvent] = function() {
-				for(var i=0; i<this.fluid[onEvent].handlers.length; i++) {
-					this.fluid[onEvent].handlers[i](this);
+				for(var i=0; i<this.wrapper[onEvent].handlers.length; i++) {
+					this.wrapper[onEvent].handlers[i](this);
 				}
 			}
 		}
-		node.fluid[onEvent].handlers.push(handler);
+		node.wrapper[onEvent].handlers.push(handler);
 	}
 };
 
@@ -817,6 +839,7 @@ function Popup(name, link, popup) {
 }
 
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Utils class:
 ///////////////////////////////////////////////////////////////////////////////
@@ -828,7 +851,7 @@ var Utils = {
 		return text;
 	},
 
-	isNull: function(arg) {
+	not: function(arg) {
 		if(arg == undefined || arg == null) {
 			return true;
 		}
@@ -836,7 +859,7 @@ var Utils = {
 	},
 	
 	checkArgs: function(args) {
-		if(Utils.isNull(args)) {
+		if(Utils.not(args)) {
 			throw new Error("null argument");
 		}
 		for(var i=1; i<arguments.length; i++) {
@@ -844,13 +867,13 @@ var Utils = {
 			var tmp = arg.split("=");
 			if(tmp.length == 1) {
 				// Default value not specified, validate if NULL:
-				if(Utils.isNull(args[arg])) {
+				if(Utils.not(args[arg])) {
 					throw new Error("'"+arguments[i]+"': required argument");
 				}
 			}
 			else if(tmp.length == 2) {
 				// Default value specified, default if NULL:
-				if(Utils.isNull(args[tmp[0]])) {
+				if(Utils.not(args[tmp[0]])) {
 					args[tmp[0]] = eval(tmp[1]);
 				}
 			}
@@ -869,15 +892,6 @@ var Utils = {
 			}
 		}
 		throw new Error("illegal argument: "+arg);
-	},
-	
-	checkMandatoryArgs: function(args, names) {
-		for(var i=0; i<names.length; i++) {
-			if(this.isNull(args[names[i]])) {
-				throw "'"+names[i]+"': required argument";
-			}
-		}
-		return args;
 	}
 };
 
