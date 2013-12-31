@@ -1,7 +1,7 @@
 ProgramManagement::Application.routes.draw do
 
-
-  get "static/home"
+  #Static mappings go below
+  get 'about'=>'static#about'
   
   resources :organizations do
     resources :programs, shallow: true
