@@ -654,6 +654,7 @@ var DOM = {
 	releaseChildren: function(node) {
 		if(node) {
 			while(node.firstChild) {
+				DOM.releaseChildren(node.firstChild);
 				node.removeChild(node.firstChild);
 			}
 		}
@@ -666,6 +667,29 @@ var DOM = {
 
 	goto: function(url) {
 		document.location = url;
+	},
+	
+	isFullyVisibleX: function(container, node) {
+		return (DOM.getPosition(node).x + node.offsetWidth) <= container.offsetWidth;
+	},
+
+	isPartiallyVisibleX: function(container, node) {
+		return DOM.getPosition(node).x < container.offsetWidth;
+	},
+
+	isFullyHiddenX: function(container, node) {
+		return DOM.getPosition(node).x >= container.offsetWidth;
+	},
+
+	isPartiallyHiddenX: function(container, node) {
+		return (DOM.getPosition(node).x + node.offsetWidth) > container.offsetWidth;
+	},
+
+	scrollByX: function(container, node) {
+		if(DOM.isFullyVisibleX(container, node)) {
+			return 0;
+		}
+		return (DOM.getPosition(node).x + node.offsetWidth) - container.offsetWidth;
 	},
 	
 	show: function(div) {
@@ -899,6 +923,12 @@ var Utils = {
 			}
 		}
 		throw new Error("illegal argument: "+arg);
+	},
+	
+	checkMinArgValue: function(arg, minValue) {
+		if(arg < minValue) {
+			throw new Error("illegal argument: expected minimum of "+minValue+", found "+arg);
+		}
 	}
 };
 

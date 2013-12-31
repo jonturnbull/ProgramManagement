@@ -21,8 +21,35 @@
 function loadPage() {
 	Fluid.init();
 	Fluid.pack();
-}
+	Node.prototype.x = {node:this};
+	Node.prototype.x.something = function() {console.log("aha! "+this.offsetHeight);};
+	Node.prototype.x.something2 = function() {console.log("aha! "+this.node);};
+	DOM.id("header").x.something();
+	DOM.id("header").x.something2();
+	Node.prototype.ext = function() {
+		this.a = {};
+		this.a.node = this;
+		this.a.something = function() {console.log("aha! "+this.node.offsetHeight);};
+		return this;
+	};
+	DOM.id("header").ext().a.something();
 
+	Node.prototype.b = function() {
+		var extensions = {};
+		extensions.node = this;
+		extensions.getPosition = function() {return DOM.getPosition(this.node);};
+		return extensions;
+	};
+	Utils.log(DOM.id("footer").b().getPosition());
+	
+	Utils.log(document.createElement("div").b().getPosition());
+	Utils.log(document.createElement("div").b().node);
+
+	
+	//DOM.id("a").xGetPosition();
+	//DOM.id("a").x().getPosition();
+	//node.x.getPosition();
+}
 </script>
 </head>
 

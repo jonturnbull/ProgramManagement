@@ -34,87 +34,83 @@ var Fluid = {
 	pack: function() {
 		Fluid._nodes.container.style.width = DOM.getWindowWidth() + "px";
 		for(var i=0; i<Fluid.columns.length; i++) {
-			Fluid.packColumn(Fluid.columns[i]);
+			//Fluid.packColumn(Fluid.columns[i]);
+			Fluid.columns[i].pack();
 		}
 	},
 	
-	// TODO make this a col function
-	packColumn: function(c) {
-		// Calculate the maximum allowed height:
-		var maxHeight = DOM.getWindowHeight() - DOM.id("header").offsetHeight - DOM.id("footer").offsetHeight - c.footer.node.offsetHeight - 1;
-		if(c.header.node) {
-			maxHeight -= c.header.node.offsetHeight;
-		}
-		if(DOM.getSize(c.form.node).height > maxHeight) {
-			// The height style value must not include padding.
-			// Note that list columns have no top or bottom padding.
-			var styleHeight = maxHeight;
-			if(c.type.form) {
-				styleHeight -= (Fluid.Constants.formPaddingTop + Fluid.Constants.formPaddingBottom);
-			}
-			c.form.node.style.height = styleHeight+"px";
-		}
-		else {
-			c.form.node.style.height = "";
-		}
-	},
-
 	addColumn: function(args) {
-		Utils.checkArgs(args, "width", "title");
-		return this._addColumn(args, {form:true});
+		return this._addColumn(args, {form:true, list:false});
 	},
 	
 	addListColumn: function(args) {
-		Utils.checkArgs(args, "width", "title", "data", "render");
-		return this._addColumn(args, {list:true});
+		Utils.checkArgs(args, "data", "render");
+		return this._addColumn(args, {form:false, list:true});
 	},
 	
-	releaseFrom: function(index) {
-		if(index < 1) {
-			throw "index out of bounds: "+index;
+	clearFrom: function(position) {
+		Utils.checkMinArgValue(position, 1);
+		// Remove hidden columns:
+		while(this.columns.length > position-1) {
+			var c = Arrays.last(this.columns);
+			if(DOM.isFullyHiddenX(Fluid._nodes.container, c.node)) {
+				this.columns.pop();
+				DOM.release(c.node);
+				c.node = null;
+			}
+			else {
+				break;
+			}
 		}
-		while(this.columns.length > index-1) {
-			var col = this.columns.pop();
-			col.node.innerHTML = "";
-			col.node.parentNode.removeChild(col.node);
-			col.node = null;
+		// Clear visible columns:
+		for(var i=position-1; i<this.columns.length; i++) {
+			this.columns[i].clear();
 		}
+		return this;
 	},
 	
-	edit: function(c) {
-		if(c.type.list) {
-			throw new Error("cannot edit list column");
+	findNextClearedColumn: function(position) {
+		// Return first cleared column:
+		for(var i=0; i<this.columns.length; i++) {
+			var c = this.columns[i];
+			if(c.status.cleared) {
+				return c;
+			}
+			// Return column at position even if not cleared:
+			if(i == position-1) {
+				return c;
+			}
 		}
-		// Header:
-		DOM.releaseChildren(c.header.node);
-		c.header.node.innerHTML = "Editing";
-		c.header.node.className = "fluid-edit";
-		c.header.node.style.width = DOM.getStyleSize({size:c.width, padding:20}) + "px";
-		// Form:
-		DOM.release(c.form.grid.node);
-		c.form.grid = new Widgets.Table(Fluid.Constants.gridEdit).attachTo(c.form.node);
-		// Footer:
-		while(c.footer.leftButtons.length > 0) {
-			var b = c.footer.leftButtons.pop();
-			DOM.release(b.node);
-		}
-		while(c.footer.rightButtons.length > 0) {
-			var b = c.footer.rightButtons.pop();
-			DOM.release(b.node);
-		}
-		return c;
+		// No column found, need to add:
+		return null;
 	},
 	
 	// PRIVATE:
 	_nodes: {},
 
 	_addColumn: function(args, type) {
+		Utils.checkArgs(args, "position", "width", "title");
 		Utils.checkArgs(type);
-		var c = {type:type, width:args.width};
-		this.columns.push(c);
-		// Create the column container:
-		c.node = DOM.addNode(this._nodes.grid, "td");
-		c.node.fluid = this;
+		Utils.checkMinArgValue(args.position, 1);
+		var initialScroll = Fluid._nodes.container.scrollLeft;
+		// Create or reuse column:
+		this.clearFrom(args.position);
+		var c = this.findNextClearedColumn(args.position);
+		if(c == null) {
+			c = {};
+			this.columns.push(c);
+			// Create the column container:
+			c.node = DOM.addNode(this._nodes.grid, "td");
+			c.node.fluid = this;
+			c.node.style.visibility = "hidden";
+		}
+		else {
+			DOM.release(c.header.node);
+			c.header = null;
+		}
+		c.type = type;
+		c.status = {cleared:false};
+		c.width = args.width;
 		c.node.className = "fluid-col";
 
 		// Function needed internally:
@@ -286,14 +282,102 @@ var Fluid = {
 		}
 		
 		// Any additional functions:
+		c.show = function() {
+			if(this.status.cleared) {
+				return false;
+			}
+			this.node.style.visibility = "visible";
+			// Scroll if required:
+			Fluid._nodes.container.scrollLeft = initialScroll;
+			if(DOM.isPartiallyHiddenX(Fluid._nodes.container, c.node)) {
+				Fluid._nodes.container.scrollLeft += DOM.scrollByX(Fluid._nodes.container, c.node);
+			}
+			return this.pack();
+		};
+
+		c.pack = function(c) {
+			if(this.status.cleared) {
+				return false;
+			}
+			// Calculate the maximum allowed height:
+			var maxHeight = DOM.getWindowHeight() - DOM.id("header").offsetHeight - DOM.id("footer").offsetHeight - this.footer.node.offsetHeight - 1;
+			if(this.header.node) {
+				maxHeight -= this.header.node.offsetHeight;
+			}
+			if(DOM.getSize(this.form.node).height > maxHeight) {
+				// The height style value must not include padding.
+				// Note that list columns have no top or bottom padding.
+				var styleHeight = maxHeight;
+				if(this.type.form) {
+					styleHeight -= (Fluid.Constants.formPaddingTop + Fluid.Constants.formPaddingBottom);
+				}
+				this.form.node.style.height = styleHeight+"px";
+			}
+			else {
+				this.form.node.style.height = "";
+			}
+			return this;
+		};
+		
+		c.clear = function() {
+			if(this.status.cleared) {
+				return false;
+			}
+			this.status.cleared = true;
+			// Release all objects:
+			DOM.releaseChildren(this.node);
+			Arrays.clear(this.footer.leftButtons);
+			Arrays.clear(this.footer.rightButtons);
+			this.header = this.form = this.footer = null;
+			// Keep the column width (needs to be done with a div node):
+			this.node.className = "";
+			this.header = {node:DOM.addNode(c.node, "div")};
+			this.header.node.wrapper = c.header;
+			this.header.node.style.width = this.width+"px";
+			return this;
+		};
+
+		// TODO move inside edit
+		c.clearForEdit = function() {
+			// Header:
+			DOM.releaseChildren(this.header.node);
+			if(this.header.grid) {
+				// TODO this call may not be need anymore
+				DOM.release(this.header.grid.node);
+				this.header.grid = null;
+			}
+			// Form:
+			DOM.release(this.form.grid.node);
+			this.form.grid = null;
+			// Footer:
+			// Note: the footer layout must be kept
+			while(this.footer.leftButtons.length > 0) {
+				var b = this.footer.leftButtons.pop();
+				DOM.release(b.node);
+			}
+			while(this.footer.rightButtons.length > 0) {
+				var b = this.footer.rightButtons.pop();
+				DOM.release(b.node);
+			}
+			return this;
+		};
+
 		if(c.type.form) {
-			c.edit = function() {
-				DOM.release(this.node);
+			c.edit = function(args) {
+				Utils.checkArgs(args, "render");
+				this.clearForEdit();
+				// Header:
+				this.header.node.innerHTML = "Editing";
+				this.header.node.className = "fluid-edit";
+				this.header.node.style.width = DOM.getStyleSize({size:c.width, padding:20}) + "px";
+				// Form:
+				this.form.grid = new Widgets.Table(Fluid.Constants.gridEdit).attachTo(this.form.node);
+				// User-defined render:
+				args.render(this);
+				return this.pack();
 			};
 		}
-		
-		// Scroll if required:
-		this._nodes.container.scrollLeft = 10000;
+
 		return c;
 	}
 };
