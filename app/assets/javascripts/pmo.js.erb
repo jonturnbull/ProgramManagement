@@ -3,7 +3,7 @@ var PMO = {
 
 	listOrgs: function() {
 		new JsonRequest({
-			url: "../app/tmp/organisations.json",
+			url: "organizations.json",
 			method: "get",
 			async: true,
 			onSuccess: function(data) {
@@ -54,13 +54,13 @@ var PMO = {
 		PMO.viewProject(1);
 	},
 	
-	viewOrg: function(org) {
+	viewOrg: function(orgId) {
 		new JsonRequest({
-			url: "../app/tmp/org-"+org+".json",
+			url: "organizations/"+orgId+".json",
 			method: "get",
 			async: true,
 			onSuccess: function(data) {
-				var org = data[0];
+				var org = data;
 				var c = Fluid.addColumn({position:2, width:280, title: org.name});
 				var buttons = new Array();
 				buttons.push({text:"Programs", action:function() {
@@ -73,8 +73,13 @@ var PMO = {
 				var row = c.form.grid.addRow();
 				row.last().addButtonGrid({buttons:buttons});
 				row = c.form.grid.addRow();
-				row.last().addText({text:org.domain, href:"http://"+org.domain});
-				row.last().addText({text:org.employees+" employees"});
+				// TODO
+				//row.last().addText({text:org.domain, href:"http://"+org.domain});
+				var domain = Strings.replace(org.name, " ", "").toLowerCase()+".co.uk";
+				row.last().addText({text:domain, href:"http://"+domain});
+				// TODO
+				//row.last().addText({text:org.employees+" employees"});
+				row.last().addText({text:"50 employees"});
 				//row = c.form.grid.addRow();
 				row.last().addText({text:org.description});
 				c.footer.addButton({type:"edit"});

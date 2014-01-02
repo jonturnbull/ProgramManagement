@@ -979,7 +979,7 @@ function HttpRequest(args) {
 function JsonRequest(args) {
 	var request = new HttpRequest(args);
 	request.preProcess = function(text) {
-		return eval(text);
+		return JSON.parse(text);
 	};
 	
 	return request;
