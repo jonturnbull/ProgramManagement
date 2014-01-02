@@ -1,190 +1,53 @@
-<% content_for :title, "Welcome to Program Management home" %>
-
-
 <script>
-<!--
-
 function loadPage() {
-	
 	Fluid.init();
-	// TODO remove this line
-	Fluid.columns.push({});
-		
-	// Ajax:
-	var request = new AjaxRequest2({
-		url: "../organizations.json",
-		method: "get",
-		async: false,
-		//parameters: Array({name:"action", value:"change-password"}, DOM.id("old_password"), DOM.id("password1")),
-		onSuccess: function(data) {
-			writeOrganisations(data)
-		},
-		onFailure: null
-	});
-	request.send();
-	
-	// Ajax:
-	var request = new AjaxRequest2({
-		url: "../organizations/23/programs.json",
-		method: "get",
-		async: false,
-		//parameters: Array({name:"action", value:"change-password"}, DOM.id("old_password"), DOM.id("password1")),
-		onSuccess: function(data) {
-			writePrograms(data)
-		},
-		onFailure: null
-	});
-	request.send();
-	
-	
-	
-	// Form 1:
-	var f = Fluid.addForm({width:280, title: "Innovair"});
-	f.addDropDown({name:"org-ddown", text:"Programmes"});
-	f.addLabel({text: "innovair.co", href:"http://innovair.co"});
-	f.addLabel({text: "54 employees"});
-	f.addLabel({text: "At Innovair, ideas, technology, experience and best practices come together to create ground-breaking, innovative products for the enterprise market."});
-	f.addLabel({text: "At Innovair, ideas, technology, experience and best practices come together to create ground-breaking, innovative products for the enterprise market."});
-	f.addLabel({text: "At Innovair, ideas, technology, experience and best practices come together to create ground-breaking, innovative products for the enterprise market."});
-	f.addButton({name:"b-org-edit", type:"edit", side:"right"});
-	f.addButton({name:"b-org-h", type:"history"});
-	f.addButton({name:"b-org-leave", type:"leave", side:"left"});
-	// Form 2:
-	var data = new Array();
-	data.push({name: "Web Billing Platform", people: 5, startDate: "12 August", endDate: "18 October"});
-	data.push({name: "Back Office API", people: 0, startDate: "5 October 2012", endDate: "25 November 2013"});
-	data.push({name: "E-Commerce Business Case", people: 2, startDate: "4 April", endDate: "12 June"});
-	f = Fluid.addList({width:430, title: "Projects", data: data, display: function(node, item) {
-		var table = DOM.addNode(node, "table");
-		table.className = "fluid-grid";
-		// Name
-		var tr1 = DOM.addNode(table, "tr");
-		var td1 = DOM.addNode(tr1, "td");
-		td1.className = "form-c";
-		td1.style.fontSize = "14px";
-		td1.innerHTML = "<strong>"+item.name+"</strong>";
-		// People:
-		var tr2 = DOM.addNode(table, "tr");
-		var td2 = DOM.addNode(tr2, "td");
-		td2.className = "form-c";
-		if(item.people) {
-			td2.innerHTML = item.people + " people";
-		}
-		else {
-			// TODO get company name via item.parent.name
-			td2.innerHTML = "open to all employees";
-		}
-		// Dates:
-		var tr3 = DOM.addNode(table, "tr");
-		var td3 = DOM.addNode(tr3, "td");
-		td3.className = "form-c";
-		td3.innerHTML = item.startDate + " to " + item.endDate;
-	}});
-	//f.gridNode.innerHTML = Strings.multiply("Main</p>", 30);
-
-	Fluid.pack();
-	
-	
-	
-		
-}
-
-function writeOrganisations(data){
-	
-	var organizations_array = new Array();
-		
-	for(var i=0; i<data.length; i++) {
-		organizations_array[i]=data[i];
-		//console.log(data[i]);
-	}
-	
-	
-	f2 = Fluid.addList({width:430, title: "Organizations", data: organizations_array, display: function(node, item) {		
-		var table = DOM.addNode(node, "table");
-		table.className = "fluid-grid";
-		// Name
-		var tr2 = DOM.addNode(table, "tr");
-		var td2 = DOM.addNode(tr2, "td");
-		td2.className = "form-c";
-		td2.style.fontSize = "14px";
-		td2.innerHTML = "<strong>"+item.name+"</strong>";
-		td2.onClick="PMO.displayOrg(" + item.id + ")"
-		
-
-	}});
-	
+	PMO.listOrgs();
 	Fluid.pack();
 }
-
-function writePrograms(data){
-	
-	var programs_array = new Array();
-		
-	for(var i=0; i<data.length; i++) {
-		programs_array[i]=data[i];
-	}
-	
-	
-	f2 = Fluid.addList({width:430, title: "Programmes", data: programs_array, display: function(node, item) {	
-		var table = DOM.addNode(node, "table");
-		table.className = "fluid-grid";
-		// Name
-		var tr2 = DOM.addNode(table, "tr");
-		var td2 = DOM.addNode(tr2, "td");
-		td2.className = "form-c";
-		td2.style.fontSize = "14px";
-		td2.innerHTML = "<strong>"+item.name+"</strong><p>"+item.description+"</p>";
-		
-
-	}});
-	
-	Fluid.pack();
-}
--->
 </script>
-</head>
 
 <body class="fnt-normal" onload="loadPage()">
 <table id="fluid-container">
-		<tr>
-			<td>
-			<table id="header">
-				<tr>
-					<td id="header-left">
-						<table>
-							<tr>
-								<td class="header-c-logo"><%= image_tag 'logo.png' %></td>
-								<td class="header-c-icon pointer"><%= image_tag 'icon-settings.png' %></td>
-								<td class="header-c-icon pointer"><%= image_tag 'icon-search.png' %></td>
-								<td class="header-c-icon pointer"><%= image_tag 'icon-help.png' %></td>
-							</tr>
-						</table>
-					</td>
-					<td id="header-right">
-						<table align="right">
-							<tr>
-								<td class="header-c-text pointer">Carlo Abruzzo</td>
-								<td class="header-c-separator"><%= image_tag 'separator.png' %></td>
-								<td class="header-c-text pointer">Sign Out</td>
-							</tr>
-						</table>
-					</td>
+	<tr>
+		<td>
+		<table id="header">
+			<tr>
+				<td id="header-left">
+					<table>
+						<tr>
+							<td class="header-c-logo"><img src="<%= asset_path 'logo.png' %>"/></td>
+							<td class="header-c-icon pointer"><img src="<%= asset_path 'icon-settings.png' %>"/></td>
+							<td class="header-c-icon pointer"><img src="<%= asset_path 'icon-search.png' %>"/></td>
+							<td class="header-c-icon pointer"><img src="<%= asset_path 'icon-help.png' %>"/></td>
+						</tr>
+					</table>
+				</td>
+				<td id="header-right">
+					<table align="right">
+						<tr>
+							<td class="header-c-text pointer">Carlo Abruzzo</td>
+							<td class="header-c-separator"><img src="<%= asset_path 'separator.png' %>"/></td>
+							<td class="header-c-text pointer">Sign Out</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr id="fluid-container-tr">
+		<td>
+			<div id="fluid-container-div">
+			<table id="fluid-container-table">
+				<tr id="fluid-grid">
+					<!-- This is where Fluid columns are added -->
 				</tr>
 			</table>
-			</td>
-		</tr>
-		<tr id="fluid-container-tr">
-			<td>
-				<div id="fluid-container-div">
-				<table id="fluid-container-table">
-					<tr id="fluid-grid">
-						<!-- This is where Fluid columns are added -->
-					</tr>
-				</table>
-				</div>
-			</td>
-		</tr>
-	    <tr>
-	        <td id="footer"></td>
-	    </tr>
-	</table>
+			</div>
+		</td>
+	</tr>
+    <tr>
+        <td id="footer"></td>
+    </tr>
+</table>
+</body>

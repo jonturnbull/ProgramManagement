@@ -1,58 +1,3 @@
-// Fluid UI styles
-// Copyright 2013 Int3raction.com, all rights reserved.
-// Change log:
-// 2013-12-25: Carlos Silva: refactored layout and component style names to make them more meaningful
-
-
-
-/* Built-in classes: */
-a:link {
-	color: #32A2FB;
-	text-decoration: none;
-}
-a:visited {
-	color: #32A2FB;
-	text-decoration: none;
-}
-a:hover {
-	color: #32A2FB;
-	text-decoration: underline;
-}
-a:active {
-	color: #32A2FB;
-	text-decoration: none;
-}
-table {
-	border: none;
-	border-spacing: 0px;
-}
-table td, table th {
-	padding: 0px;
-	margin: 0px;
-}
-td {
-	text-align: left;
-	vertical-align: top;
-}
-
-
-
-/* Fonts: */
-.fnt-normal {
-	font-family: Helvetica, Arial, sans-serif;
-	font-style: normal;
-	font-size: 12px;
-	color: #666666;
-}
-.fnt-filter-input {
-	font-family: Helvetica, Arial, sans-serif;
-	font-size: 12px;
-	font-style: normal;
-	color: #CDCDCD;
-	letter-spacing: 0.03em;
-}
-
-
 
 /* Home screen */
 html {
@@ -104,7 +49,7 @@ td.header-c-icon {
 td.header-c-text {
 	padding: 15px;
 	text-align: left;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	font-style: normal;
 	font-weight: bold;
@@ -121,8 +66,38 @@ td.header-c-separator {
 }
 
 
+/* Built-in classes: */
+a:link {
+	color: #32A2FB;
+	text-decoration: none;
+}
+a:visited {
+	color: #32A2FB;
+	text-decoration: none;
+}
+a:hover {
+	color: #32A2FB;
+	text-decoration: underline;
+}
+a:active {
+	color: #32A2FB;
+	text-decoration: none;
+}
+table {
+	border: none;
+	border-spacing: 0px;
+}
+table td, table th {
+	padding: 0px;
+	margin: 0px;
+}
+td {
+	text-align: left;
+	vertical-align: top;
+}
 
-/* Fluid layout: */
+
+/* Fluid components: */
 #fluid-container {
 	padding: 0;
 	margin: 0;
@@ -141,13 +116,9 @@ td.header-c-separator {
 #fluid-container-table {
 	height: 100%;
 }
-td.fluid-col {
+td.fluid-grid-col {
 	background-color: white;
 	border-right: 1px solid #CCCCCC;
-}
-div.fluid-footer {
-	height: 65px;
-	vertical-align: top;
 }
 div.fluid-form {
 	overflow-y: auto;
@@ -155,176 +126,27 @@ div.fluid-form {
 	border-bottom: 1px solid #CCCCCC;
 	padding-top: 10px;
 	padding-bottom: 20px;
-	padding-left: 0px;
 	/* space for vertical scrollbars */
 	padding-right: 0px;
 }
-table.fluid-grid {
-	width: 100%;
+div.fluid-footer {
+	height: 65px;
+	vertical-align: top;
 }
-td.fluid-cell-view {
-	padding-left: 20px;
-	padding-right: 20px;
-	padding-top: 10px;
-	padding-bottom: 0px;
-	vertical-align: middle;
-}
-td.fluid-cell-edit {
-	padding-left: 20px;
-	padding-right: 20px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	vertical-align: middle;
-}
-div.fluid-filter-header {
+div.fluid-filter {
 	border-bottom: 1px solid #CCCCCC;
 	padding-top: 10px;
 	padding-bottom: 20px;
 }
-div.fluid-filter-box {
-	border: 1px solid #CCCCCC;
-	padding: 0px;
-}
-td.fluid-filter-cell {
-	padding: 3px;
-}
-input[type='text'].fluid-filter-input {
-	border: none;
-	outline: none;
+table.form-grid {
 	width: 100%;
 }
-td.fluid-list-cell {
+td.form-c {
 	padding-left: 20px;
 	padding-right: 20px;
 	padding-top: 10px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #CCCCCC;
-	cursor: pointer;
+	padding-bottom: 0px;
 }
-td.fluid-list-cell:hover {
-	background-color: #F8F8F8;
-}
-td.fluid-list-cell-s {
-	padding-left: 20px;
-	padding-right: 20px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #CCCCCC;
-	background-color: #F8F8F8;
-}
-div.fluid-edit {
-	color: #FFFFFF;
-	color: #C07201;
-	background-color: #FFDE0D;
-	font-size: 12px;
-	font-weight: bold;
-	letter-spacing: 0.03em;
-	padding: 15px;
-	padding-left: 20px;
-	padding-right: 20px;
-}
-
-
-
-/* Buttons: */
-input.button-save {
-	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
-	background-position: -4px -4px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-	outline: none;
-}
-input.button-save:hover {
-	background-position: -34px -4px;
-	cursor: pointer;
-}
-input.button-save-inactive {
-	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
-	background-position: -64px -4px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-	outline: none;
-}
-input.button-history {
-	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
-	background-position: -4px -34px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-	outline: none;
-}
-input.button-history:hover {
-	background-position: -34px -34px;
-	cursor: pointer;
-}
-input.button-edit {
-	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
-	background-position: -4px -64px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-	outline: none;
-}
-input.button-edit:hover {
-	background-position: -34px -64px;
-	cursor: pointer;
-}
-input.button-add {
-	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
-	background-position: -4px -94px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-	outline: none;
-}
-input.button-add:hover {
-	background-position: -34px -94px;
-	cursor: pointer;
-}
-input.button-leave {
-	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
-	background-position: -4px -154px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-	outline: none;
-}
-input.button-leave:hover {
-	background-position: -34px -154px;
-	cursor: pointer;
-}
-input.button-leave-inactive {
-	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
-	background-position: -64px -154px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-	outline: none;
-}
-input.button-prev-inactive {
-	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
-	background-position: -4px -184px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-}
-input.button-next-inactive {
-	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
-	background-position: -4px -214px;
-	height: 28px;
-	width: 28px;
-	border: 1px solid #FFFFFF;
-	outline: none;
-}
-
-
-
-
-/* Fluid components: (OLD) */
-
-
 td.form-c-title {
 	font-size: 20px;
 	font-weight: bold;
@@ -349,12 +171,69 @@ td.form-c-label {
 	padding-top: 10px;
 	padding-bottom: 5px;
 }
+table.wg-ddown-table {
+	width: 100%;
+	padding: 10px;
+	background-color: #E4E4E4;
+}
+td.wg-ddown-td {
+	text-align: left;
+	vertical-align: middle;
+	font-size: 16px;
+	font-weight: bold;
+	color: #333333;
+}
+div.wg-highlight {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: normal;
+	color: #999999;
+	text-align: center;
+	vertical-align: middle;
+	padding: 15px;
+	margin-bottom: 5px;
+}
+div.wg-highlight:hover {
+	background-color: #F8F8F8;
+	color: #666666;
+	font-weight: bold;
+	cursor: pointer;
+}
+div.wg-filter {
+	width: 100%;
+	border: 1px solid #CCCCCC;
+	padding: 0px;
+}
+td.wg-filter-c {
+	padding: 3px;
+}
+input[type='text'].wg-filter-input {
+	border: none;
+	outline: none;
+	width: 100%;
+}
+td.wg-list-c {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #CCCCCC;
+	cursor: pointer;
+}
+td.wg-list-c:hover {
+	background-color: #F8F8F8;
+}
 
 
-
-/* Input components: */
-
-
+/* Font styles: */
+.fnt-normal {
+	font-family: Arial, Helvetica, sans-serif;
+	font-style: normal;
+	font-size: 12px;
+	color: #666666;
+}
+.fnt-filter-input {
+	color: #CDCDCD;
+	font-size: 12px;
+}
 
 /* Other: */
 .pointer {
@@ -362,11 +241,91 @@ td.form-c-label {
 }
 
 
+/* Input components: */
+input.button-save {
+	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
+	background-position: -4px -4px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+input.button-save:hover {
+	background-position: -34px -4px;
+	cursor: pointer;
+}
+input.button-history {
+	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
+	background-position: -4px -34px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+input.button-history:hover {
+	background-position: -34px -34px;
+	cursor: pointer;
+}
+input.button-edit {
+	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
+	background-position: -4px -64px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+input.button-edit:hover {
+	background-position: -34px -64px;
+	cursor: pointer;
+}
+input.button-add {
+	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
+	background-position: -4px -94px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+input.button-add:hover {
+	background-position: -34px -94px;
+	cursor: pointer;
+}
+input.button-leave {
+	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
+	background-position: -4px -154px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+input.button-leave:hover {
+	background-position: -34px -154px;
+	cursor: pointer;
+}
+input.button-leave-inactive {
+	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
+	background-position: -64px -154px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+input.button-prev-inactive {
+	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
+	background-position: -4px -184px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+input.button-next-inactive {
+	background: #FFFFFF url(<%= asset_path 'buttons.png' %>) no-repeat;
+	background-position: -4px -214px;
+	height: 28px;
+	width: 28px;
+	border: 1px solid #FFFFFF;
+}
+
+
+
+
 /* OLD RIT - NOT YET REVIEWED */
 
 
 /* Built-in classes: */
-/*
 input {
 	border: 1px solid #666666;
 	padding: 2px;
@@ -406,7 +365,7 @@ select {
 	height: 20px;
 	width: 150px;
 }
-*/
+
 
 /* Global classes: */
 .fnt-mandatory {
@@ -469,7 +428,7 @@ div.block-error {
 	margin-bottom: 10px;
 }
 .block-validation{
-	background-image:url('../img/bg-msg.png');
+	background-image:url(<%= asset_path 'bg-msg.png' %>);
 	color: #FFFFFF;
 	text-align: left;
 	padding: 10px;
@@ -492,7 +451,7 @@ div.info-container {
 	padding-bottom: 10px;
 	z-index: 6;
 	min-height: 30px;
-	background-image:url('../img/bg-msg.png');
+	background-image:url(<%= asset_path 'bg-msg.png' %>);
 	display: none;
 }
 div.info-title {
@@ -506,7 +465,7 @@ div.field-msg-left-container {
 	padding-right: 10px;
 	padding-bottom: 7px;
 	z-index: 5;
-	background-image:url('../img/bg-msg.png');
+	background-image:url(<%= asset_path 'bg-msg.png' %>);
 	display: none;
 }
 div.field-msg-left-icon {
@@ -524,7 +483,7 @@ div.field-msg-bottom-container {
 	padding: 5px;
 	padding-bottom: 7px;
 	z-index: 5;
-	background-image:url('../img/bg-msg.png');
+	background-image:url(<%= asset_path 'bg-msg.png' %>);
 	display: none;
 }
 div.field-msg-bottom-icon {
@@ -539,14 +498,14 @@ div.field-msg-bottom-content {
 /* Buttons */
 /* TODO buttons small havent been converted to new button styles */
 input.button-small {
-	background: #FFFFFF url('../img/buttons_small.png') no-repeat;
+	background: #FFFFFF url(<%= asset_path 'buttons_small.png' %>) no-repeat;
 	background-position: -5px -5px;
 	width: 50px;
 	height: 20px;
 	border: none;
 	color: white;
 	font-weight: normal;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 }
 input.button-small:hover {
@@ -554,13 +513,13 @@ input.button-small:hover {
 	cursor: pointer;
 }
 input.button-normal {
-	background: #010A1F url('../img/buttons-normal.png') no-repeat;
+	background: #010A1F url(<%= asset_path 'buttons-normal.png' %>) no-repeat;
 	background-position: -5px -5px;
 	height: 26px;
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -569,13 +528,13 @@ input.button-normal:hover {
 	cursor: pointer;
 }
 input.button-danger {
-	background: #333333 url('../img/buttons-normal.png') no-repeat;
+	background: #333333 url(<%= asset_path 'buttons-normal.png' %>) no-repeat;
 	background-position: -5px -65px;
 	height: 26px;
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: 1px solid #333333;
 }
@@ -584,24 +543,24 @@ input.button-danger:hover {
 	cursor: pointer;
 }
 input.button-inactive {
-	background: #010A1F url('../img/buttons-normal.png') no-repeat;
+	background: #010A1F url(<%= asset_path 'buttons-normal.png' %>) no-repeat;
 	background-position: -5px -125px;
 	height: 26px;
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
 input.button-dialog {
-	background: #010A1F url('../img/buttons-normal.png') no-repeat;
+	background: #010A1F url(<%= asset_path 'buttons-normal.png' %>) no-repeat;
 	background-position: -5px -155px;
 	height: 28px;
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 	margin-left: 5px;
@@ -612,13 +571,13 @@ input.button-dialog:hover {
 	cursor: pointer;
 }
 input.button-dialog-red {
-	background: #010A1F url('../img/buttons-normal.png') no-repeat;
+	background: #010A1F url(<%= asset_path 'buttons-normal.png' %>) no-repeat;
 	background-position: -5px -155px;
 	height: 28px;
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 	margin-left: 5px;
@@ -629,13 +588,13 @@ input.button-dialog-red:hover {
 	cursor: pointer;
 }
 input.button-plus {
-	background: #010A1F url('../img/buttons-plus.png') no-repeat;
+	background: #010A1F url(<%= asset_path 'buttons-plus.png' %>) no-repeat;
 	background-position: -5px -5px;
 	height: 26px;
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -644,13 +603,13 @@ input.button-plus:hover {
 	cursor: pointer;
 }
 input.button-pleft {
-	background: #FFFFFF url('../img/buttons-pleft.png') no-repeat;
+	background: #FFFFFF url(<%= asset_path 'buttons-pleft.png' %>) no-repeat;
 	background-position: -5px -5px;
 	height: 26px;
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -659,13 +618,13 @@ input.button-pleft:hover {
 	cursor: pointer;
 }
 input.button-pright-070 {
-	background: #FFFFFF url('../img/buttons-pright-070.png') no-repeat;
+	background: #FFFFFF url(<%= asset_path 'buttons-pright-070.png' %>) no-repeat;
 	background-position: -5px -5px;
 	height: 26px;
 	width: 70px;
 	color: white;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }
@@ -674,13 +633,13 @@ input.button-pright-070:hover {
 	cursor: pointer;
 }
 input.button-pright-100 {
-	background: #FFFFFF url('../img/buttons-pright-100.png') no-repeat;
+	background: #FFFFFF url(<%= asset_path 'buttons-pright-100.png' %>) no-repeat;
 	background-position: -5px -5px;
 	height: 26px;
 	width: 100px;
 	color: white;
 	font-weight: bold;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	border: 1px solid #010A1F;
 }

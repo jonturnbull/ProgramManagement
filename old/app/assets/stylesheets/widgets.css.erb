@@ -1,191 +1,9 @@
 
-div.wg-title {
-	font-size: 20px;
-	font-weight: bold;
-	color: #333333;
-	margin-top: 0px;
-	margin-bottom: 5px;
-}
-div.wg-subtitle {
-	font-size: 16px;
-	font-weight: bold;
-	color: #333333;
-	margin-top: 6px;
-	margin-bottom: 4px;
-}
-div.wg-label {
-	color: #333333;
-	font-weight: bold;
-	margin-bottom: 8px;
-}
-div.wg-text {
-	margin-bottom: 8px;
-}
-div.wg-block {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: normal;
-	color: #999999;
-	text-align: center;
-	vertical-align: middle;
-	padding: 15px;
-	margin-bottom: 10px;
-}
-div.wg-block:hover {
-	background-color: #F8F8F8;
-	color: #666666;
-	font-weight: bold;
-	cursor: pointer;
-}
-div.wg-block-s {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: bold;
-	text-align: center;
-	vertical-align: middle;
-	padding: 15px;
-	margin-bottom: 10px;
-	background-color: #F8F8F8;
-	color: #666666;
-}
-table.wg-button-grid {
-	width: 100%;
-	border: 1px solid #CCCCCC;
-	border-collapse: collapse;
-	margin-bottom: 10px;
-}
-td.wg-button-grid {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: normal;
-	text-align: center;
-	vertical-align: middle;
-	padding: 10px;
-	color: #999999;
-	border: 1px solid #CCCCCC;
-}
-td.wg-button-grid:hover {
-	font-weight: bold;
-	cursor: pointer;
-	color: #666666;
-	background-color: #F8F8F8;
-}
-td.wg-button-grid-s {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: bold;
-	text-align: center;
-	vertical-align: middle;
-	padding: 10px;
-	color: #666666;
-	background-color: #F8F8F8;
-	border: 1px solid #CCCCCC;
-}
-div.wg-user-label {
-	padding-top: 3px;
-	padding-bottom: 3px;
-	margin-right: 7px;
-	margin-bottom: 7px;
-	float: left;
-	color: #333333;
-	font-weight: bold;
-}
-div.wg-user-company {
-	padding-top: 3px;
-	padding-bottom: 3px;
-	padding-left: 7px;
-	padding-right: 7px;
-	margin-right: 5px;
-	margin-bottom: 7px;
-	float: left;
-	color: #30A2FB;
-	font-weight: normal;
-	background-color: #DCF1FF;
-}
-div.wg-user-external {
-	padding-top: 3px;
-	padding-bottom: 3px;
-	padding-left: 7px;
-	padding-right: 7px;
-	margin-right: 5px;
-	margin-bottom: 7px;
-	float: left;
-	color: #FA0000;
-	font-weight: normal;
-	background-color: #FFEAF0;
-}
-div.wg-user-group {
-	padding-top: 3px;
-	padding-bottom: 3px;
-	padding-left: 7px;
-	padding-right: 7px;
-	margin-right: 5px;
-	margin-bottom: 7px;
-	float: left;
-	color: #669500;
-	font-weight: normal;
-	background-color: #E9FABC;
-}
-input[type="text"].wg-textbox {
-	font-family: Helvetica, Arial, sans-serif;
-	font-style: normal;
-	font-size: 12px;
-	color: #333333;
-	border: 1px solid #CCCCCC;
-	padding: 5px;
-	margin: 0px;
-}
-textarea.wg-textarea {
-	font-family: Helvetica, Arial, sans-serif;
-	font-style: normal;
-	font-size: 12px;
-	color: #333333;
-	border: 1px solid #CCCCCC;
-	padding: 5px;
-	margin: 0px;
-}
-div.wg-datepicker-box {
-	border: 1px solid #CCCCCC;
-	padding: 0px;
-	margin: 0px;
-	text-align: left;
-	display: inline-block;
-}
-input.wg-datepicker-input {
-	font-family: Helvetica, Arial, sans-serif;
-	font-style: normal;
-	font-size: 12px;
-	color: #333333;
-	border: none;
-	padding: 5px;
-	margin: 0px;
-	width: 118px;
-}
-td.wg-datepicker-icon-cell {
-	width: 24px;
-	vertical-align: middle;
-	text-align: center;
-}
-input.wg-datepicker-icon {
-	background: url(<%= 'icon-calendar.png' %>);
-	background-repeat: no-repeat;
-	border: none;
-	width: 16px;
-	height: 16px;
-}
-
-
-
-/* OLD */
 table.wg-menu {
 	position: absolute;
 	z-index: 6;
 	display: none;
-	background-image:url('../img/bg-msg.png');
+	background-image:url(<%= asset_path 'bg-msg.png' %>);
 	cursor: pointer;
 	border: 1px solid black;
 }
@@ -206,7 +24,7 @@ td.wg-menu-img {
 	text-align: right;
 }
 input.wg-button-menu-left {
-	background: #010A1F url('../img/buttons-normal.png') no-repeat;
+	background: #010A1F url(<%= asset_path 'buttons-normal.png' %>) no-repeat;
 	background-position: -5px -5px;
 	height: 26px;
 	width: 70px;
@@ -224,7 +42,7 @@ input.wg-button-menu-left:hover {
 	cursor: pointer;
 }
 input.wg-button-menu-right {
-	background: #010A1F url('../img/wg-button-menu-right.png') no-repeat;
+	background: #010A1F url(<%= asset_path 'wg-button-menu-right.png' %>) no-repeat;
 	background-position: -5px -5px;
 	height: 26px;
 	width: 26px;
@@ -251,7 +69,7 @@ div.wg-dialog-container {
 	position: absolute;
 	z-index: 101;
 	display: none;
-	background-image: url('../img/bg-dialog.png');
+	background-image: url(<%= asset_path 'bg-dialog.png' %>);
 	background-repeat: no-repeat;
 	border: 2px solid #FFFFFF;
 	padding-top: 0px;
