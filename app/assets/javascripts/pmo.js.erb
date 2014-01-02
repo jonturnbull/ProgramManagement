@@ -11,7 +11,7 @@ var PMO = {
 				c.form.grid.rows[0].cols[0].node.children[0].style.textAlign = "center";
 				// Create Home and Personal links:
 				c.header.node.className = "fluid-form";
-				c.header.grid = new Widgets.Table(Fluid.Constants.gridView).attachTo(c.header.node);
+				c.header.grid = new Widgets.Table(Fluid.Constants.GRID_VIEW_STYLE).attachTo(c.header.node);
 				var row = c.header.grid.addRow();
 				var block = row.cols[0].addBlock({text:"HOME"});
 				block.node.onclick = function() {

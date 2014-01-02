@@ -57,10 +57,8 @@ function Group(args) {
 var Widgets = {
 	
 	Constants: {
-		defaultTableClass: false,
-		defaultColClass: false,
-		mandatoryColor: "#FA0000",
-		marginBottom: 7
+		MANDATORY_COLOR: "#FA0000",
+		MARGIN_BOTTOM: 7
 	},
 	
 	Table: function(args) {
@@ -152,7 +150,7 @@ var Widgets = {
 			this.node.style.fontSize = "14px";		
 		}
 		if(args.margin) {
-			this.node.style.marginBottom = args.margin+"px";
+			this.node.style.MARGIN_BOTTOM = args.margin+"px";
 		}
 		if(args.float) {
 			this.node.style.float = "left";
@@ -167,7 +165,7 @@ var Widgets = {
 		text.node.className = "wg-label";
 		if(args.mandatory) {
 			var span = DOM.addNode(text.node, "span");
-			span.style.color = Widgets.Constants.mandatoryColor;
+			span.style.color = Widgets.Constants.MANDATORY_COLOR;
 			span.innerHTML = "&nbsp;*";
 		}
 		return text;
