@@ -872,6 +872,122 @@ function Popup(name, link, popup) {
 
 
 ///////////////////////////////////////////////////////////////////////////////
+// HttpRequest class:
+///////////////////////////////////////////////////////////////////////////////
+
+var HttpRequests = {
+	// Global request failure handler to be overwritten by higher level code
+	onFailure: function(e) {
+		throw e;
+	}
+};
+
+function HttpRequest(args) {
+	Utils.checkArgs(args, "url", "method=GET", "async=true", "onSuccess", "onFailure=HttpRequests.onFailure");
+	args.method = args.method.toUpperCase();
+	Utils.checkArgValues(args.method, "GET", "POST");
+	/*
+	this.url = args.url;
+	this.method = args.method;
+	this.async = args.async;
+	this.parameters = args.parameters;
+	this.onSuccess = args.onSuccess;
+	this.onFailure = args.onFailure;
+	*/
+	
+	this.send = function() {
+		request = this._getXmlHttp();
+		request.onreadystatechange = this._onChangeState;
+		request._onSuccess = args.onSuccess;
+		request._onFailure = args.onFailure;
+		request._preProcess = this.preProcess;
+		// Build request parameters:
+		var reqParams = null;
+		if(args.parameters != null) {
+			reqParams = "";
+			for(var i=0; i<args.parameters.length; i++) {
+				reqParams += (args.parameters[i].name + "=" + args.parameters[i].value);
+				if(i != args.parameters.length-1) {
+					reqParams += "&";
+				}
+			}
+		}
+		try {
+			if(args.method == "GET") {
+				request.open(args.method, args.url + (reqParams != null ? "?" + reqParams : ""), args.async);
+				request.send(null);
+				return true;
+			}
+			if(args.method == "POST") {
+				request.open(args.method, args.url, args.async);
+				request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				request.setRequestHeader("Content-length", reqParams.length);
+				request.setRequestHeader("Connection", "close");
+				request.send(reqParams);
+				return true;
+			}
+		}
+		catch(e) {
+			return args.onFailure(e);
+		}
+		// If the code got here, the request parameter is neither GET nor POST
+		throw new Error(args.method);
+	};
+	
+	this._getXmlHttp = function() {
+		try { return new XMLHttpRequest(); } catch(e) {}
+		try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch(e) {}
+		try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); } catch(e) {}
+		try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch(e) {}
+		try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch(e) {}
+		throw new Error("XML HTTP not supported");
+	};
+	
+	// To be overriden by extending classes:
+	this.preProcess = function(text) {
+		return text;
+	};
+
+	this._onChangeState = function() {
+		if(this.readyState == 4) {
+			// Note: status is 0 if the script is run on a local drive
+			if(this.status != 200 && this.status != 0) {
+				throw new Error("server status code: "+this.status+(this.statusText ? " ("+this.statusText+")" : ""));
+			}
+			if(Utils.not(this.responseText)) {
+				throw new Error("HTTP response is null");
+			}
+			try {
+				var data = this._preProcess(this.responseText);
+				return this._onSuccess(data);
+			}
+			catch(e) {
+				return this._onFailure(e);
+			}
+		}
+	};
+	
+	return this;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// JsonRequest class:
+///////////////////////////////////////////////////////////////////////////////
+
+function JsonRequest(args) {
+	var request = new HttpRequest(args);
+	request.preProcess = function(text) {
+		return eval(text);
+	};
+	
+	return request;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
 // Utils class:
 ///////////////////////////////////////////////////////////////////////////////
 

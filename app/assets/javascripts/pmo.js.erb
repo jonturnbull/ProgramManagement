@@ -2,7 +2,7 @@
 var PMO = {
 
 	listOrgs: function() {
-		var request = new AjaxRequest2({
+		new JsonRequest({
 			url: "../app/tmp/organisations.json",
 			method: "get",
 			async: true,
@@ -41,10 +41,8 @@ var PMO = {
 				// TODO put this code somewhere else.
 				// Note that it needs to wait for the Ajax request to complete
 				PMO.viewHome();
-			},
-			onFailure: null
-		});
-		request.send();
+			}
+		}).send();
 	},
 
 	viewHome: function() {
@@ -57,7 +55,7 @@ var PMO = {
 	},
 	
 	viewOrg: function(org) {
-		var request = new AjaxRequest2({
+		new JsonRequest({
 			url: "../app/tmp/org-"+org+".json",
 			method: "get",
 			async: true,
@@ -83,10 +81,8 @@ var PMO = {
 				c.footer.addButton({type:"history"});
 				c.footer.addButton({type:"leave", side:"left"});
 				c.show();
-			},
-			onFailure: null
-		});
-		request.send();
+			}
+		}).send();
 	},
 	
 	listPrograms: function(org) {
@@ -109,7 +105,7 @@ var PMO = {
 	},
 	
 	viewProgram: function(id) {
-		var request = new AjaxRequest2({
+		new JsonRequest({
 			url: "../app/tmp/program-"+id+".json",
 			method: "get",
 			async: true,
@@ -128,10 +124,8 @@ var PMO = {
 				c.footer.addButton({type:"edit"});
 				c.footer.addButton({type:"history"});
 				c.show();
-			},
-			onFailure: null
-		});
-		request.send();
+			}
+		}).send();
 	},
 	
 	listProjects: function(id) {
@@ -153,7 +147,7 @@ var PMO = {
 	},
 	
 	viewProject: function(id) {
-		var request = new AjaxRequest2({
+		new JsonRequest({
 			url: "../app/tmp/project-"+1+".json",
 			method: "get",
 			async: true,
@@ -194,10 +188,8 @@ var PMO = {
 				}});
 				c.footer.addButton({type:"history"});
 				c.show();
-			},
-			onFailure: null
-		});
-		request.send();
+			}
+		}).send();
 	},
 	
 	editProject: function(pCol, p) {
