@@ -7,7 +7,15 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 Organization.delete_all
-Organization.create(name: 'FT Consulting', description: 'FT Consulting offers project and programme management, application development and outsourcing services for clients in multiple industries: Banking, Insurance, Oil & Gas, Media, Retail.')
-Organization.create(name: 'Innovair', description: 'At Innovair, ideas, technology, experience and best practices come together to create ground-breaking, innovative products for the enterprise market.')
-Organization.create(name: 'RedFly', description: 'Advertising and Communications agency headquartered in the Golden Square, London. We serve clients in the Media and Technology sectors across the UK. Please get in touch with us through our web page, Facebook or LinkedIn!')
+FT=Organization.create!(name: 'FT Consulting', description: 'FT Consulting offers project and programme management, application development and outsourcing services for clients in multiple industries: Banking, Insurance, Oil & Gas, Media, Retail.')
+Innovair=Organization.create!(name: 'Innovair', description: 'At Innovair, ideas, technology, experience and best practices come together to create ground-breaking, innovative products for the enterprise market.')
+RedFly=Organization.create!(name: 'RedFly', description: 'Advertising and Communications agency headquartered in the Golden Square, London. We serve clients in the Media and Technology sectors across the UK. Please get in touch with us through our web page, Facebook or LinkedIn!')
+
+Program.delete_all
+Innovair_Program1=Program.create!(organization: Innovair, name: 'Program Inov8', description: 'Improve the efficiency of Innovairs HR department') 
+Innovair_Program2=Program.create!(organization: Innovair, name: 'Program Inov9', description: 'Improve the program management controls which are available') 
+
+Project.delete_all
+Innovair_Project1=Project.create!(program: Innovair_Program1, name: 'Project Inov8 TSC', description: 'Improve the efficiency of Innovairs HR Talent Supply Chain department') 
+
 
