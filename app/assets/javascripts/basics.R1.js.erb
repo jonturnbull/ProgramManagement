@@ -638,19 +638,11 @@ var DOM = {
 	generateId: function() {
 		return "node_"+(++this._currentId);
 	},
-	
-	addNode: function(parent, nodeType) {
-		if(Utils.not(parent)) {
-			throw "parent: required argument";
-		}
-		if(Utils.not(nodeType)) {
-			throw "nodeType: required argument";
-		}
-		var node = document.createElement(nodeType);
-		parent.appendChild(node);
-		return node;
+
+	goto: function(url) {
+		document.location = url;
 	},
-	
+
 	releaseChildren: function(node) {
 		if(node) {
 			while(node.firstChild) {
@@ -665,56 +657,12 @@ var DOM = {
 		node.parentNode.removeChild(node);
 	},
 
-	goto: function(url) {
-		document.location = url;
-	},
-	
-	isFullyVisibleX: function(container, node) {
-		return (DOM.getPosition(node).x + node.offsetWidth) <= container.offsetWidth;
-	},
-
-	isPartiallyVisibleX: function(container, node) {
-		return DOM.getPosition(node).x < container.offsetWidth;
-	},
-
-	isFullyHiddenX: function(container, node) {
-		return DOM.getPosition(node).x >= container.offsetWidth;
-	},
-
-	isPartiallyHiddenX: function(container, node) {
-		return (DOM.getPosition(node).x + node.offsetWidth) > container.offsetWidth;
-	},
-
-	scrollByX: function(container, node) {
-		if(DOM.isFullyVisibleX(container, node)) {
-			return 0;
-		}
-		return (DOM.getPosition(node).x + node.offsetWidth) - container.offsetWidth;
-	},
-	
 	show: function(div) {
 		div.style.display = "inline";
 	},
 
 	hide: function(div) {
 		div.style.display = "none";
-	},
-
-	getPosition: function(elem) {
-		// TODO remove
-		//var left = 0;
-		//var top = 0;
-		//do {
-		//	left += elem.offsetLeft;
-		//	top += elem.offsetTop;
-		//} while(elem = elem.offsetParent);		
-		//return {x: left, y: top};
-		var pos = elem.getBoundingClientRect();
-		return {x:pos.left, y:pos.top};
-	},
-	
-	getSize: function(elem) {
-		return {width: elem.offsetWidth, height: elem.offsetHeight};
 	},
 	
 	getStyleSize: function(args) {
@@ -798,6 +746,71 @@ var DOM = {
 	
 	// PRIVATE:
 	_currentId: 0
+};
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Element extensions:
+///////////////////////////////////////////////////////////////////////////////
+
+Element.prototype.xGetSize = function() {
+	return {width: this.offsetWidth, height: this.offsetHeight};
+};
+
+Element.prototype.xAppend = function(tagName) {
+	if(Utils.not(tagName)) {
+		throw "tagName: required argument";
+	}
+	var elem = document.createElement(tagName);
+	this.appendChild(elem);
+	return elem;
+};
+
+Element.prototype.xGetPosition = function() {
+	// TODO remove
+	//var left = 0;
+	//var top = 0;
+	//do {
+	//	left += elem.offsetLeft;
+	//	top += elem.offsetTop;
+	//} while(elem = elem.offsetParent);		
+	//return {x: left, y: top};
+	var pos = this.getBoundingClientRect();
+	return {x:pos.left, y:pos.top};
+}
+	
+Element.prototype.xGetSize = function() {
+	return {width: this.offsetWidth, height: this.offsetHeight};
+};
+
+Element.prototype.xHorizontalScrolling = function() {
+	var hs = {container:this};
+	
+	hs.isFullyVisible = function(elem) {
+		return (elem.xGetPosition().x + elem.offsetWidth) <= this.container.offsetWidth;
+	};
+
+	hs.isFullyHidden = function(elem) {
+		return elem.xGetPosition(elem).x >= this.container.offsetWidth;
+	};
+
+	hs.isPartiallyVisible = function(elem) {
+		return elem.xGetPosition().x < this.container.offsetWidth;
+	};
+
+	hs.isPartiallyHidden = function(elem) {
+		return (elem.xGetPosition().x + elem.offsetWidth) > this.container.offsetWidth;
+	};
+	
+	hs.scrollToShow = function(elem) {
+		if(this.isFullyVisible(elem)) {
+			return this;
+		}
+		this.container.scrollLeft += ((elem.xGetPosition().x + elem.offsetWidth) - this.container.offsetWidth);
+	};
+
+	return hs;
 };
 
 
