@@ -36,7 +36,6 @@ var Fluid = {
 	pack: function() {
 		Fluid._nodes.container.style.width = DOM.getWindowWidth() + "px";
 		for(var i=0; i<Fluid.columns.length; i++) {
-			//Fluid.packColumn(Fluid.columns[i]);
 			Fluid.columns[i].pack();
 		}
 	},
@@ -55,7 +54,7 @@ var Fluid = {
 		// Remove hidden columns:
 		while(this.columns.length > position-1) {
 			var c = Arrays.last(this.columns);
-			if(DOM.isFullyHiddenX(Fluid._nodes.container, c.node)) {
+			if(Fluid._nodes.container.xHorizontalScrolling().isFullyHidden(c.node)) {
 				this.columns.pop();
 				DOM.release(c.node);
 				c.node = null;
@@ -102,7 +101,7 @@ var Fluid = {
 			c = {};
 			this.columns.push(c);
 			// Create the column container:
-			c.node = DOM.addNode(this._nodes.grid, "td");
+			c.node = this._nodes.grid.xAppend("td");
 			c.node.fluid = this;
 			c.node.style.visibility = "hidden";
 		}
@@ -125,7 +124,7 @@ var Fluid = {
 		};
 		
 		// Create header:
-		c.header = {node:DOM.addNode(c.node, "div")};
+		c.header = {node:c.node.xAppend("div")};
 		c.header.node.wrapper = c.header;
 		c.header.node.style.width = args.width+"px";
 		if(c.type.list) {
@@ -133,7 +132,7 @@ var Fluid = {
 			c.header.grid = new Widgets.Table(Fluid.Constants.GRID_VIEW_STYLE).attachTo(c.header.node);
 			c.header.grid.addRow().last().addTitle({text:args.title, subtitle:true});
 			// Create the filter section:
-			var filterDiv = DOM.addNode(c.header.grid.addRow().last().node, "div");
+			var filterDiv = c.header.grid.addRow().last().node.xAppend("div");
 			filterDiv.className = "fluid-filter-box";
 			filterDiv.style.width = c.getMaxNodeWidth({border:1}) + "px";
 			var table = new Widgets.Table({numCols:3}).attachTo(filterDiv);
@@ -143,9 +142,9 @@ var Fluid = {
 			for(var i=0; i<row.cols.length; i++) {
 				row.cols[i].node.className = "fluid-filter-cell";
 			}
-			var sIcon = DOM.addNode(row.cols[0].node, "img");
+			var sIcon = row.cols[0].node.xAppend("img");
 			sIcon.src = Fluid.Constants.IMG_ICON_SEARCH;
-			var input = DOM.addNode(row.cols[1].node, "input");
+			var input = row.cols[1].node.xAppend("input");
 			input.wrapper = {};
 			input.wrapper.clearIconVisible = false;
 			input.wrapper.clearIconCell = row.cols[2].node;
@@ -170,7 +169,7 @@ var Fluid = {
 			};
 			input.onkeyup = function() {
 				if(!this.wrapper.clearIconVisible && this.value != "") {
-					var cIcon = DOM.addNode(this.wrapper.clearIconCell, "img");
+					var cIcon = this.wrapper.clearIconCell.xAppend("img");
 					cIcon.src = Fluid.Constants.IMG_ICON_CLEAR_FILTER;
 					cIcon.className = "pointer";
 					cIcon.wrapper = {};
@@ -193,7 +192,7 @@ var Fluid = {
 		}
 
 		// Create the resizable form section:
-		c.form = {node: DOM.addNode(c.node, "div")};
+		c.form = {node: c.node.xAppend("div")};
 		c.form.node.wrapper = c.form;
 		c.form.node.className = "fluid-form";
 		c.form.node.style.width = args.width+"px";
@@ -224,7 +223,7 @@ var Fluid = {
 		}
 
 		// Create the footer section:
-		c.footer = {node: DOM.addNode(c.node, "div")};
+		c.footer = {node: c.node.xAppend("div")};
 		c.footer.node.wrapper = c.footer;
 		c.footer.node.className = "fluid-footer";
 		c.footer.node.style.width = args.width+"px";
@@ -251,12 +250,12 @@ var Fluid = {
 			Utils.checkArgValues(args.side, "left", "right");
 			var b = {fluidColumn:c};
 			if(args.side == "left") {
-				b.node = DOM.addNode(this.grid.rows[0].cols[0].node, "input");
+				b.node = this.grid.rows[0].cols[0].node.xAppend("input");
 				b.node.style.marginRight = Fluid.Constants.BUTTON_MARGIN + "px";
 				this.leftButtons.push(b);
 			}
 			else if(args.side == "right") {
-				b.node = DOM.addNode(this.grid.rows[0].cols[2].node, "input");
+				b.node = this.grid.rows[0].cols[2].node.xAppend("input");
 				b.node.style.marginLeft = Fluid.Constants.BUTTON_MARGIN + "px";
 				this.rightButtons.push(b);
 			}
@@ -291,8 +290,8 @@ var Fluid = {
 			this.node.style.visibility = "visible";
 			// Scroll if required:
 			Fluid._nodes.container.scrollLeft = initialScroll;
-			if(DOM.isPartiallyHiddenX(Fluid._nodes.container, c.node)) {
-				Fluid._nodes.container.scrollLeft += DOM.scrollByX(Fluid._nodes.container, c.node);
+			if(Fluid._nodes.container.xHorizontalScrolling().isPartiallyHidden(c.node)) {
+				Fluid._nodes.container.xHorizontalScrolling().scrollToShow(c.node);
 			}
 			return this.pack();
 		};
@@ -306,7 +305,7 @@ var Fluid = {
 			if(this.header.node) {
 				maxHeight -= this.header.node.offsetHeight;
 			}
-			if(DOM.getSize(this.form.node).height > maxHeight) {
+			if(this.form.node.xGetSize().height > maxHeight) {
 				// The height style value must not include padding.
 				// Note that list columns have no top or bottom padding.
 				var styleHeight = maxHeight;
@@ -333,7 +332,7 @@ var Fluid = {
 			this.header = this.form = this.footer = null;
 			// Keep the column width (needs to be done with a div node):
 			this.node.className = "";
-			this.header = {node:DOM.addNode(c.node, "div")};
+			this.header = {node:c.node.xAppend("div")};
 			this.header.node.wrapper = c.header;
 			this.header.node.style.width = this.width+"px";
 			return this;
