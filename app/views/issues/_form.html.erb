@@ -1,4 +1,9 @@
-<%= form_for(@issue) do |f| %>
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+
+
+<%= form_for(@issue, html: {class: "pure-form pure-form-aligned" }) do |f| %>
+    <fieldset>
   <% if @issue.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@issue.errors.count, "error") %> prohibited this issue from being saved:</h2>
@@ -11,15 +16,20 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
+	<div class="pure-control-group">
+
+    <%= f.label :title %>
+    <%= f.text_field :title, { :placeholder => "Summary title"} %>
   </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
+	<div class="pure-control-group">
+    <%= f.label :description %>
+    <%= f.text_area :description, { :placeholder => "What is the issue?"} %>
   </div>
   <div class="actions">
-    <%= f.submit %>
   </div>
+	<div class="pure-controls">
+	    <%= f.submit 'Submit issue', :class => 'pure-button pure-button-primary' %>
+
+  </div>
+</fieldset>
 <% end %>

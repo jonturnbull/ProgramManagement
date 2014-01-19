@@ -2,6 +2,8 @@ ProgramManagement::Application.routes.draw do
 
   #Static mappings go below
   get 'about'=>'static#about'
+  get 'dashboard'=>'static#dashboard'
+  
   
   resources :organizations do
     resources :programs, shallow: true
@@ -24,12 +26,13 @@ ProgramManagement::Application.routes.draw do
   resources :issues
   
   resources :issue_updates
+  
       
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-   root 'static#home'
+   root 'static#landing'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

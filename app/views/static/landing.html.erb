@@ -1,0 +1,143 @@
+
+<body>
+
+<div class="content">
+    <div class="header">
+        <div class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
+            <ul>
+                <li class="pure-menu-selected"><a href="#">Home</a></li>
+                <li><%= link_to 'Dashboard', 'dashboard' %> </li>
+                <li><a href="#">API</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="splash">
+        <div class="pure-g-r">
+            <div class="pure-u-1-3">
+                <div class="l-box splash-image">
+                    <img src="http://placehold.it/500x350"
+                         alt="Placeholder image for example.">
+                </div>
+            </div>
+
+            <div class="pure-u-2-3">
+                <div class="l-box splash-text">
+                    <h1 class="splash-head">
+                        Program Management. Simply.
+                    </h1>
+
+                    <h2 class="splash-subhead">
+                        We create products that enhance productivity, whether it be for a person or an enterprise. Products that make information more accessible and easier to find; that enhance collaboration; that make it simpler for people to use technology; that become transparent and part of people's lives and ways of working.
+                    </h2>
+
+                    <p>
+                        <a href="#" class="pure-button primary-button">Get Started</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="pure-g-r content-ribbon">
+            <div class="pure-u-2-3">
+                <div class="l-box">
+                    <h4 class="content-subhead">Some small text</h4>
+
+                    <h3>How many?</h3>
+                    <p>
+                        How many projects have you worked on which had status reports which didn't really serve any purpose, meetings that you attended where you leave thinking that it was a complete waste of your time, had so many calls just to stay up to date with ad to stay up late or get up early to enable you to attend a call which was effectively passing information on.
+                    </p>
+                </div>
+            </div>
+
+            <div class="pure-u-1-3">
+                <div class="l-box">
+                    <img src="http://placehold.it/400x250"
+                         alt="Placeholder image for example.">
+                </div>
+            </div>
+        </div>
+
+        <div class="pure-g-r content-ribbon">
+            <div class="pure-u-1-3">
+                <div class="l-box">
+                    <img src="http://placehold.it/400x250"
+                         alt="Placeholder image for example.">
+                </div>
+            </div>
+
+            <div class="pure-u-2-3">
+                <div class="l-box">
+                    <h4 class="content-subhead">Some more small text</h4>
+
+                    <h3>Etiam iaculis iaculis lobortis.</h3>
+                    <p>
+                        Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum. Morbi fermentum dui sit amet libero tincidunt rutrum. Nam sodales consequat metus sed accumsan.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pure-g-r">
+            <div class="pure-u-1-3">
+                <div class="l-box">
+                    <h3>Speed</h3>
+                    <p>
+                        Speed: we don't mean the speed of the application, but the speed of the activities that you actually do. We are managers by profession, but we still believe that management is an overhead. Ideally, your projects would get done without management. Since that's not possible, we will take second best and make management as fast as it can possibly be
+                    </p>
+                </div>
+            </div>
+
+            <div class="pure-u-1-3">
+                <div class="l-box">
+                    <h3>Flexibility</h3>
+                    <p>
+                        In an era where market disruption is the norm, you want your project management process and supporting tools to be able to adapt as changes happen. At the same time, you need a structure and process that the team understands and follows. Can process and flexibility coexist? We think it can - here is how
+                    </p>
+                </div>
+            </div>
+
+            <div class="pure-u-1-3">
+                <div class="l-box">
+                    <h3>Mobility</h3>
+                    <p>
+                        if you are a real project manager, you spend most of our time talking to people and little time sitting in front of a laptop. So why would you need to go back to your laptop to register a risk you just became aware of? Do it from your phone. As and when you hear about it.
+                    </p>
+                </div>
+            </div>
+
+           
+        </div>
+
+        <div class="l-box ribbon">
+            <h2>Get started now.</h2>
+            <a href="#" class="pure-button primary-button">Sign up</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        Made with love in London.
+    </div>
+</div>
+
+<script src="http://yui.yahooapis.com/3.12.0/build/yui/yui.js"></script>
+<script>
+YUI().use('node-base', 'node-event-delegate', function (Y) {
+    // This just makes sure that the href="#" attached to the <a> elements
+    // don't scroll you back up the page.
+    Y.one('body').delegate('click', function (e) {
+        e.preventDefault();
+    }, 'a[href="#"]');
+});
+</script>
+
+
+
+
+
+</body>
+

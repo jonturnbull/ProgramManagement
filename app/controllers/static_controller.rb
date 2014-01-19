@@ -1,9 +1,9 @@
 class StaticController < ApplicationController
-  layout "static", :except => "home" 
-  layout "application", :except => "about" 
-  
+  layout "static", :only => "about" 
+  layout "application", :only => "home" 
+  layout "landing", :only => "landing"
    
-  def home
+  def dashboard
     @programs=Program.count
   end
   
@@ -13,5 +13,9 @@ class StaticController < ApplicationController
   
   def whatwedo
     
+  end
+  
+  def landing 
+  
   end
 end

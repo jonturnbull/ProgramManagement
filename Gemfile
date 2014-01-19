@@ -36,7 +36,7 @@ group :development, :test do
 end
 
 group :production do
-  gem 'mysql2'
+  #gem 'mysql2'
 end
 
 # Use ActiveModel has_secure_password
