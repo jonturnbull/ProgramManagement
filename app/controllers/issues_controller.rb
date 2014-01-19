@@ -6,6 +6,7 @@ layout "issue"
   # GET /issues.json
   def index
     @issues = Issue.all
+    @project=Project.find(params[:project_id])
   end
 
   # GET /issues/1

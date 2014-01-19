@@ -1,10 +1,27 @@
-<h1>Listing issues</h1>
+<% content_for :title, "Issues for #{@project.name}" %>
+<% content_for :subtitle, "Listing of all issues" %>
+
+<style type="text/css">
+<!--
+tr {
+	padding: 10px;
+}
+
+td {
+	padding: 10px;
+}
+th.title {
+	width: 150px;
+}
+
+-->
+</style>
 
 <table>
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Description</th>
+      <th class="title">Title</th>
+      <th class="description">Description</th>
       <th></th>
       <th></th>
       <th></th>
@@ -15,7 +32,8 @@
     <% @issues.each do |issue| %>
       <tr>
         <td><%= issue.title %></td>
-        <td><%= issue.description %></td>
+        <td><%= truncate(issue.description, :length=>200) { link_to("read more",issue)}  %>
+
         <td><%= link_to 'Show', issue %></td>
         <td><%= link_to 'Edit', edit_issue_path(issue) %></td>
         <td><%= link_to 'Destroy', issue, method: :delete, data: { confirm: 'Are you sure?' } %></td>
