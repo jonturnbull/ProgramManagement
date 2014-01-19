@@ -1,35 +1,58 @@
 
-<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<style type="text/css">
+<!--
+span {
+	display: none;
+}
+
+div {
+	border-width: 0px;
+	border-color: black;
+	border-style: solid;
+}
+
+-->
+</style>
 
 
-<%= form_for(@issue, html: {class: "pure-form pure-form-aligned" }) do |f| %>
-    <fieldset>
-  <% if @issue.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@issue.errors.count, "error") %> prohibited this issue from being saved:</h2>
+		<%= form_for(@issue, html: {class: "pure-form pure-form-aligned" }) do |f| %>
+		<fieldset>
+			<% if @issue.errors.any? %>
+				<div id="error_explanation">
+					<h2>
+						<%= pluralize(@issue.errors.count, "error") %> prohibited this issue from being saved:
+					</h2>
+					<ul>
+						<% @issue.errors.full_messages.each do |msg| %>
+						<li>
+							<%= msg %>
+						</li>
+						<% end %>
+					</ul>
+				</div>        
+			<% end %>
+			<div class="pure-control-group">
+				<%= f.label :title %>
+				<%= f.text_field :title, { :placeholder => "Summary title"} %>
+			</div>
+			<div class="pure-control-group">
+				<%= f.label :description %>
+				<%= f.text_area :description, { :placeholder => "What is the issue?"} %>
+			</div>
 
-      <ul>
-      <% @issue.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+			<div class="pure-controls">
+				<%= f.submit 'Submit issue', :class => 'pure-button pure-button-primary' %>
+			</div>
+		</fieldset>
+		<% end %>
+	
 
-	<div class="pure-control-group">
+		<script>
+		$("#issue_title").focus(function() {
+			$("#title_help").css( "display", "inline" );
+		});
 
-    <%= f.label :title %>
-    <%= f.text_field :title, { :placeholder => "Summary title"} %>
-  </div>
-	<div class="pure-control-group">
-    <%= f.label :description %>
-    <%= f.text_area :description, { :placeholder => "What is the issue?"} %>
-  </div>
-  <div class="actions">
-  </div>
-	<div class="pure-controls">
-	    <%= f.submit 'Submit issue', :class => 'pure-button pure-button-primary' %>
-
-  </div>
-</fieldset>
-<% end %>
+		$("#issue_title").focusout(function() {
+			$("#title_help").css( "display", "none" );
+		});
+		</script>
