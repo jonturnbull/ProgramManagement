@@ -1,5 +1,6 @@
 ProgramManagement::Application.routes.draw do
 
+  devise_for :users
   #Static mappings go below
   get 'about'=>'static#about'
   get 'dashboard'=>'static#dashboard'
