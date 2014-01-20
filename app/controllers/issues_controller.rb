@@ -1,4 +1,8 @@
 class IssuesController < ApplicationController
+
+  before_filter :authenticate_user!
+
+
   before_action :set_issue, only: [:show, :edit, :update, :destroy]
 
 layout "issue"

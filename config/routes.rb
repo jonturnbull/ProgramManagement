@@ -1,10 +1,15 @@
 ProgramManagement::Application.routes.draw do
 
   devise_for :users
+  
   #Static mappings go below
   get 'about'=>'static#about'
   get 'dashboard'=>'static#dashboard'
   
+  devise_scope :user do
+    get "login", :to => "devise/sessions#new"
+    get "register", :to => "devise/registrations#new"
+  end
   
   resources :organizations do
     resources :programs, shallow: true
