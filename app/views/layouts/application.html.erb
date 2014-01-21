@@ -3,13 +3,90 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Welcome to Program Management</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
-<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/base-min.css">
+<script src="http://www.google.com/jsapi"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<style type="text/css">
+<!--
+body {
+    color: #777;
+}
+
+form {
+	margin:0 auto;
+	padding:14px;
+	
+	margin: 0 auto;
+    max-width: 600px;
+}
+
+input[type="email"] {
+	width: 300px;
+}
+
+input[type="password"] {
+	width: 300px;
+}
+
+
+/*
+The content `<div>` is where all your content goes.
+*/
+.content {
+    margin: 0 auto;
+    padding: 0 2em;
+    max-width: 600px;
+    margin-bottom: 50px;
+    line-height: 1.6em;
+}
+
+.header {
+     margin: 0;
+     color: #333;
+     text-align: center;
+     padding: 2.5em 2em 0;
+     border-bottom: 1px solid #eee;
+ }
+    .header h1 {
+        margin: 0.2em 0;
+        font-size: 3em;
+        font-weight: 300;
+    }
+     .header h2 {
+        font-weight: 300;
+        color: #ccc;
+        padding: 0;
+        margin-top: 0;
+    }
+
+.content-subhead {
+    margin: 50px 0 20px 0;
+    font-weight: 300;
+    color: #888;
+}
+
+fieldset
+{
+border: 1px solid black;
+}
+
+
+-->
+</style>
 </head>
 <body>
-	<p class="notice"><%= notice %></p>
-	       <p class="alert"><%= alert %></p>
+<div id="layout">
+	<div id="main">
+		<div class="header">
+			<h1><%= yield(:title) %></h1>
+			<h2><%= yield(:subtitle) %></h2>
+				<p class="notice"><%= notice %></p>
+		       	<p class="alert"><%= alert %></p>
+		</div>
 <%= yield %>
+	</div>
+</div>
 </html>
+
+		

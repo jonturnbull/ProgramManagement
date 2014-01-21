@@ -1,6 +1,6 @@
 class StaticController < ApplicationController
   layout "static", :only => "about" 
-  layout "application", :only => "home" 
+  layout "dashboard", :only => "dashboard" 
   layout "landing", :only => "landing"
    
   def dashboard
