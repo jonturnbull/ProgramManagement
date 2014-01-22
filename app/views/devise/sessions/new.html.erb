@@ -1,7 +1,66 @@
+<style type="text/css">
+<!--
+
+
+form {
+	margin:0 auto;
+	padding:14px;
+	
+    max-width: 500px;
+}
+
+
+input[type="email"] {
+	width: 250px;
+}
+
+input[type="password"] {
+	width: 250px;
+}
+
+
+/*
+The content `<div>` is where all your content goes.
+*/
+.content {
+    margin: 0 auto;
+    padding: 0 2em;
+    max-width: 600px;
+    margin-bottom: 50px;
+    line-height: 1.6em;
+}
+
+.header {
+     margin: 0;
+     color: #333;
+     text-align: center;
+     padding: 2.5em 2em 0;
+     border-bottom: 1px solid #eee;
+ }
+    .header h1 {
+        margin: 0.2em 0;
+        font-size: 3em;
+        font-weight: 300;
+    }
+     .header h2 {
+        font-weight: 300;
+        color: #ccc;
+        padding: 0;
+        margin-top: 0;
+    }
+
+.content-subhead {
+    margin: 50px 0 20px 0;
+    font-weight: 300;
+    color: #888;
+}
+
+
+-->
+</style>
+
 <% content_for :title, "Sign in" %>
 
-<div class="pure-g-r">
-	<div class="pure-u-19-24">
 		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), html: {class: "pure-form pure-form-aligned" }) do |f| %>
 		<fieldset>
 			<div class="pure-control-group">
@@ -28,5 +87,3 @@
 		</fieldset>
 		</form>
 		<% end %>
-	</div>
-</div>
