@@ -1,4 +1,4 @@
-		<%= form_for(@issue, html: {class: "pure-form pure-form-aligned" }) do |f| %>
+		<%= form_for(@issue,  :remote => true, :format => :js, :authenticity_token => true, html: {class: "pure-form pure-form-aligned" }) do |f| %>
 		<fieldset>
 			<% if @issue.errors.any? %>
 				<div id="error_explanation">

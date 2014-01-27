@@ -1,6 +1,6 @@
 class IssuesController < ApplicationController
 
-  before_filter :authenticate_user!
+  #before_filter :authenticate_user!
 
 
   before_action :set_issue, only: [:show, :edit, :update, :destroy]
@@ -34,6 +34,7 @@ layout "issue"
 
     respond_to do |format|
       if @issue.save
+        format.js { }
         format.html { redirect_to @issue, notice: 'Issue was successfully created.' }
         format.json { render action: 'show', status: :created, location: @issue }
       else

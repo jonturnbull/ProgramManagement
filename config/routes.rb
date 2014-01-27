@@ -5,6 +5,8 @@ ProgramManagement::Application.routes.draw do
   #Static mappings go below
   get 'about'=>'static#about'
   get 'dashboard'=>'static#dashboard'
+  get 'test'=>'static#test'
+
   
   devise_scope :user do
     get "login", :to => "devise/sessions#new"
