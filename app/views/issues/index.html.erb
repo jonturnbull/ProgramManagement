@@ -1,5 +1,6 @@
 <% content_for :title, "Issues for #{@project.name}" %>
 <% content_for :subtitle, "Listing of all issues" %>
+
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -70,7 +71,7 @@
 <div id="dialog-form" title="Create new user">
   
 </div>
-<table>
+<table id="issue_list">
   <thead>
     <tr>
       <th class="title">Title</th>
@@ -82,18 +83,16 @@
   </thead>
 
   <tbody>
-    <% @issues.each do |issue| %>
-      <tr>
-        <td><%= issue.title %></td>
-        <td><%= truncate(issue.description, :length=>200) { link_to("read more",issue)}  %>
-
-        <td><%= link_to 'Show', issue %></td>
-        <td><%= link_to 'Edit', edit_issue_path(issue) %></td>
-        <td><%= link_to 'Destroy', issue, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+    <%= render @issues %>
+      
   </tbody>
 </table>
+
+<div class="pure-g-r">
+<div class="pure-u-19-24">
+<%= render 'form' %>
+</div>
+</div>
 
 <br>
 <button id="new-issue">Create new issue</button>

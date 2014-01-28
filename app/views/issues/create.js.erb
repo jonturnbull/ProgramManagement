@@ -1,1 +1,2 @@
-test
+$("<%= escape_javascript(render @issue) %>").appendTo("#issue_list");
+$("#issue<%= @issue.id %>").css({'background-color': 'yellow'}).animate({'background-color':'white'}, 1000);
