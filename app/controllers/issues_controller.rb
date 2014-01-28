@@ -23,6 +23,10 @@ layout "issue"
   # GET /issues/new
   def new
     @issue = Issue.new
+    
+    respond_to do |format|
+      format.html  { render :layout => !request.xhr? }
+    end
   end
 
   # GET /issues/1/edit
