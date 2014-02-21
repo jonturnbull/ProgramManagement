@@ -16,10 +16,18 @@ class OrganizationsController < ApplicationController
   # GET /organizations/new
   def new
     @organization = Organization.new
+    
+    respond_to do |format|
+      format.html  { render :layout => !request.xhr? }
+    end
   end
 
   # GET /organizations/1/edit
   def edit
+    respond_to do |format|
+    
+    format.html  { render :layout => !request.xhr? }
+  end
   end
 
   # POST /organizations
@@ -29,9 +37,11 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       if @organization.save
+        format.js { }
         format.html { redirect_to @organization, notice: 'Organization was successfully created.' }
         format.json { render action: 'show', status: :created, location: @organization }
       else
+        format.js { }
         format.html { render action: 'new' }
         format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
@@ -43,9 +53,11 @@ class OrganizationsController < ApplicationController
   def update
     respond_to do |format|
       if @organization.update(organization_params)
+        format.js { }
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
         format.json { head :no_content }
       else
+        format.js { }
         format.html { render action: 'edit' }
         format.json { render json: @organization.errors, status: :unprocessable_entity }
       end

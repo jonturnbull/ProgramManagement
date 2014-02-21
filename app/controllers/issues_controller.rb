@@ -5,7 +5,6 @@ class IssuesController < ApplicationController
 
   before_action :set_issue, only: [:show, :edit, :update, :destroy]
 
-layout "issue"
   # GET /issues
   # GET /issues.json
   def index
@@ -31,6 +30,9 @@ layout "issue"
 
   # GET /issues/1/edit
   def edit
+    respond_to do |format|
+      format.html  { render :layout => !request.xhr? }
+    end
   end
 
   # POST /issues
@@ -44,6 +46,7 @@ layout "issue"
         format.html { redirect_to @issue, notice: 'Issue was successfully created.' }
         format.json { render action: 'show', status: :created, location: @issue }
       else
+        format.js {}
         format.html { render action: 'new' }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
       end
@@ -55,6 +58,7 @@ layout "issue"
   def update
     respond_to do |format|
       if @issue.update(issue_params)
+        format.js { }
         format.html { redirect_to @issue, notice: 'Issue was successfully updated.' }
         format.json { head :no_content }
       else

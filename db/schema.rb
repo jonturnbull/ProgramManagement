@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140120221034) do
+ActiveRecord::Schema.define(version: 20140212202852) do
 
   create_table "issue_types", force: true do |t|
     t.string   "name"
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 20140120221034) do
     t.datetime "target_resolution_date"
     t.text     "impact_description"
     t.integer  "project_id"
+    t.datetime "date_closed"
+    t.integer  "status",                 limit: 1
   end
 
   add_index "issues", ["project_id"], name: "index_issues_on_project_id"
@@ -47,6 +49,8 @@ ActiveRecord::Schema.define(version: 20140120221034) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "domain"
+    t.integer  "number_of_users"
   end
 
   create_table "programs", force: true do |t|
@@ -55,6 +59,7 @@ ActiveRecord::Schema.define(version: 20140120221034) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "organization_id"
+    t.text     "purpose"
   end
 
   add_index "programs", ["organization_id"], name: "index_programs_on_organization_id"

@@ -5,6 +5,8 @@ ProgramManagement::Application.routes.draw do
   #Static mappings go below
   get 'about'=>'static#about'
   get 'dashboard'=>'static#dashboard'
+  get 'dashboard1'=>'static#dashboard1'
+  
   get 'test'=>'static#test'
 
   
