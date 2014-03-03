@@ -1,6 +1,6 @@
 ProgramManagement::Application.routes.draw do
 
-  devise_for :users
+  devise_for :users, path_names: {sign_in: "login" }
   
   #Static mappings go below
   get 'about'=>'static#about'
@@ -9,11 +9,6 @@ ProgramManagement::Application.routes.draw do
   
   get 'test'=>'static#test'
 
-  
-  devise_scope :user do
-    get "login", :to => "devise/sessions#new"
-    get "register", :to => "devise/registrations#new"
-  end
   
   resources :organizations do
     resources :programs, shallow: true
