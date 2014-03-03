@@ -4,57 +4,43 @@
 <!--
 
 
-form {
-	margin:0 auto;
-	padding:14px;
-	
-    max-width: 500px;
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
 }
-
-
-input[type="email"] {
-	width: 250px;
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
 }
-
-input[type="password"] {
-	width: 250px;
+.form-signin .checkbox {
+  font-weight: normal;
 }
-
-
-/*
-The content `<div>` is where all your content goes.
-*/
-.content {
-    margin: 0 auto;
-    padding: 0 2em;
-    max-width: 600px;
-    margin-bottom: 50px;
-    line-height: 1.6em;
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
 }
-
-.header {
-     margin: 0;
-     color: #333;
-     text-align: center;
-     padding: 2.5em 2em 0;
-     border-bottom: 1px solid #eee;
- }
-    .header h1 {
-        margin: 0.2em 0;
-        font-size: 3em;
-        font-weight: 300;
-    }
-     .header h2 {
-        font-weight: 300;
-        color: #ccc;
-        padding: 0;
-        margin-top: 0;
-    }
-
-.content-subhead {
-    margin: 50px 0 20px 0;
-    font-weight: 300;
-    color: #888;
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+#user_password {
+  	border-radius: 0;
+	border-radius: 0;
+}
+#user_password_confirmation {
+	margin-bottom: 10px;
+	  border-top-left-radius: 0;
+	  border-top-right-radius: 0;
 }
 
 -->
@@ -76,8 +62,8 @@ The content `<div>` is where all your content goes.
 					<%= f.check_box :remember_me %> I've read the terms and conditions
 					</label>
 				<% end -%>
-		
-				<%= f.submit "Sign in", :class=> "btn btn-lg btn-primary btn-block"   %>
+			</div>
+				<div><%= f.submit "Sign in", :class=> "btn btn-lg btn-primary btn-block"   %>
 			</div>
 
 			<%= render "devise/shared/links" %>
