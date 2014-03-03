@@ -10,9 +10,10 @@ ul {
 }
 -->
 </style>
-
-
-<div class="pure-u-1-4" id="organization<%= organization.id %>">
+<% if organization_counter % 4 == 0 %>
+<div class="row">
+<% end %>
+<div class="col-md-3" id="organization<%= organization.id %>">
 	<div id="" class="box <%= [:green, :amber, :red].sample %>">
 		<div id="orgTitle<%= organization.id %>">
 			<h3>
@@ -55,6 +56,9 @@ ul {
 		</div>
 	</div>
 </div>
+<% if organization_counter % 4 == 3 %>
+</div>
+<% end %>
 
 <script type="text/javascript">
 	$( "#edit-organization-<%= organization.id %>" )
