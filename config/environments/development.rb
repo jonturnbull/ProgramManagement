@@ -35,7 +35,7 @@ ProgramManagement::Application.configure do
       :port      => 25, # ports 587 and 2525 are also supported with STARTTLS
       :enable_starttls_auto => true, # detects and uses STARTTLS
       :user_name => "jon.turnbull@gmail.com",
-      :password  => "oYqLF22JlAs6INNqv2d-YQ", # SMTP password is any valid API key
+      :password  => "*REMOVED*", # SMTP password is any valid API key
       :authentication => 'login', # Mandrill supports 'plain' or 'login'
       :domain => 'yourdomain.com', # your domain to identify your server when connecting
     }
